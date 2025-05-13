@@ -14,15 +14,15 @@ public class DiseaseService {
         diseaseRepository.createDisease(disease);
     }
 
-    public Disease getDiseaseById(int id){
-        return diseaseRepository.getDiseaseById(id);
+    public Disease getDisease(int diseaseId){
+        return diseaseRepository.getDisease(diseaseId);
     }
 
-    public void updateDiseaseName(int id, String name){
-        diseaseRepository.updateDiseaseName(id, name);
+    public void updateDiseaseName(int diseaseId, String name){
+        diseaseRepository.updateDiseaseName(diseaseId, name);
     }
 
-    public void deleteDisease(int id){
-        diseaseRepository.deleteDisease(id);
+    public void deleteDisease(int diseaseId){
+        diseaseRepository.deleteDisease(diseaseId);
     }
 }
