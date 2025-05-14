@@ -15,4 +15,6 @@ public class CreateUserReqDTO {
     private String password;
     private String name;
     private String lastName;
+    private int siteId;
+    private int roleId;
 }

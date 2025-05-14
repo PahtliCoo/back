@@ -22,7 +22,7 @@ public class User {
     private String lastName;
     private String email;
     private int siteId;
-    private int roleId; // Esto debería de ser rol.
+    private int roleId;
     private String firebaseId;
     private OffsetDateTime createdAt;
     private OffsetDateTime updatedAt;

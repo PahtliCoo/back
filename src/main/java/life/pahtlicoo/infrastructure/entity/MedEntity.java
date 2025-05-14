@@ -37,7 +37,7 @@ public class MedEntity extends PanacheEntityBase {
     @UpdateTimestamp
     private OffsetDateTime updated_at;
 
-    @ManyToMany(mappedBy = "site",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
             name="med_site",
             joinColumns = @JoinColumn(name="med_id"),

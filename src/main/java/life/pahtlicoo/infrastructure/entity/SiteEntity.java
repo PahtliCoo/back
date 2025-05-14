@@ -37,6 +37,6 @@ public class SiteEntity extends PanacheEntityBase {
     @UpdateTimestamp
     private OffsetDateTime updated_at;
 
-    @ManyToMany(mappedBy = "site")
+    @ManyToMany(mappedBy = "sites", fetch = FetchType.LAZY)
     private List<MedEntity> meds;
 }

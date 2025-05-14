@@ -8,4 +8,5 @@ public interface UserRepository {
     public void updateUserEmail(int userId, String newEmail);
     public void deleteUser(int userId);
     public User createUserFirebase(User user, String password);
+    public Boolean deleteUserFirebase(String userUid);
 }
