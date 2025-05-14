@@ -4,7 +4,7 @@ import life.pahtlicoo.domain.model.Disease;
 
 public interface DiseaseRepository {
     public void createDisease(Disease disease); //Usar create, evitar statements tipo SQL
-    public Disease getDiseaseById(int diseaseId);
+    public Disease getDisease(int diseaseId);
     public void updateDiseaseName(int diseaseId, String name);
     public void deleteDisease(int diseaseId);
 }
