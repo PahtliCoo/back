@@ -8,8 +8,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 
 @Entity
 @Table(name="med")
@@ -17,6 +20,7 @@ import java.time.OffsetDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class MedEntity extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,9 +28,20 @@ public class MedEntity extends PanacheEntityBase {
 
     @Column(name="name")
     private String name;
+
     @Column(name = "created_at")
+    @CreationTimestamp
     private OffsetDateTime created_at;
+
     @Column(name="updated_at")
+    @UpdateTimestamp
     private OffsetDateTime updated_at;
 
+    @ManyToMany(mappedBy = "site",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(
+            name="med_site",
+            joinColumns = @JoinColumn(name="med_id"),
+            inverseJoinColumns = @JoinColumn(name="site_id")
+    )
+    private List<SiteEntity> sites;
 }

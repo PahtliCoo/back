@@ -10,6 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 
 @Entity
 @Table(name="site")
@@ -35,4 +36,7 @@ public class SiteEntity extends PanacheEntityBase {
     @Column(name="updated_at")
     @UpdateTimestamp
     private OffsetDateTime updated_at;
+
+    @ManyToMany(mappedBy = "site")
+    private List<MedEntity> meds;
 }
