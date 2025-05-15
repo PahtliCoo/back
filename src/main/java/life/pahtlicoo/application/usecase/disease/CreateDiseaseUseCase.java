@@ -19,8 +19,6 @@ public class CreateDiseaseUseCase {
 
     public void execute(CreateDiseaseReqDTO createDiseaseRequestDTO) {
         Disease disease = diseaseDomainMapper.createRequestToDomain(createDiseaseRequestDTO);
-        disease.setCreatedAt(OffsetDateTime.now());
-        disease.setUpdatedAt(OffsetDateTime.now()); //Esto está considerando UTC?
         diseaseService.createDisease(disease);
     }
 }

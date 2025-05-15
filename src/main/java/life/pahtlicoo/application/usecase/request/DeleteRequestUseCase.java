@@ -2,14 +2,14 @@ package life.pahtlicoo.application.usecase.request;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import life.pahtlicoo.domain.repository.RequestRepository;
+import life.pahtlicoo.application.service.RequestService;
 
 @ApplicationScoped
 public class DeleteRequestUseCase {
     @Inject
-    RequestRepository requestRepository;
+    RequestService requestService;
 
     public void execute(int requestId) {
-        requestRepository.deleteRequest(requestId);
+        requestService.deleteRequest(requestId);
     }
 }

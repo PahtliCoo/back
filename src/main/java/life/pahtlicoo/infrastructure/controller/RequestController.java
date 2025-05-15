@@ -65,7 +65,7 @@ public class RequestController {
     }
 
     @DELETE
-    @Path("{request_id}")
+    @Path("/{request_id}")
     public Response deleteRequest(@PathParam("request_id") int requestId){
         deleteRequestUseCase.execute(requestId);
         return Response.ok().build();

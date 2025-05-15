@@ -19,8 +19,6 @@ public class CreateRequestUseCase {
 
     public void execute(CreateRequestReqDTO createRequestReqDTO) {
         Request request = requestDomainMapper.createRequestToDomain(createRequestReqDTO);
-        request.setCreatedAt(OffsetDateTime.now());
-        request.setUpdatedAt(OffsetDateTime.now());
         requestService.createRequest(request);
     }
 }

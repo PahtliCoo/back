@@ -3,13 +3,13 @@ package life.pahtlicoo.application.usecase.request;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import life.pahtlicoo.application.dto.request.UpdateRequestStatusReqDTO;
-import life.pahtlicoo.application.service.DiseaseService;
+import life.pahtlicoo.application.service.RequestService;
 
 @ApplicationScoped
 public class UpdateRequestStatusUseCase {
     @Inject
-    DiseaseService diseaseService;
+    RequestService requestService;
     public void execute(int requestId, UpdateRequestStatusReqDTO updateRequestStatusReqDTO){
-        diseaseService.updateDiseaseName(requestId, updateRequestStatusReqDTO.getStatus());
+        requestService.updateRequestStatus(requestId, updateRequestStatusReqDTO.getStatus());
     }
 }
