@@ -7,7 +7,7 @@ import java.util.List;
 public interface RequestRepository {
     public void createRequest(Request request);
     public Request getRequest(int requestId);
-    public List<Request> getAllRequests();
+    public List<Request> getAllRequestsByUserId(int userId);
     public void updateRequestStatus(int requestId, String status);
     public void deleteRequest(int requestId);
 }
