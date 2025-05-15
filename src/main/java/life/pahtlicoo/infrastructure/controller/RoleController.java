@@ -60,7 +60,7 @@ public class RoleController {
     @PATCH
     @Path("/{role_id}")
     public Response updateRoleName(@PathParam("role_id") int roleId, UpdateRoleNameReqDTO updateRoleNameReqDTO) {
-        updateRoleNameUseCase.execute(roleId, updateRoleNameReqDTO.getName());
+        updateRoleNameUseCase.execute(roleId, updateRoleNameReqDTO);
         return Response.ok().build();
     }
 

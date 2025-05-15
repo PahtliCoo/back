@@ -7,8 +7,6 @@ import life.pahtlicoo.application.mapper.RoleDomainMapper;
 import life.pahtlicoo.application.service.RoleService;
 import life.pahtlicoo.domain.model.Role;
 
-import java.time.OffsetDateTime;
-
 @ApplicationScoped
 public class CreateRoleUseCase {
     @Inject
