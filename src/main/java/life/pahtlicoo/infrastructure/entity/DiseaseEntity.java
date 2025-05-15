@@ -21,16 +21,16 @@ public class DiseaseEntity extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="disease_id")
-    public int diseaseId;
+    private int diseaseId;
 
     @Column(name = "name")
-    public String name;
+    private String name;
 
     @Column(name = "created_at")
     @CreationTimestamp
-    public OffsetDateTime createdAt;
+    private OffsetDateTime createdAt;
 
     @Column(name = "updated_at")
     @UpdateTimestamp
-    public OffsetDateTime updatedAt;
+    private OffsetDateTime updatedAt;
 }

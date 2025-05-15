@@ -21,25 +21,25 @@ public class RequestEntity extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "request_id")
-    public int requestId;
+    private int requestId;
 
     @Column(name="user_id")
-    public int userId;
+    private int userId;
 
     @Column(name = "site_id")
-    public int siteId;
+    private int siteId;
 
     @Column(name = "status")
-    public String status;
+    private String status;
 
     @Column(name= "description")
-    public String description;
+    private String description;
 
     @Column(name = "created_at")
     @CreationTimestamp
-    public OffsetDateTime createdAt;
+    private OffsetDateTime createdAt;
 
     @Column(name = "updated_at")
     @UpdateTimestamp
-    public OffsetDateTime updatedAt;
+    private OffsetDateTime updatedAt;
 }

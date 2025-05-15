@@ -48,6 +48,7 @@ public class UserEntity extends PanacheEntityBase {
 
     @Column(name="role_id")
     private int roleId;
+
     @Column(name="site_id")
     private int siteId;
 }

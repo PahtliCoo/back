@@ -21,28 +21,28 @@ public class NotificationEntity extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="notification_id")
-    public int notificationId;
+    private int notificationId;
 
     @Column(name="status")
-    public String status;
+    private String status;
 
     @Column(name="description")
-    public String description;
+    private String description;
 
     @Column(name="sender_id")
-    public int senderId;
+    private int senderId;
 
     @Column(name="receiver_id")
-    public int receiverId;
+    private int receiverId;
 
     @Column(name="request_id")
-    public int requestId;
+    private int requestId;
 
     @Column(name = "created_at")
     @CreationTimestamp
-    public OffsetDateTime createdAt;
+    private OffsetDateTime createdAt;
 
     @Column(name = "updated_at")
     @UpdateTimestamp
-    public OffsetDateTime updatedAt;
+    private OffsetDateTime updatedAt;
 }

@@ -21,17 +21,17 @@ public class RoleEntity extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "role_id")
-    public int roleId;
+    private int roleId;
 
     @Column(name = "name")
-    public String name;
+    private String name;
 
     @Column(name = "created_at")
     @CreationTimestamp
-    public OffsetDateTime createdAt;
+    private OffsetDateTime createdAt;
 
     @Column(name = "updated_at")
     @UpdateTimestamp
-    public OffsetDateTime updatedAt;
+    private OffsetDateTime updatedAt;
 
 }
