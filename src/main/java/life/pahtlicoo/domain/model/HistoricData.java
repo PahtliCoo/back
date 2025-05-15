@@ -22,6 +22,7 @@ public class HistoricData {
     private int year;
     private int month;
     private int medId;
+    private int quantity;
     private OffsetDateTime createdAt;
     private OffsetDateTime updatedAt;
 }
