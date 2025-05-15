@@ -20,13 +20,14 @@ import java.time.OffsetDateTime;
 public class ShipmentOrderEntity extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public int shipment_order_id;
+    @Column(name="shipment_order_id")
+    public int shipmentOrderId;
 
     @Column(name="user_id")
-    public int user_id; //Aqui puede ser camelCase o debería mantenerse snake?
+    public int userId;
 
     @Column(name="request_id")
-    public int request_id;
+    public int requestId;
 
     @Column(name="description")
     public String description;
@@ -36,10 +37,10 @@ public class ShipmentOrderEntity extends PanacheEntityBase {
 
     @Column(name="created_at")
     @CreationTimestamp
-    public OffsetDateTime created_at;
+    public OffsetDateTime createdAt;
 
     @Column(name = "updated_at")
     @UpdateTimestamp
-    public OffsetDateTime updated_at;
+    public OffsetDateTime updatedAt;
 
 }

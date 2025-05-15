@@ -1,0 +1,21 @@
+package life.pahtlicoo.infrastructure.mapper;
+
+import jakarta.enterprise.context.ApplicationScoped;
+import life.pahtlicoo.domain.model.ShipmentOrder;
+import life.pahtlicoo.infrastructure.entity.ShipmentOrderEntity;
+
+@ApplicationScoped
+public class ShipmentOrderEntityMapper {
+    public ShipmentOrderEntity toEntity(ShipmentOrder shipmentOrder) {
+        return new ShipmentOrderEntity(shipmentOrder.getShipmentOrderId(),
+                shipmentOrder.getUserId(), shipmentOrder.getRequestId(), shipmentOrder.getDescription(),
+                shipmentOrder.getStatus(), shipmentOrder.getCreatedAt(), shipmentOrder.getUpdatedAt());
+    }
+
+    public ShipmentOrder toDomain(ShipmentOrderEntity shipmentOrderEntity){
+        return new ShipmentOrder(shipmentOrderEntity.getShipmentOrderId(), shipmentOrderEntity.getUserId(),
+                shipmentOrderEntity.getRequestId(), shipmentOrderEntity.getDescription(),
+                shipmentOrderEntity.getStatus(), shipmentOrderEntity.getCreatedAt(), shipmentOrderEntity.getUpdatedAt());
+    }
+
+}
