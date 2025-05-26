@@ -1,3 +1,9 @@
+/**
+ * JPA Site entity.
+ * @author Santiago Moreno Lacalle Quintero (a01663197@tec.mx)
+ * @since 2025-05-26
+ */
+
 package life.pahtlicoo.infrastructure.entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
@@ -21,6 +27,7 @@ import java.util.List;
 public class SiteEntity extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="site_id")
     private int site_id;
 
     @Column(name="name")

@@ -1,6 +1,10 @@
+/**
+ * JPA User entity.
+ * @author Adolfo Hernández Fernández (a01664412@tec.mx)
+ * @since 2025-05-21
+ */
 package life.pahtlicoo.infrastructure.entity;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -10,7 +14,6 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.security.Timestamp;
 import java.time.OffsetDateTime;
 
 @Entity

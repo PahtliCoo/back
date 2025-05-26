@@ -1,12 +1,10 @@
-/**
- * JPA Disease entity.
- * @author Adolfo Hernández Fernández (a01664412@tec.mx)
- * @since 2025-05-26
- */
 package life.pahtlicoo.infrastructure.entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,19 +15,19 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.OffsetDateTime;
 
 @Entity
-@Table (name = "disease")
+@Table(name="med_disease")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DiseaseEntity extends PanacheEntityBase {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="disease_id")
-    private int diseaseId;
+public class MedDiseaseEntity extends PanacheEntityBase {
+    @Id//Actually a foreign key
+    @Column(name = "med_id")
+    private int medId;
 
-    @Column(name = "name")
-    private String name;
+    //Actually a foreign key
+    @Column(name = "disease_id")
+    private int diseaseId;
 
     @Column(name = "created_at")
     @CreationTimestamp

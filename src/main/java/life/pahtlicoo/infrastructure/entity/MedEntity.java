@@ -1,8 +1,11 @@
+/**
+ * JPA Med entity.
+ * @author Santiago Moreno Lacalle Quintero (a01663197@tec.mx)
+ * @since 2025-05-21
+ */
 package life.pahtlicoo.infrastructure.entity;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,13 +34,13 @@ public class MedEntity extends PanacheEntityBase {
 
     @Column(name = "created_at")
     @CreationTimestamp
-    private OffsetDateTime created_at;
+    private OffsetDateTime createdAt;
 
     @Column(name="updated_at")
     @UpdateTimestamp
-    private OffsetDateTime updated_at;
+    private OffsetDateTime updatedAt;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY) //TODO ver si esto está bien implementado, que significa cascade y fetch
     @JoinTable(
             name="med_site",
             joinColumns = @JoinColumn(name="med_id"),

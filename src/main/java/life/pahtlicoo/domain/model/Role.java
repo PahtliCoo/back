@@ -1,7 +1,7 @@
 /**
- * Role class.
+ * JPA Role entity.
  * @author Adolfo Hernández Fernández (a01664412@tec.mx)
- * @since 2025-05-11
+ * @since 2025-05-21
  */
 package life.pahtlicoo.domain.model;
 
