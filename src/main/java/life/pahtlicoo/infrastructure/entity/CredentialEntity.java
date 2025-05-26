@@ -12,16 +12,16 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.OffsetDateTime;
 
 @Entity
-@Table(name="role")
+@Table(name="credential")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoleEntity extends PanacheEntityBase {
+public class CredentialEntity extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "role_id")
-    private int roleId;
+    @Column(name = "credential_id")
+    private int credentialId;
 
     @Column(name = "name")
     private String name;

@@ -1,5 +1,5 @@
 /**
- * Med Disease class.
+ * Role class.
  * @author Adolfo Hernández Fernández (a01664412@tec.mx)
  * @since 2025-05-11
  */
@@ -10,13 +10,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.OffsetDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MedDisease {
-    private int medId;
-    private int diseaseId;
-    private OffsetDateTime createdAt; //added
-    private OffsetDateTime updatedAt;//added
+public class Credential {
+    private int credentialId;
+    private String name;
+    private OffsetDateTime createdAt;
+    private OffsetDateTime updatedAt;
 }

@@ -18,10 +18,9 @@ import java.time.OffsetDateTime;
 @AllArgsConstructor
 public class ShipmentOrder {
     private int shipmentOrderId;
-    private int userId;
     private int requestId;
     private String description;
-    private String status;
+    private int state; //modified
     private OffsetDateTime createdAt;
     private OffsetDateTime updatedAt;
 }

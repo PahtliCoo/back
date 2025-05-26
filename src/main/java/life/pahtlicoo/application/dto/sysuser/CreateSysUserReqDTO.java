@@ -1,4 +1,4 @@
-package life.pahtlicoo.application.dto.user;
+package life.pahtlicoo.application.dto.sysuser;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,11 +10,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class CreateUserReqDTO {
+public class CreateSysUserReqDTO {
     private String email;
-    private String password;
+    //private String password; //SI? 
     private String name;
     private String lastName;
     private int siteId;
-    private int roleId;
+    private int credentialId;
 }

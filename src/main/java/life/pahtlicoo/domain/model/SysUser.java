@@ -1,5 +1,5 @@
 /**
- * Role class.
+ * User class.
  * @author Adolfo Hernández Fernández (a01664412@tec.mx)
  * @since 2025-05-11
  */
@@ -16,9 +16,14 @@ import java.time.OffsetDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Role {
-    private int roleId;
+public class SysUser {
+    private int sysUserId;
     private String name;
+    private String lastName;
+    private String email;
+    private int siteId;
+    private int credentialId;
+    private String firebaseId;
     private OffsetDateTime createdAt;
     private OffsetDateTime updatedAt;
 }

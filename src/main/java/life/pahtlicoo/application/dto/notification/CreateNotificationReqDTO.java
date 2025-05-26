@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateNotificationReqDTO {
-    private String status;
+    private int seen;
     private String description;
     @NotBlank
     private int sender_id;

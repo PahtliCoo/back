@@ -1,87 +1,87 @@
 /*
-Implementation of all the methods fore User
+Implementation of all the methods fore SysUser
 @Autor: Santiago Moreno Lacalle Quintero
 @CoAuthor
  */
 package life.pahtlicoo.infrastructure.repository;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.UserRecord;
+import com.google.firebase.auth.SysUserRecord;
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import life.pahtlicoo.domain.model.User;
-import life.pahtlicoo.domain.repository.UserRepository;
-import life.pahtlicoo.infrastructure.entity.UserEntity;
-import life.pahtlicoo.infrastructure.mapper.UserMapper;
+import life.pahtlicoo.domain.model.SysUser;
+import life.pahtlicoo.domain.repository.SysUserRepository;
+import life.pahtlicoo.infrastructure.entity.SysUserEntity;
+import life.pahtlicoo.infrastructure.mapper.SysUserMapper;
 
 
 @ApplicationScoped
-public class UserRepositoryImpl implements UserRepository, PanacheRepositoryBase<UserEntity,Integer> {
+public class SysUserRepositoryImpl implements SysUserRepository, PanacheRepositoryBase<SysUserEntity,Integer> {
 
     @Override
     @Transactional
-    public User createUser(User user) {
+    public SysUser createSysUser(SysUser sysUser) {
         try {
-            UserEntity userEntity = UserMapper.toEntity(user);
-            System.out.println("FirebaseId Entity" + userEntity.getFirebaseId());
-            // 1. Persist the User
-            userEntity.persist();
+            SysUserEntity sysUserEntity = SysUserMapper.toEntity(sysUser);
+            System.out.println("FirebaseId Entity" + sysUserEntity.getFirebaseId());
+            // 1. Persist the SysUser
+            sysUserEntity.persist();
 
             // 2. Check if persistance worked
-            if (!userEntity.isPersistent()) {
-                System.out.println("User entity was not persisted.");
+            if (!sysUserEntity.isPersistent()) {
+                System.out.println("SysUser entity was not persisted.");
                 return null;
             }
 
-            // 3. Return User
-            return UserMapper.toDomain(userEntity);
+            // 3. Return SysUser
+            return SysUserMapper.toDomain(sysUserEntity);
 
         } catch (Exception e) {
             // 4. Failed
-            System.err.println("Error al guardar el user " + e.getMessage());
+            System.err.println("Error al guardar el sysUser " + e.getMessage());
             return null;
         }
     }
 
     @Override
-    public User getUser(int userId){
-        UserEntity userEntity = UserEntity.findById(userId);
+    public SysUser getSysUser(int sysUserId){
+        SysUserEntity sysUserEntity = SysUserEntity.findById(sysUserId);
 
-        if (userEntity == null) {
+        if (sysUserEntity == null) {
             return null;
         }
 
-        return UserMapper.toDomain(userEntity);
+        return SysUserMapper.toDomain(sysUserEntity);
     }
 
     @Override
-    public void updateUserEmail(int userId, String newEmail){
+    public void updateSysUserEmail(int sysUserId, String newEmail){
 
     }
 
     @Override
-    public void deleteUser(int userId){
+    public void deleteSysUser(int sysUserId){
 
     }
     @Transactional
     @Override
-    public User createUserFirebase(User user,  String password) {
-        UserRecord.CreateRequest request = new UserRecord.CreateRequest().
-                                                setEmail(user.getEmail()).
+    public SysUser createSysUserFirebase(SysUser sysUser,  String password) {
+        SysUserRecord.CreateRequest request = new SysUserRecord.CreateRequest().
+                                                setEmail(sysUser.getEmail()).
                                                 setPassword(password);
         try {
-            UserRecord userRecord = FirebaseAuth.getInstance().createUser(request);
+            SysUserRecord sysUserRecord = FirebaseAuth.getInstance().createSysUser(request);
             // Checking data.
-            System.out.println(userRecord);
-            System.out.println("Email que se agrega: " + userRecord.getEmail());
-            System.out.println("Firebase que se agrega" + userRecord.getUid());
+            System.out.println(sysUserRecord);
+            System.out.println("Email que se agrega: " + sysUserRecord.getEmail());
+            System.out.println("Firebase que se agrega" + sysUserRecord.getUid());
 
-            //Add the UID from firebase to the user.
-            user.setFirebaseId(userRecord.getUid());
+            //Add the UID from firebase to the sysUser.
+            sysUser.setFirebaseId(sysUserRecord.getUid());
 
-            return user;
+            return sysUser;
 
         }catch (Exception e) {
             System.out.println("No se creo el usuario en firebase");
@@ -90,12 +90,12 @@ public class UserRepositoryImpl implements UserRepository, PanacheRepositoryBase
     }
 
     @Override
-    public Boolean deleteUserFirebase(String userUid) {
+    public Boolean deleteSysUserFirebase(String sysUserUid) {
         try {
-            FirebaseAuth.getInstance().deleteUser(userUid);
+            FirebaseAuth.getInstance().deleteSysUser(sysUserUid);
             return true;
         } catch (Exception e) {
-            throw new RuntimeException("Error deleting user from Firebase: " + e.getMessage(), e);
+            throw new RuntimeException("Error deleting sysUser from Firebase: " + e.getMessage(), e);
         }
 
     }

@@ -19,7 +19,7 @@ import java.time.LocalDate;
 public class Med {
     private int medId;
     private String name;
-    private int siteId;
-    private LocalDate createdAt;
-    private LocalDate updatedAt;
+    //private int siteId;
+    private OffsetDateTime createdAt;
+    private OffsetDateTime updatedAt;
 }

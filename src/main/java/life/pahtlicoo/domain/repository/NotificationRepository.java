@@ -8,6 +8,6 @@ public interface NotificationRepository {
     public void createNotification(Notification notification);
     public Notification getNotification(int notificationId);
     public List<Notification> getAllNotificationsByReceiverId(int receiverId);
-    public void updateNotificationStatus(int notificationId, String status);
+    public void updateNotificationStatus(int notificationId, int seen);
     public void deleteNotification(int notificationId);
 }

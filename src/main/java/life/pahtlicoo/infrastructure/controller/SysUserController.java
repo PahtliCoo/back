@@ -4,11 +4,11 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
-import life.pahtlicoo.application.dto.user.CreateUserReqDTO;
-import life.pahtlicoo.application.usecase.user.CreateUserUseCase;
-import life.pahtlicoo.domain.model.User;
+import life.pahtlicoo.application.dto.sysUser.CreateUserReqDTO;
+import life.pahtlicoo.application.usecase.sysUser.CreateUserUseCase;
+import life.pahtlicoo.domain.model.SysUser;
 
-@Path("/user")
+@Path("/sysUser")
 public class UserController {
     @Inject
     CreateUserUseCase createUserUseCase;
@@ -17,8 +17,8 @@ public class UserController {
     @Path("/createUser")
     public Response createUser(CreateUserReqDTO createUserReqDTO) {
         try {
-            User user = createUserUseCase.execute(createUserReqDTO);
-            return Response.ok(user).build();
+            SysUser sysUser = createUserUseCase.execute(createUserReqDTO);
+            return Response.ok(sysUser).build();
         }catch (Exception e){
             return Response.serverError().entity(e.getMessage()).build();
         }

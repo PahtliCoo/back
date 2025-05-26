@@ -18,7 +18,7 @@ import java.time.OffsetDateTime;
 @AllArgsConstructor
 public class Notification {
     private int notificationId;
-    private String status;
+    private int seen; //status
     private String description;
     private int senderId;
     private int receiverId;

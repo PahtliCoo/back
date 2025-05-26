@@ -17,4 +17,8 @@ import lombok.Setter;
 public class MedSite {
     private int medId;
     private int siteId;
+    private int initialQuantity; //added
+    private int currentQuantity; //added
+    private OffsetDateTime createdAt; //added
+    private OffsetDateTime updatedAt;//added
 }

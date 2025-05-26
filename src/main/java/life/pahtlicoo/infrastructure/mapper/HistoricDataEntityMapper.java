@@ -9,13 +9,13 @@ public class HistoricDataEntityMapper {
 
     public HistoricData toDomain(HistoricDataEntity historicDataEntity){
         return new HistoricData(historicDataEntity.getHistoricDataId(), historicDataEntity.getSiteId(),
-                historicDataEntity.getYear(), historicDataEntity.getMonth(), historicDataEntity.getMedId(),
+                historicDataEntity.getDateYear(), historicDataEntity.getDateMonth(), historicDataEntity.getMedId(),
                 historicDataEntity.getQuantity(), historicDataEntity.getCreatedAt(), historicDataEntity.getUpdatedAt());
     }
 
     public HistoricDataEntity toEntity(HistoricData historicData){
         return new HistoricDataEntity(historicData.getHistoricDataId(), historicData.getSiteId(),
-                historicData.getYear(), historicData.getMonth(), historicData.getMedId(), historicData.getQuantity(),
+                historicData.getDateYear(), historicData.getDateMonth(), historicData.getMedId(), historicData.getQuantity(),
                 historicData.getCreatedAt(), historicData.getUpdatedAt());
     }
 

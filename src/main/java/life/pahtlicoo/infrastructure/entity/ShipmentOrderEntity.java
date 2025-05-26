@@ -23,17 +23,14 @@ public class ShipmentOrderEntity extends PanacheEntityBase {
     @Column(name="shipment_order_id")
     private int shipmentOrderId;
 
-    @Column(name="user_id")
-    private int userId;
-
     @Column(name="request_id")
     private int requestId;
 
     @Column(name="description")
     private String description;
 
-    @Column(name= "status")
-    private String status;
+    @Column(name= "state")
+    private int state;
 
     @Column(name="created_at")
     @CreationTimestamp

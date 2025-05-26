@@ -18,9 +18,9 @@ import java.time.OffsetDateTime;
 @AllArgsConstructor
 public class Request {
     private int requestId;
-    private int userId;
-    private int siteId;
-    private String status;
+    private int sysUserId;
+    //private int siteId;
+    private int state; //modified
     private String description;
     private OffsetDateTime createdAt;
     private OffsetDateTime updatedAt;

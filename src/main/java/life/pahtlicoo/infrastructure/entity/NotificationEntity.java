@@ -23,8 +23,8 @@ public class NotificationEntity extends PanacheEntityBase {
     @Column(name="notification_id")
     private int notificationId;
 
-    @Column(name="status")
-    private String status;
+    @Column(name="seen")
+    private String seen;
 
     @Column(name="description")
     private String description;

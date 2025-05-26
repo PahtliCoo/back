@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateRoleReqDTO {
+public class CreateCredentalReqDTO {
     @NotBlank
     private String name;
 }

@@ -35,8 +35,8 @@ public class RequestRepositoryImpl implements RequestRepository, PanacheReposito
     }
 
     @Override
-    public List<Request> getAllRequestsByUserId(int userId){
-        List<RequestEntity> requestEntities = find("userId", userId).list();
+    public List<Request> getAllRequestsByUserId(int sysUserId){
+        List<RequestEntity> requestEntities = find("sysUserId", sysUserId).list();
         return requestEntities.stream()
                 .map(requestEntityMapper::toDomain)
                 .toList();
@@ -44,12 +44,12 @@ public class RequestRepositoryImpl implements RequestRepository, PanacheReposito
 
     @Override
     @Transactional
-    public void updateRequestStatus(int userId, String status){
-        RequestEntity requestEntity = findById(userId);
+    public void updateRequestStatus(int sysUserId, int state){
+        RequestEntity requestEntity = findById(sysUserId);
         if(requestEntity == null){
             return;
         }
-        requestEntity.setStatus(status);
+        requestEntity.setStatus(state);
     }
 
     @Override

@@ -19,10 +19,11 @@ import java.time.OffsetDateTime;
 public class HistoricData {
     private int historicDataId;
     private int siteId;
-    private int year;
-    private int month;
+    private int dateYear;
+    private int dateMonth;
     private int medId;
     private int quantity;
+    private int projectedQuantity;
     private OffsetDateTime createdAt;
     private OffsetDateTime updatedAt;
 }

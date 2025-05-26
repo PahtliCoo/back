@@ -33,12 +33,12 @@ public class ShipmentOrderRepositoryImpl implements ShipmentOrderRepository, Pan
 
     @Override
     @Transactional
-    public void updateShipmentOrderStatus(int shipmentOrderId, String status) {
+    public void updateShipmentOrderStatus(int shipmentOrderId, int state) {
         ShipmentOrderEntity shipmentOrderEntity = findById(shipmentOrderId);
         if (shipmentOrderEntity == null) {
             return;
         }
-        shipmentOrderEntity.setStatus(status);
+        shipmentOrderEntity.setState(state);
     }
 
     @Override

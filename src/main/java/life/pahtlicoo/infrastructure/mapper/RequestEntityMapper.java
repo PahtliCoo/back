@@ -9,9 +9,8 @@ public class RequestEntityMapper {
     public Request toDomain(RequestEntity requestEntity){
         Request request = new Request();
         request.setRequestId(requestEntity.getRequestId());
-        request.setUserId(requestEntity.getUserId());
-        request.setSiteId(requestEntity.getSiteId());
-        request.setStatus(requestEntity.getStatus());
+        request.setSysUserId(requestEntity.getSysUserId());
+        request.setState(requestEntity.getState());
         request.setDescription(requestEntity.getDescription());
         request.setCreatedAt(requestEntity.getCreatedAt());
         request.setUpdatedAt(requestEntity.getUpdatedAt());
@@ -22,8 +21,7 @@ public class RequestEntityMapper {
         RequestEntity requestEntity = new RequestEntity();
         requestEntity.setRequestId(request.getRequestId());
         requestEntity.setUserId(request.getUserId());
-        requestEntity.setSiteId(request.getSiteId());
-        requestEntity.setStatus(request.getStatus());
+        requestEntity.setState(request.getState());
         requestEntity.setDescription(request.getDescription());
         requestEntity.setCreatedAt(request.getCreatedAt());
         requestEntity.setUpdatedAt(request.getUpdatedAt());

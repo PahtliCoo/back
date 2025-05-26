@@ -23,14 +23,11 @@ public class RequestEntity extends PanacheEntityBase {
     @Column(name = "request_id")
     private int requestId;
 
-    @Column(name="user_id")
-    private int userId;
+    @Column(name="sys_user_id")
+    private int sysUserId;
 
-    @Column(name = "site_id")
-    private int siteId;
-
-    @Column(name = "status")
-    private String status;
+    @Column(name = "state")
+    private int state;
 
     @Column(name= "description")
     private String description;

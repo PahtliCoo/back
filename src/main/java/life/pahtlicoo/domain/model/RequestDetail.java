@@ -1,5 +1,5 @@
 /**
- * User class.
+ * Request class.
  * @author Adolfo Hernández Fernández (a01664412@tec.mx)
  * @since 2025-05-11
  */
@@ -16,14 +16,10 @@ import java.time.OffsetDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
-    private int userId;
-    private String name;
-    private String lastName;
-    private String email;
-    private int siteId;
-    private int roleId;
-    private String firebaseId;
+public class Request {
+    private int medId;
+    private int requestId;
+    private int quantity; 
     private OffsetDateTime createdAt;
     private OffsetDateTime updatedAt;
 }

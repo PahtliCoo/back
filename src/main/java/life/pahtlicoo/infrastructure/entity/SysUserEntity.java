@@ -1,5 +1,6 @@
 package life.pahtlicoo.infrastructure.entity;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,43 +10,45 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.security.Timestamp;
 import java.time.OffsetDateTime;
 
 @Entity
-@Table(name="historic_data")
-@Setter
+@Table(name="sys_user")
 @Getter
-@AllArgsConstructor
+@Setter
 @NoArgsConstructor
-public class HistoricDataEntity extends PanacheEntityBase {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="historic_data_id")
-    private int historicDataId;
+@AllArgsConstructor
 
-    @Column(name="site_id")
+public class SysUserEntity extends PanacheEntityBase {
+    @Id
+    @Column(name="sys_user_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name="last_name")
+    private String lastName;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "site_id")
     private int siteId;
 
-    @Column(name="date_year")
-    private int dateYear;
+    @Column(name = "credential_id")
+    private int credentialId;
 
-    @Column(name="date_month")
-    private int dateMonth;
-
-    @Column(name="med_id")
-    private int medId;
-
-    @Column(name="quantity")
-    private int quantity;
-
-    @Column(name="projected_quantity")
-    private int projectedQuantity;
+    @Column(name="firebase_id")
+    private String firebaseId;
 
     @Column(name = "created_at")
     @CreationTimestamp
     private OffsetDateTime createdAt;
 
-    @Column(name = "updated_at")
+    @Column(name="updated_at")
     @UpdateTimestamp
     private OffsetDateTime updatedAt;
 }
