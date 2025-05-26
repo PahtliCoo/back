@@ -1,7 +1,8 @@
 /**
  * Request class.
  * @author Adolfo Hernández Fernández (a01664412@tec.mx)
- * @since 2025-05-11
+ * @co-author Nicole Kapellmann Lepine (a01664563@tec.mx)
+ * @since 2025-05-26
  */
 package life.pahtlicoo.domain.model;
 
@@ -19,8 +20,7 @@ import java.time.OffsetDateTime;
 public class Request {
     private int requestId;
     private int sysUserId;
-    //private int siteId;
-    private int state; //modified
+    private int state;
     private String description;
     private OffsetDateTime createdAt;
     private OffsetDateTime updatedAt;

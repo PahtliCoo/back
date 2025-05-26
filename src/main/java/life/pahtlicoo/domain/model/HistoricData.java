@@ -1,6 +1,7 @@
 /**
  * Historic Data class.
  * @author Adolfo Hernández Fernández (a01664412@tec.mx)
+ * @co-author Nicole Kapellmann Lepine (a01664563@tec.mx)
  * @since 2025-05-11
  */
 package life.pahtlicoo.domain.model;
