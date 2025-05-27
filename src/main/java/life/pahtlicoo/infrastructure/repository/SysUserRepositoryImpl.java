@@ -13,7 +13,7 @@ import jakarta.transaction.Transactional;
 import life.pahtlicoo.domain.model.SysUser;
 import life.pahtlicoo.domain.repository.SysUserRepository;
 import life.pahtlicoo.infrastructure.entity.SysUserEntity;
-import life.pahtlicoo.infrastructure.mapper.SysUserMapper;
+import life.pahtlicoo.infrastructure.mapper.SysUserEntityMapper;
 
 
 @ApplicationScoped
@@ -23,7 +23,7 @@ public class SysUserRepositoryImpl implements SysUserRepository, PanacheReposito
     @Transactional
     public SysUser createSysUser(SysUser sysUser) {
         try {
-            SysUserEntity sysUserEntity = SysUserMapper.toEntity(sysUser);
+            SysUserEntity sysUserEntity = SysUserEntityMapper.toEntity(sysUser);
             System.out.println("FirebaseId Entity" + sysUserEntity.getFirebaseId());
             // 1. Persist the SysUser
             sysUserEntity.persist();
@@ -35,7 +35,7 @@ public class SysUserRepositoryImpl implements SysUserRepository, PanacheReposito
             }
 
             // 3. Return SysUser
-            return SysUserMapper.toDomain(sysUserEntity);
+            return SysUserEntityMapper.toDomain(sysUserEntity);
 
         } catch (Exception e) {
             // 4. Failed
@@ -52,7 +52,7 @@ public class SysUserRepositoryImpl implements SysUserRepository, PanacheReposito
             return null;
         }
 
-        return SysUserMapper.toDomain(sysUserEntity);
+        return SysUserEntityMapper.toDomain(sysUserEntity);
     }
 
     @Override

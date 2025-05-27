@@ -1,14 +1,21 @@
+/**
+ * System User Entity Mapper.
+ * @author Nicole Kapellmann Lepine (a01664563@tec.mx)
+ * @co-author Adolfo Hernandez Fernandez (a01664412@tec.mx)
+ * @since 2025-05-26
+ */
 package life.pahtlicoo.infrastructure.mapper;
 
-
+import jakarta.enterprise.context.ApplicationScoped;
 import life.pahtlicoo.domain.model.SysUser;
 import life.pahtlicoo.infrastructure.entity.SysUserEntity;
 
-public class SysUserMapper {
+@ApplicationScoped
+public class SysUserEntityMapper {
     public static SysUser toDomain(SysUserEntity sysUserEntity){
         SysUser sysUser = new SysUser();
         // userId
-        sysUser.setSysUserId(sysUserEntity.getSysUserid());
+        sysUser.setSysUserId(sysUserEntity.getSysUserId());
         // firebaseId
         sysUser.setFirebaseId(sysUserEntity.getFirebaseId());
         // email
@@ -31,7 +38,7 @@ public class SysUserMapper {
     public static SysUserEntity toEntity(SysUser sysUser){
         SysUserEntity sysUserEntity = new SysUserEntity();
         // userId
-        sysUserEntity.setSysUserid(sysUser.getSysUserId());
+        sysUserEntity.setSysUserId(sysUser.getSysUserId());
         // firebaseId
         sysUserEntity.setFirebaseId(sysUser.getFirebaseId());
         // email
