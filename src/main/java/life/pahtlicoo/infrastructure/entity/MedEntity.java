@@ -27,6 +27,7 @@ import java.time.OffsetDateTime;
 public class MedEntity extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="med_id")
     private int medId;
 
     @Column(name="name")

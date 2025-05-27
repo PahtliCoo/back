@@ -24,7 +24,7 @@ public class NotificationService {
         return notificationRepository.getAllNotificationsByReceiverId(receiverId);
     }
 
-    public void updateNotificationStatus(int notificationId, int seen) {
+    public void updateNotificationStatus(int notificationId, boolean seen) {
         notificationRepository.updateNotificationStatus(notificationId, seen);
     }
 
