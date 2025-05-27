@@ -1,6 +1,5 @@
 package life.pahtlicoo.infrastructure.entity;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -10,7 +9,6 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.security.Timestamp;
 import java.time.OffsetDateTime;
 
 @Entity
@@ -24,7 +22,7 @@ public class SysUserEntity extends PanacheEntityBase {
     @Id
     @Column(name="sys_user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int sysUserid;
 
     @Column(name = "name")
     private String name;

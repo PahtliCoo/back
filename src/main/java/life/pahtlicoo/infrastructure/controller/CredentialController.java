@@ -1,14 +1,20 @@
+/**
+ * Get all Credentials Use Case.
+ * @author Adolfo Hernández Fernández (a01664412@tec.mx)
+ * @co-author Nicole Kapellmann Lepine
+ * @co-author Santiago Moreno Lacalle Quintero (A01663197@tec.mx)
+ * @since 2025-05-26
+ */
 package life.pahtlicoo.infrastructure.controller;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import life.pahtlicoo.application.dto.credential.CreateCredentialReqDTO;
 import life.pahtlicoo.application.dto.credential.UpdateCredentialNameReqDTO;
 import life.pahtlicoo.application.usecase.credential.*;
 import life.pahtlicoo.domain.model.Credential;
-
+import life.pahtlicoo.application.dto.credential.CreateCredentialReqDTO;
 import java.util.List;
 
 @Path("/credential")

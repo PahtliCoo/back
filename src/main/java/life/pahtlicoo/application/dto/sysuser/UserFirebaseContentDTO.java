@@ -1,4 +1,4 @@
-package life.pahtlicoo.application.dto.user;
+package life.pahtlicoo.application.dto.sysuser;
 
 import jakarta.enterprise.context.RequestScoped;
 import lombok.AllArgsConstructor;
