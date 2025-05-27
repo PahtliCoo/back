@@ -1,4 +1,4 @@
-package life.pahtlicoo.application.dto.role;
+package life.pahtlicoo.application.dto.credential;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateRoleNameReqDTO {
+public class UpdateCredentialNameReqDTO {
     @NotBlank
     private String name;
 }

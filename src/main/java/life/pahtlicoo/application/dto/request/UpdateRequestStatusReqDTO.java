@@ -12,5 +12,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UpdateRequestStatusReqDTO {
     @NotBlank
-    private int status;
+    private int state;
 }

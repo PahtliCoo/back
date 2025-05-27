@@ -1,6 +1,6 @@
 package life.pahtlicoo.domain.repository;
 
-import life.pahtlicoo.domain.model.Role;
+import life.pahtlicoo.domain.model.Credential;
 
 import java.util.List;
 

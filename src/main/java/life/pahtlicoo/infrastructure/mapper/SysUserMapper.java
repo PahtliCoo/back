@@ -1,36 +1,37 @@
 package life.pahtlicoo.infrastructure.mapper;
 
-import life.pahtlicoo.domain.model.User;
-import life.pahtlicoo.infrastructure.entity.UserEntity;
+
+import life.pahtlicoo.domain.model.SysUser;
+import life.pahtlicoo.infrastructure.entity.SysUserEntity;
 
 public class SysUserMapper {
     public static SysUser toDomain(SysUserEntity sysUserEntity){
         SysUser sysUser = new SysUser();
         // userId
-        user.setId(sysUserEntity.getId());
+        sysUser.setSysUserId(sysUserEntity.getSysUserid());
         // firebaseId
-        user.setFirebaseId(sysUserEntity.getFirebaseId());
+        sysUser.setFirebaseId(sysUserEntity.getFirebaseId());
         // email
-        user.setEmail(sysUserEntity.getEmail());
+        sysUser.setEmail(sysUserEntity.getEmail());
         // name
-        user.setName(sysUserEntity.getName());
+        sysUser.setName(sysUserEntity.getName());
         //lastName
-        user.setLastName(sysUserEntity.getLastName());
+        sysUser.setLastName(sysUserEntity.getLastName());
         // siteId
-        user.setSiteId(sysUserEntity.getSiteId());
+        sysUser.setSiteId(sysUserEntity.getSiteId());
         //credentialId
-        user.setCredentialId(sysUserEntity.getCredentialId());
+        sysUser.setCredentialId(sysUserEntity.getCredentialId());
         //createdAt
-        user.setCreatedAt(sysUserEntity.getCreatedAt());
+        sysUser.setCreatedAt(sysUserEntity.getCreatedAt());
         //updatedAt
-        user.setUpdatedAt(sysUserEntity.getUpdatedAt());
-        return user;
+        sysUser.setUpdatedAt(sysUserEntity.getUpdatedAt());
+        return sysUser;
     };
 
     public static SysUserEntity toEntity(SysUser sysUser){
         SysUserEntity sysUserEntity = new SysUserEntity();
         // userId
-        sysUserEntity.setId(sysUser.getUserId());
+        sysUserEntity.setSysUserid(sysUser.getSysUserId());
         // firebaseId
         sysUserEntity.setFirebaseId(sysUser.getFirebaseId());
         // email

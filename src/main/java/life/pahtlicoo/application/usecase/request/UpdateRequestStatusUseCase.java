@@ -10,6 +10,6 @@ public class UpdateRequestStatusUseCase {
     @Inject
     RequestService requestService;
     public void execute(int requestId, UpdateRequestStatusReqDTO updateRequestStatusReqDTO){
-        requestService.updateRequestStatus(requestId, updateRequestStatusReqDTO.getStatus());
+        requestService.updateRequestStatus(requestId, updateRequestStatusReqDTO.getState());
     }
 }

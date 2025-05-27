@@ -11,6 +11,6 @@ public class UpdateNotificationStatusUseCase {
     NotificationService notificationService;
 
     public void execute(int notificationId, UpdateNotificationStatusReqDTO updateNotificationStatusReqDTO) {
-        notificationService.updateNotificationStatus(notificationId, updateNotificationStatusReqDTO.getStatus());
+        notificationService.updateNotificationStatus(notificationId, updateNotificationStatusReqDTO.getSeen());
     }
 }

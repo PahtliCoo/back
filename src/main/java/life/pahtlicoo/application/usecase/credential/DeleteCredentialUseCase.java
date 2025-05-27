@@ -1,16 +1,16 @@
-package life.pahtlicoo.application.usecase.role;
+package life.pahtlicoo.application.usecase.credential;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import life.pahtlicoo.application.service.RoleService;
+import life.pahtlicoo.application.service.CredentialService;
 
 @ApplicationScoped
-public class DeleteRoleUseCase {
+public class DeleteCredentialUseCase {
     @Inject
-    RoleService roleService;
+    CredentialService credentialService;
 
     public void execute(int roleId) {
-        roleService.deleteRole(roleId);
+        credentialService.deleteRole(roleId);
     }
 }
 

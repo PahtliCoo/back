@@ -11,6 +11,6 @@ public class UpdateShipmentOrderStatusUseCase {
     ShipmentOrderService shipmentOrderService;
 
     public void execute(int shipmentOrderId, UpdateShipmentOrderStatusReqDTO updateShipmentOrderStatusReqDTO) {
-        shipmentOrderService.updateShipmentOrderStatus(shipmentOrderId, updateShipmentOrderStatusReqDTO.getStatus());
+        shipmentOrderService.updateShipmentOrderStatus(shipmentOrderId, updateShipmentOrderStatusReqDTO.getState());
     }
 }
