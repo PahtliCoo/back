@@ -1,3 +1,9 @@
+/**
+ * Shipment Order entity.
+ * @author Adolfo Hernandez Fernandez (a01664412@tec.mx)
+ * @co-author Nicole Kapellmann Lepine (a01664563@tec.mx)
+ * @since 2025-05-26
+ */
 package life.pahtlicoo.infrastructure.entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
@@ -23,17 +29,14 @@ public class ShipmentOrderEntity extends PanacheEntityBase {
     @Column(name="shipment_order_id")
     private int shipmentOrderId;
 
-    @Column(name="user_id")
-    private int userId;
-
     @Column(name="request_id")
     private int requestId;
 
     @Column(name="description")
     private String description;
 
-    @Column(name= "status")
-    private String status;
+    @Column(name= "state")
+    private int state;
 
     @Column(name="created_at")
     @CreationTimestamp

@@ -12,9 +12,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class CreateRequestReqDTO {
     @NotBlank
-    private int user_id;
-    @NotBlank
-    private int site_id;
-    private String status;
+    private int sys_user_id;
+    @NotBlank // no sé si va aquí
+    private int state;
     private String description;
 }

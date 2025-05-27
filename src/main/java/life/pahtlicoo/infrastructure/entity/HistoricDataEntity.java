@@ -1,3 +1,9 @@
+/**
+ * Historic Data entity
+ * @author Adolfo Hernández Fernández (a01664412@tec.mx)
+ * @co-author Nicole Kapellmann Lepine (a01664563@tec.mx)
+ * @since 2025-05-26
+ */
 package life.pahtlicoo.infrastructure.entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
@@ -26,17 +32,20 @@ public class HistoricDataEntity extends PanacheEntityBase {
     @Column(name="site_id")
     private int siteId;
 
-    @Column(name="year")
-    private int year;
+    @Column(name="date_year")
+    private int dateYear;
 
-    @Column(name="month")
-    private int month;
+    @Column(name="date_month")
+    private int dateMonth;
 
     @Column(name="med_id")
     private int medId;
 
     @Column(name="quantity")
     private int quantity;
+
+    @Column(name="projected_quantity")
+    private int projectedQuantity;
 
     @Column(name = "created_at")
     @CreationTimestamp

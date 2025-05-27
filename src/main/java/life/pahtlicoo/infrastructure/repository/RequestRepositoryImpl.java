@@ -1,3 +1,9 @@
+/**
+ * Request Repository.
+ * @author Adolfo Hernández Fernández (a01664412@tec.mx)
+ * @Co-Author Santiago Moreno Lacalle Quintero (A01663197@tec.mx)
+ * @since 2025-05-11
+ */
 package life.pahtlicoo.infrastructure.repository;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
@@ -35,8 +41,8 @@ public class RequestRepositoryImpl implements RequestRepository, PanacheReposito
     }
 
     @Override
-    public List<Request> getAllRequestsByUserId(int userId){
-        List<RequestEntity> requestEntities = find("userId", userId).list();
+    public List<Request> getAllRequestsByUserId(int sysUserId){
+        List<RequestEntity> requestEntities = find("sysUserId", sysUserId).list();
         return requestEntities.stream()
                 .map(requestEntityMapper::toDomain)
                 .toList();
@@ -44,12 +50,12 @@ public class RequestRepositoryImpl implements RequestRepository, PanacheReposito
 
     @Override
     @Transactional
-    public void updateRequestStatus(int userId, String status){
-        RequestEntity requestEntity = findById(userId);
+    public void updateRequestStatus(int sysUserId, int state){
+        RequestEntity requestEntity = findById(sysUserId);
         if(requestEntity == null){
             return;
         }
-        requestEntity.setStatus(status);
+        requestEntity.setState(state);
     }
 
     @Override

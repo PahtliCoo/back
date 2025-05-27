@@ -13,8 +13,8 @@ import lombok.Setter;
 public class CreateHistoricDataReqDTO {
     @NotBlank
     private int site_id;
-    private int year;
-    private int month;
+    private int date_year;
+    private int date_month;
     private int med_id;
     private int quantity;
 }

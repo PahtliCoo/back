@@ -24,8 +24,8 @@ public class NotificationService {
         return notificationRepository.getAllNotificationsByReceiverId(receiverId);
     }
 
-    public void updateNotificationStatus(int notificationId, String status) {
-        notificationRepository.updateNotificationStatus(notificationId, status);
+    public void updateNotificationStatus(int notificationId, boolean seen) {
+        notificationRepository.updateNotificationStatus(notificationId, seen);
     }
 
     public void deleteNotification(int notificationId) {

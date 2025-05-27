@@ -1,3 +1,10 @@
+/**
+ * Historic Data Entity Mapper
+ * @author Adolfo Hernández Fernández (a01664412@tec.mx)
+ * @co-author Nicole Kapellmann lepine (a01664563@tec.mx)
+ * @since 2025-05-26
+ */
+
 package life.pahtlicoo.infrastructure.mapper;
 
 import jakarta.enterprise.context.ApplicationScoped;
@@ -9,14 +16,15 @@ public class HistoricDataEntityMapper {
 
     public HistoricData toDomain(HistoricDataEntity historicDataEntity){
         return new HistoricData(historicDataEntity.getHistoricDataId(), historicDataEntity.getSiteId(),
-                historicDataEntity.getYear(), historicDataEntity.getMonth(), historicDataEntity.getMedId(),
-                historicDataEntity.getQuantity(), historicDataEntity.getCreatedAt(), historicDataEntity.getUpdatedAt());
+                historicDataEntity.getDateYear(), historicDataEntity.getDateMonth(), historicDataEntity.getMedId(),
+                historicDataEntity.getQuantity(), historicDataEntity.getProjectedQuantity(),
+                historicDataEntity.getCreatedAt(), historicDataEntity.getUpdatedAt());
     }
 
     public HistoricDataEntity toEntity(HistoricData historicData){
         return new HistoricDataEntity(historicData.getHistoricDataId(), historicData.getSiteId(),
-                historicData.getYear(), historicData.getMonth(), historicData.getMedId(), historicData.getQuantity(),
-                historicData.getCreatedAt(), historicData.getUpdatedAt());
+                historicData.getDateYear(), historicData.getDateMonth(), historicData.getMedId(),
+                historicData.getQuantity(), historicData.getProjectedQuantity(), historicData.getCreatedAt(),
+                historicData.getUpdatedAt());
     }
-
 }

@@ -1,3 +1,10 @@
+/**
+ * Request Entity Mapper.
+ * @author Adolfo Hernandez Fernandez (a01664412@tec.mx)
+ * @co-author Nicole Kapellmann Lepine (a01664563@tec.mx)
+ * @since 2025-05-26
+ */
+
 package life.pahtlicoo.infrastructure.mapper;
 
 import jakarta.enterprise.context.ApplicationScoped;
@@ -7,26 +14,12 @@ import life.pahtlicoo.infrastructure.entity.RequestEntity;
 @ApplicationScoped
 public class RequestEntityMapper {
     public Request toDomain(RequestEntity requestEntity){
-        Request request = new Request();
-        request.setRequestId(requestEntity.getRequestId());
-        request.setUserId(requestEntity.getUserId());
-        request.setSiteId(requestEntity.getSiteId());
-        request.setStatus(requestEntity.getStatus());
-        request.setDescription(requestEntity.getDescription());
-        request.setCreatedAt(requestEntity.getCreatedAt());
-        request.setUpdatedAt(requestEntity.getUpdatedAt());
-        return request;
+        return new Request(requestEntity.getRequestId(), requestEntity.getSysUserId(), requestEntity.getState(),
+                requestEntity.getDescription(), requestEntity.getCreatedAt(), requestEntity.getUpdatedAt());
     }
 
     public RequestEntity toEntity(Request request){
-        RequestEntity requestEntity = new RequestEntity();
-        requestEntity.setRequestId(request.getRequestId());
-        requestEntity.setUserId(request.getUserId());
-        requestEntity.setSiteId(request.getSiteId());
-        requestEntity.setStatus(request.getStatus());
-        requestEntity.setDescription(request.getDescription());
-        requestEntity.setCreatedAt(request.getCreatedAt());
-        requestEntity.setUpdatedAt(request.getUpdatedAt());
-        return requestEntity;
+        return new RequestEntity(request.getRequestId(),request.getSysUserId(),request.getState(),
+                request.getDescription(), request.getCreatedAt(), request.getUpdatedAt());
     }
 }

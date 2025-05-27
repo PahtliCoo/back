@@ -11,12 +11,12 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateNotificationReqDTO {
-    private String status;
-    private String description;
     @NotBlank
     private int sender_id;
     @NotBlank
     private int receiver_id;
     @NotBlank
     private int request_id;
+    private boolean seen;
+    private String description;
 }

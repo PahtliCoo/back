@@ -43,12 +43,12 @@ public class NotificationRepositoryImpl implements NotificationRepository, Panac
 
     @Override
     @Transactional
-    public void updateNotificationStatus(int notificationId, String status){
+    public void updateNotificationStatus(int notificationId, boolean seen){
         NotificationEntity notificationEntity = findById(notificationId);
         if(notificationEntity == null){
             return;
         }
-        notificationEntity.setStatus(status);
+        notificationEntity.setSeen(seen);
     }
 
     @Override

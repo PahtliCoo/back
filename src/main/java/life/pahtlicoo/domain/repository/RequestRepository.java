@@ -8,6 +8,6 @@ public interface RequestRepository {
     public void createRequest(Request request);
     public Request getRequest(int requestId);
     public List<Request> getAllRequestsByUserId(int userId);
-    public void updateRequestStatus(int requestId, String status);
+    public void updateRequestStatus(int requestId, int state);
     public void deleteRequest(int requestId);
 }

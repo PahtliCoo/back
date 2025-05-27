@@ -24,8 +24,8 @@ public class RequestService {
         return requestRepository.getAllRequestsByUserId(userId);
     }
 
-    public void updateRequestStatus(int requestId, String status){
-        requestRepository.updateRequestStatus(requestId, status);
+    public void updateRequestStatus(int requestId, int state){
+        requestRepository.updateRequestStatus(requestId, state);
     }
 
     public void deleteRequest(int requestId){
