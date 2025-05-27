@@ -1,3 +1,9 @@
+/**
+ * Request Repository.
+ * @author Adolfo Hernández Fernández (a01664412@tec.mx)
+ * @Co-Author Santiago Moreno Lacalle Quintero (A01663197@tec.mx)
+ * @since 2025-05-11
+ */
 package life.pahtlicoo.infrastructure.repository;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
@@ -49,7 +55,7 @@ public class RequestRepositoryImpl implements RequestRepository, PanacheReposito
         if(requestEntity == null){
             return;
         }
-        requestEntity.setStatus(state);
+        requestEntity.setState(state);
     }
 
     @Override

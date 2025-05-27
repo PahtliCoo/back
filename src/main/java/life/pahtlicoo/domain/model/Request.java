@@ -19,8 +19,7 @@ import java.time.OffsetDateTime;
 public class Request {
     private int requestId;
     private int sysUserId;
-    //private int siteId;
-    private int state; //modified
+    private int state;
     private String description;
     private OffsetDateTime createdAt;
     private OffsetDateTime updatedAt;

@@ -8,7 +8,7 @@ import life.pahtlicoo.domain.model.Notification;
 public class NotificationDomainMapper {
     public Notification createNotificationToDomain(CreateNotificationReqDTO createNotificationReqDTO){
         Notification notification = new Notification();
-        notification.setStatus(createNotificationReqDTO.getStatus());
+        notification.setSeen(createNotificationReqDTO.getSeen());
         notification.setDescription(createNotificationReqDTO.getDescription());
         notification.setSenderId(createNotificationReqDTO.getSender_id());
         notification.setReceiverId(createNotificationReqDTO.getReceiver_id());

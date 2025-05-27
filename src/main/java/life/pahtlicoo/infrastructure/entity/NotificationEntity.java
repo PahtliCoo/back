@@ -1,3 +1,10 @@
+/**
+ * Notification Entity
+ * @author Adolfo Hernández Fernández (a01664412@tec.mx)
+ * @Co-author Santiago Moreno Lacalle Quintero (A01663197@tec.mx)
+ * @Co-author Nicole Kapellmann lepine
+ * @since 2025-05-26
+ */
 package life.pahtlicoo.infrastructure.entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
@@ -24,7 +31,7 @@ public class NotificationEntity extends PanacheEntityBase {
     private int notificationId;
 
     @Column(name="seen")
-    private String seen;
+    private int seen;
 
     @Column(name="description")
     private String description;

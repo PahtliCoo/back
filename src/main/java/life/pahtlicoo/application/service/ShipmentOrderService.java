@@ -1,5 +1,9 @@
+/**
+ Use case para crear usuario
+ @author Adolfo Hernández Fernández (a01664412@tec.mx)
+ @Since: 2025-05-13
+ */
 package life.pahtlicoo.application.service;
-
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import life.pahtlicoo.domain.model.ShipmentOrder;
@@ -18,8 +22,8 @@ public class ShipmentOrderService {
         return shipmentOrderRepository.getShipmentOrder(shipmentOrderId);
     }
 
-    public void updateShipmentOrderStatus(int shipmentOrderId, String status) {
-        shipmentOrderRepository.updateShipmentOrderStatus(shipmentOrderId, status);
+    public void updateShipmentOrderStatus(int shipmentOrderId, int state) {
+        shipmentOrderRepository.updateShipmentOrderStatus(shipmentOrderId, state);
     }
 
     public void deleteShipmentOrder(int shipmentOrderId) {

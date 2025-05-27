@@ -17,7 +17,7 @@ import java.time.OffsetDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RequestEntity extends PanacheEntityBase {
+public class RequestDetailEntity extends PanacheEntityBase {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

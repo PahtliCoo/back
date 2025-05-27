@@ -16,7 +16,7 @@ import java.time.OffsetDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Request {
+public class RequestDetail {
     private int medId;
     private int requestId;
     private int quantity; 
