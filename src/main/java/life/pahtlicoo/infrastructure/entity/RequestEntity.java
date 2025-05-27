@@ -1,3 +1,9 @@
+/**
+ * Request entity.
+ * @author Nicole Kapellmann Lepine (a01664563@tec.mx)
+ * @co-author Adolfo Hernandez Fernandez (a01664412@tec.mx)
+ * @since 2025-05-26
+ */
 package life.pahtlicoo.infrastructure.entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;

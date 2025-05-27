@@ -2,7 +2,7 @@
  * Notification Entity
  * @author Adolfo Hernández Fernández (a01664412@tec.mx)
  * @Co-author Santiago Moreno Lacalle Quintero (A01663197@tec.mx)
- * @Co-author Nicole Kapellmann lepine
+ * @Co-author Nicole Kapellmann lepine (a01664563@tec.mx)
  * @since 2025-05-26
  */
 package life.pahtlicoo.infrastructure.entity;
@@ -31,7 +31,7 @@ public class NotificationEntity extends PanacheEntityBase {
     private int notificationId;
 
     @Column(name="seen")
-    private int seen;
+    private boolean seen;
 
     @Column(name="description")
     private String description;

@@ -1,3 +1,10 @@
+/**
+ * Notification Entity
+ * @author Santiago Moreno Lacalle Quintero (A01663197@tec.mx)
+ * @Co-author Nicole Kapellmann lepine (a01664563@tec.mx)
+ * @Co-author Adolfo Hernández Fernández (a01664412@tec.mx)
+ * @since 2025-05-26
+ */
 package life.pahtlicoo.infrastructure.entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
@@ -22,7 +29,7 @@ public class SysUserEntity extends PanacheEntityBase {
     @Id
     @Column(name="sys_user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int sysUserid;
+    private int sysUserId;
 
     @Column(name = "name")
     private String name;

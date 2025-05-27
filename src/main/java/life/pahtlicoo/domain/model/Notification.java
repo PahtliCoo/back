@@ -1,6 +1,7 @@
 /**
  * Notification class.
  * @author Adolfo Hernández Fernández (a01664412@tec.mx)
+ * @co-author Nicole Kapellmann Lepine (a01664563@tec.mx)
  * @since 2025-05-11
  */
 package life.pahtlicoo.domain.model;
@@ -18,7 +19,7 @@ import java.time.OffsetDateTime;
 @AllArgsConstructor
 public class Notification {
     private int notificationId;
-    private int seen; //status
+    private boolean seen;
     private String description;
     private int senderId;
     private int receiverId;

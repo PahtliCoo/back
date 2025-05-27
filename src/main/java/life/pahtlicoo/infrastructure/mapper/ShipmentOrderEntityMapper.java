@@ -1,3 +1,9 @@
+/**
+ * Shipment Order Entity Mapper.
+ * @author Adolfo Hernandez Fernandez (a01664412@tec.mx)
+ * @co-author Nicole Kapellmann Lepine (a01664563@tec.mx)
+ * @since 2025-05-26
+ */
 package life.pahtlicoo.infrastructure.mapper;
 
 import jakarta.enterprise.context.ApplicationScoped;
