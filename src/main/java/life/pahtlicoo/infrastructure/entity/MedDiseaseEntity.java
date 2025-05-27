@@ -1,13 +1,15 @@
 /**
- * Med entity.
- * @author Santiago Moreno Lacalle Quintero (a01663197@tec.mx)
- * @co-author Adolfo Hernandez Fernandez (a01664412@tec.mx)
+ * Med Disease entity.
+ * @author Adolfo Hernandez Fernandez (a01664412@tec.mx)
  * @since 2025-05-26
  */
 package life.pahtlicoo.infrastructure.entity;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import life.pahtlicoo.infrastructure.entity.compositeid.MedDiseaseID;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,25 +20,20 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.OffsetDateTime;
 
 @Entity
-@Table(name="med")
+@Table(name="med_disease")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+public class MedDiseaseEntity {
+    @EmbeddedId
+    private MedDiseaseID medDiseaseID;
 
-public class MedEntity extends PanacheEntityBase {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int medId;
-
-    @Column(name="name")
-    private String name;
-
-    @Column(name = "created_at")
     @CreationTimestamp
+    @Column(name = "created_at")
     private OffsetDateTime createdAt;
 
-    @Column(name="updated_at")
     @UpdateTimestamp
+    @Column(name = "updated_at")
     private OffsetDateTime updatedAt;
 }
