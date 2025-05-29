@@ -15,6 +15,7 @@ import life.pahtlicoo.domain.repository.RequestRepository;
 import life.pahtlicoo.infrastructure.entity.RequestEntity;
 import life.pahtlicoo.infrastructure.mapper.RequestEntityMapper;
 
+import java.util.Date;
 import java.util.List;
 
 @ApplicationScoped
@@ -62,6 +63,28 @@ public class RequestRepositoryImpl implements RequestRepository, PanacheReposito
     @Transactional
     public void deleteRequest(int requestId){
         deleteById(requestId);
+    }
+
+    @Override
+    public List<Request> getAllRequestsByUserIdByStateAndDate(int sysUserId, int state, Date date){
+        List<RequestEntity> requestEntities = find("sysUserId = ?1 and state = ?2 and createdAt = ?3",sysUserId,state,date).list();
+        if(requestEntities == null){
+            return null;
+        }
+        return requestEntities.stream()
+                .map(requestEntityMapper::toDomain)
+                .toList();
+    }
+
+    @Override
+    public List<Request> getAllRequestsByUserIdByState(int sysUserId, int state){
+        List<RequestEntity> requestEntities = find("sysUserId = ?1 and state = ?2",sysUserId,state).list();
+        if(requestEntities == null){
+            return null;
+        }
+        return requestEntities.stream()
+                .map(requestEntityMapper::toDomain)
+                .toList();
     }
 
 }

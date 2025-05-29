@@ -3,8 +3,10 @@
 package life.pahtlicoo.application.mapper;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import life.pahtlicoo.application.dto.request.CreateRequestReqDTO;
 import life.pahtlicoo.application.dto.requestdetail.CreateRequestDetailReqDTO;
 import life.pahtlicoo.application.dto.requestdetail.MedicineQuantityReqDTO;
+import life.pahtlicoo.domain.model.Request;
 import life.pahtlicoo.domain.model.RequestDetail;
 
 import java.util.ArrayList;
@@ -21,5 +23,12 @@ public class RequestDetailDomainMapper {
             requestDetailList.add(detail);
         }
         return requestDetailList;
+    }
+
+    public CreateRequestDetailReqDTO createRequestToRequestDetailReqDTO(Request request, CreateRequestReqDTO createRequestReqDTO){
+        CreateRequestDetailReqDTO requestDetailReqDTO = new CreateRequestDetailReqDTO();
+        requestDetailReqDTO.setRequestId(request.getRequestId());
+        requestDetailReqDTO.setRequestDetailsList(createRequestReqDTO.getRequestDetailList());
+        return requestDetailReqDTO;
     }
 }

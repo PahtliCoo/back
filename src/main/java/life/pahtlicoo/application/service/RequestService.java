@@ -5,6 +5,7 @@ import jakarta.inject.Inject;
 import life.pahtlicoo.domain.model.Request;
 import life.pahtlicoo.domain.repository.RequestRepository;
 
+import java.util.Date;
 import java.util.List;
 
 @ApplicationScoped
@@ -30,5 +31,13 @@ public class RequestService {
 
     public void deleteRequest(int requestId){
        requestRepository.deleteRequest(requestId);
+    }
+
+    public List<Request> getAllRequestsByUserIdByState(int userId, int state){
+        return requestRepository.getAllRequestsByUserIdByState(userId, state);
+    }
+
+    public List<Request> getAllRequestsByUserIdByStateAndDate(int sysUserId, int state, Date date){
+        return requestRepository.getAllRequestsByUserIdByStateAndDate(sysUserId, state, date);
     }
 }
