@@ -3,11 +3,6 @@
  * @author Santiago Moreno Lacalle Quintero (A01663197@tec.mx)
  * @since 2025-05-28
  */
-/**
- * Request Detail Repository Implementation.
- * @author Santiago Moreno Lacalle Quintero (A01663197@tec.mx)
- * @since 2025-05-28
- */
 package life.pahtlicoo.infrastructure.repository;
 
 
