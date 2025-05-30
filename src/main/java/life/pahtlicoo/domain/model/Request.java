@@ -21,6 +21,7 @@ public class Request {
     private int requestId;
     private int sysUserId;
     private int state;
+    private String name;
     private String description;
     private OffsetDateTime createdAt;
     private OffsetDateTime updatedAt;

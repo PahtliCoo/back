@@ -16,6 +16,7 @@ public class RequestDomainMapper {
         request.setSysUserId(createRequestReqDTO.getSys_user_id());
         request.setState(createRequestReqDTO.getState());
         request.setDescription(createRequestReqDTO.getDescription());
+        request.setName(createRequestReqDTO.getName());
         return request;
     }
 }

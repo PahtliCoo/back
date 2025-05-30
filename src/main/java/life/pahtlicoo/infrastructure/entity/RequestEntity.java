@@ -35,6 +35,9 @@ public class RequestEntity extends PanacheEntityBase {
     @Column(name = "state")
     private int state;
 
+    @Column(name="name")
+    private String name;
+
     @Column(name= "description")
     private String description;
 

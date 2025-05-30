@@ -13,4 +13,9 @@ public interface RequestRepository {
     public void deleteRequest(int requestId);
     public List<Request> getAllRequestsByUserIdByStateAndDate(int sysUserId, int state, int year, int month, int day,int page);
     public List<Request> getAllRequestsByUserIdByState(int sysUserId, int state,int page);
+    public List<Request> getAllRequestsByUserIdByDate(int sysUserId, int year, int month, int day,int page);
+    public List<Request> getAllRequest(int page);
+    public List<Request> getAllRequestsByDate(int year, int month, int day,int page);
+    public List<Request> getAllRequestsByDateByState(int state,int year, int month, int day,int page);
+    public List<Request> getAllRequestsByState(int state,int page);
 }

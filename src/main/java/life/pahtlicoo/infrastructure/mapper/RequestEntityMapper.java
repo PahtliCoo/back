@@ -15,11 +15,12 @@ import life.pahtlicoo.infrastructure.entity.RequestEntity;
 public class RequestEntityMapper {
     public Request toDomain(RequestEntity requestEntity){
         return new Request(requestEntity.getRequestId(), requestEntity.getSysUserId(), requestEntity.getState(),
-                requestEntity.getDescription(), requestEntity.getCreatedAt(), requestEntity.getUpdatedAt());
+                requestEntity.getName(), requestEntity.getDescription(), requestEntity.getCreatedAt(),
+                requestEntity.getUpdatedAt());
     }
 
     public RequestEntity toEntity(Request request){
         return new RequestEntity(request.getRequestId(),request.getSysUserId(),request.getState(),
-                request.getDescription(), request.getCreatedAt(), request.getUpdatedAt());
+                request.getName(), request.getDescription(), request.getCreatedAt(), request.getUpdatedAt());
     }
 }

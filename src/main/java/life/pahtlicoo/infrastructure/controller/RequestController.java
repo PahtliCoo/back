@@ -26,9 +26,7 @@ public class RequestController {
     @Inject
     DeleteRequestUseCase deleteRequestUseCase;
     @Inject
-    GetAllRequestByUserIdAndStateUseCase getAllRequestByUserIdAndStateUseCase;
-    @Inject
-    GetRequestByUserIdAndStateIdAndDate getRequestByUserIdAndStateIdAndDateUseCase;
+    GetRequestByFilterUseCase getRequestByFilterUseCase;
 
 
     @POST
@@ -78,32 +76,17 @@ public class RequestController {
         deleteRequestUseCase.execute(requestId);
         return Response.ok().build();
     }
-    @GET
-    @Path("/state/{user_id}/{state}/{page}")
-    public Response getRequestByUserIdAndState(@PathParam("user_id") int userId,@PathParam("state") int state, @PathParam("page") int page ){
-        try{
-            List<Request> request = getAllRequestByUserIdAndStateUseCase.execute(userId,state,page);
-            if(request == null){
-                return Response.status(Response.Status.NOT_FOUND).build();
-            }
-            return Response.ok(request).build();
 
-        } catch (Exception e){
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    @GET
-    @Path("/date/{user_id}/{state}/{year}/{month}/{day}/{page}")
-    public Response getRequestByUserIdAndStateAndDate(@PathParam("user_id") int userId,@PathParam("state") int state,
-                                                      @PathParam("year") int year, @PathParam("month") int month,
-                                                      @PathParam("day") int day, @PathParam("page") int page){
+    @POST
+    @Path("/filter/{page}")
+    public Response filterRequest(@PathParam("page") int page,GetRequestFilterReqDTO getRequestFilterReqDTO){
         try{
-            List<Request> requestList = getRequestByUserIdAndStateIdAndDateUseCase.execute(userId,state,year,month,day,page );
+            List<Request> requestList = getRequestByFilterUseCase.execute(page,getRequestFilterReqDTO);
             if(requestList == null){
                 return Response.status(Response.Status.NOT_FOUND).build();
             }
             return Response.ok(requestList).build();
+
         }catch (Exception e){
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }

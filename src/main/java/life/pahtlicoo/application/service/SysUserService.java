@@ -25,4 +25,8 @@ public class SysUserService {
     public Boolean deleteUserFirebase(String userUid){
         return sysUserRepository.deleteSysUserFirebase(userUid);
     }
+
+    public SysUser getSysUserByUid(int userId) {
+        return sysUserRepository.getSysUser(userId);
+    }
 }

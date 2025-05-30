@@ -40,4 +40,22 @@ public class RequestService {
     public List<Request> getAllRequestsByUserIdByStateAndDate(int sysUserId, int state, int year, int month, int day,int page){
         return requestRepository.getAllRequestsByUserIdByStateAndDate(sysUserId, state, year, month, day,page);
     }
+
+    public List<Request> getAllRequestsByUserIdByDate(int userId, int year, int month, int day,int page){
+        return requestRepository.getAllRequestsByUserIdByDate(userId,year,month,day, page);
+    }
+
+    public List<Request> getAllRequest(int page){
+        return requestRepository.getAllRequest(page);
+    }
+    public List<Request> getAllRequestsByDate(int year, int month, int day,int page){
+        return requestRepository.getAllRequestsByDate(year,month,day,page);
+    }
+    public List<Request> getAllRequestsByDateByState(int state,int year, int month, int day,int page){
+        return requestRepository.getAllRequestsByDateByState(state,year,month,day,page);
+    }
+    public List<Request> getAllRequestsByState(int state,int page){
+        return requestRepository.getAllRequestsByState(state,page);
+    }
+
 }

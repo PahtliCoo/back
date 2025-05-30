@@ -7,6 +7,7 @@
 package life.pahtlicoo.infrastructure.repository;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
+import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -43,7 +44,7 @@ public class RequestRepositoryImpl implements RequestRepository, PanacheReposito
 
     @Override
     public List<Request> getAllRequestsByUserId(int sysUserId){
-        List<RequestEntity> requestEntities = find("sysUserId", sysUserId).list();
+        List<RequestEntity> requestEntities = find("sysUserId",Sort.descending("createdAt") ,sysUserId).list();
         return requestEntities.stream()
                 .map(requestEntityMapper::toDomain)
                 .toList();
@@ -70,6 +71,7 @@ public class RequestRepositoryImpl implements RequestRepository, PanacheReposito
         List<RequestEntity> requestEntities = find(
                 "sysUserId = ?1 and state = ?2 and YEAR(createdAt) = ?3 and MONTH(createdAt) = ?4 and " +
                         "DAY(createdAt) = ?5",
+                Sort.descending("createdAt"),
                 sysUserId, state, year, month, day
         ).page(page,5).list();
         if(requestEntities == null){
@@ -82,7 +84,7 @@ public class RequestRepositoryImpl implements RequestRepository, PanacheReposito
 
     @Override
     public List<Request> getAllRequestsByUserIdByState(int sysUserId, int state,int page){
-        List<RequestEntity> requestEntities = find("sysUserId = ?1 and state = ?2",sysUserId,state).page(page,5).list();
+        List<RequestEntity> requestEntities = find("sysUserId = ?1 and state = ?2",Sort.descending("createdAt"),sysUserId,state).page(page,5).list();
         if(requestEntities == null){
             return null;
         }
@@ -91,4 +93,61 @@ public class RequestRepositoryImpl implements RequestRepository, PanacheReposito
                 .toList();
     }
 
+    @Override
+    public List<Request> getAllRequestsByUserIdByDate(int sysUserId, int year, int month, int day,int page){
+        List<RequestEntity> requestEntities = find(
+                "sysUserId = ?1 and YEAR(createdAt) = ?2 and MONTH(createdAt) = ?3 and " +
+                        "DAY(createdAt) = ?4",
+                Sort.descending("createdAt"),
+                sysUserId, year, month, day
+        ).page(page,5).list();
+        if(requestEntities == null){
+            return null;
+        }
+        return requestEntities.stream()
+                .map(requestEntityMapper::toDomain)
+                .toList();
+    }
+    @Override
+    public List<Request> getAllRequest(int page){
+        List<RequestEntity> requestEntities = RequestEntity.findAll(Sort.descending("createdAt")).page(page,5).list();
+        if(requestEntities == null){
+            return null;
+        }
+        return requestEntities.stream()
+                .map(requestEntityMapper::toDomain)
+                .toList();
+    }
+    @Override
+    public List<Request> getAllRequestsByDate(int year, int month, int day,int page){
+        List<RequestEntity> requestEntities = find("YEAR(createdAt) = ?1 and MONTH(createdAt) = ?2 and " +
+                "DAY(createdAt) = ?3", Sort.descending("createdAt"),year,month,day).page(page,5).list();
+        if(requestEntities == null){
+            return null;
+        }
+        return requestEntities.stream()
+                .map(requestEntityMapper::toDomain)
+                .toList();
+    }
+    @Override
+    public List<Request> getAllRequestsByDateByState(int state,int year, int month, int day,int page){
+        List<RequestEntity> requestEntities = find(" state = ?1 and YEAR(createdAt) = ?2 and " +
+                "MONTH(createdAt) = ?3 and " + "DAY(createdAt) = ?4",Sort.descending("createdAt"),state,year,month,day).page(page,5).list();
+        if(requestEntities == null){
+            return null;
+        }
+        return requestEntities.stream()
+                .map(requestEntityMapper::toDomain)
+                .toList();
+    }
+    @Override
+    public List<Request> getAllRequestsByState(int state, int page){
+        List<RequestEntity> requestEntities = find("state",Sort.descending("createdAt"),state).page(page,5).list();
+        if(requestEntities == null) {
+            return null;
+        }
+        return requestEntities.stream()
+                .map(requestEntityMapper::toDomain)
+                .toList();
+    }
 }

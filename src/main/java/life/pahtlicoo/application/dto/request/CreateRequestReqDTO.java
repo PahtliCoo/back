@@ -24,6 +24,8 @@ public class CreateRequestReqDTO {
     private int sys_user_id;
     @NotNull
     private int state;
+    @NotNull
+    private String name;
 
     private String description;
 
