@@ -26,7 +26,6 @@ public class CreateRequestReqDTO {
     private int state;
     @NotNull
     private String name;
-
     private String description;
 
     @NotEmpty

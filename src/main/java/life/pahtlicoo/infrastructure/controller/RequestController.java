@@ -1,3 +1,9 @@
+/**
+ * Request Controller.
+ * @author Adolfo Hernández Fernández (a01664412@tec.mx)
+ * @co-author Santiago Moreno Lacalle Quintero (A01663197@tec.mx)
+ * @since 2025-05-11
+ */
 package life.pahtlicoo.infrastructure.controller;
 
 import jakarta.inject.Inject;
@@ -81,7 +87,7 @@ public class RequestController {
     @Path("/filter/{page}")
     public Response filterRequest(@PathParam("page") int page,GetRequestFilterReqDTO getRequestFilterReqDTO){
         try{
-            List<Request> requestList = getRequestByFilterUseCase.execute(page,getRequestFilterReqDTO);
+            List<RequestResponseDTO> requestList = getRequestByFilterUseCase.execute(page,getRequestFilterReqDTO);
             if(requestList == null){
                 return Response.status(Response.Status.NOT_FOUND).build();
             }

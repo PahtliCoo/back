@@ -3,13 +3,18 @@ package life.pahtlicoo.application.usecase.request;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import life.pahtlicoo.application.dto.request.GetRequestFilterReqDTO;
+import life.pahtlicoo.application.dto.request.RequestResponseDTO;
+import life.pahtlicoo.application.mapper.RequestResponseDomainMapper;
 import life.pahtlicoo.application.service.CredentialService;
 import life.pahtlicoo.application.service.RequestService;
+import life.pahtlicoo.application.service.SiteService;
 import life.pahtlicoo.application.service.SysUserService;
 import life.pahtlicoo.domain.model.Credential;
 import life.pahtlicoo.domain.model.Request;
+import life.pahtlicoo.domain.model.Site;
 import life.pahtlicoo.domain.model.SysUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @ApplicationScoped
@@ -20,8 +25,12 @@ public class GetRequestByFilterUseCase {
     SysUserService sysUserService;
     @Inject
     CredentialService credentialService;
+    @Inject
+    SiteService siteService;
+    @Inject
+    RequestResponseDomainMapper requestResponseDomainMapper;
 
-    public List<Request> execute(int page, GetRequestFilterReqDTO getRequestFilterReqDTO) {
+    public List<RequestResponseDTO> execute(int page, GetRequestFilterReqDTO getRequestFilterReqDTO) {
         try {
             int userId = getRequestFilterReqDTO.getUserId();
             Integer state = getRequestFilterReqDTO.getState();
@@ -49,46 +58,68 @@ public class GetRequestByFilterUseCase {
                 return null;
             }
 
+            List<Request> requestList = new ArrayList<>();
+
             // Case for logistics admin filter
             if(isLogisticsAdmin) {
                 // 1. No filter is selected
                 if (state == null && year == null && month == null && day == null) {
-                    return requestService.getAllRequest(page);
+                    requestList = requestService.getAllRequest(page);
                 }
 
                 // 2. Date filter selected
                 if (state == null) {
-                    return requestService.getAllRequestsByDate(year, month, day, page);
+                     requestList = requestService.getAllRequestsByDate(year, month, day, page);
                 }
 
                 // 3. State filter selected
                 if (month == null || year == null || day == null) {
-                    return requestService.getAllRequestsByState(state, page);
+                    requestList = requestService.getAllRequestsByState(state, page);
                 }
 
                 // 5. ALl filter selected
-                return requestService.getAllRequestsByDateByState( state, year, month, day, page);
+                requestList = requestService.getAllRequestsByDateByState( state, year, month, day, page);
+            }else{
+                //Any other User
+
+                // 1. No filter is selected
+                if (state == null && year == null && month == null && day == null) {
+                     requestList = requestService.getAllRequestsByUserId(userId);
+                }
+
+                // 2. Date filter selected
+                if (state == null) {
+                     requestList = requestService.getAllRequestsByUserIdByDate(userId, year, month, day, page);
+                }
+
+                // 3. State filter selected
+                if (month == null || year == null || day == null) {
+                     requestList = requestService.getAllRequestsByUserIdByState(userId, state, page);
+                }
+
+                // 4. Al filter Selected
+                 requestList = requestService.getAllRequestsByUserIdByStateAndDate(userId, state, year, month, day, page);
+            }
+            // Validate that we have the correct data
+            if (requestList == null) {
+                return null;
             }
 
-            //Any other user
-
-            // 1. No filter is selected
-            if (state == null && year == null && month == null && day == null) {
-                return requestService.getAllRequestsByUserId(userId);
+            // Make change from domain to RequestResponse
+            List<RequestResponseDTO> requestResponseDTOList = new ArrayList<>();
+            for (Request request : requestList) {
+                //Get the correct site name
+                SysUser sysUser = sysUserService.getSysUserByUid(request.getSysUserId());
+                Site siteTemp = siteService.findSite(sysUser.getSiteId());
+                RequestResponseDTO requestResponseDTO = requestResponseDomainMapper.toRequestResponse(request, siteTemp);
+                requestResponseDTOList.add(requestResponseDTO);
             }
-
-            // 2. Date filter selected
-            if (state == null) {
-                return requestService.getAllRequestsByUserIdByDate(userId, year, month, day, page);
+            // Check that it does have data
+            if(requestResponseDTOList.isEmpty()){
+                return null;
             }
-
-            // 3. State filter selected
-            if (month == null || year == null || day == null) {
-                return requestService.getAllRequestsByUserIdByState(userId, state, page);
-            }
-
-            // 4. Al filter Selected
-            return requestService.getAllRequestsByUserIdByStateAndDate(userId, state, year, month, day, page);
+            // Return result
+            return requestResponseDTOList;
 
         } catch (Exception e ){
             // 1. Data not valid.
