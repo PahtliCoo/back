@@ -14,7 +14,7 @@ import life.pahtlicoo.domain.repository.RequestDetailRepository;
 public class DeleteAllRequestDetailUseCase {
     @Inject
     RequestDetailService requestDetailService;
-    public void execute(int requestId) {
-        requestDetailService.deleteRequestDetail(requestId);
+    public boolean execute(int requestId) {
+        return requestDetailService.deleteRequestDetail(requestId);
     }
 }

@@ -1,11 +1,17 @@
+/**
+ * Request Controller.
+ * @author Adolfo Hernández Fernández (a01664412@tec.mx)
+ * @co-author Santiago Moreno Lacalle Quintero (A01663197@tec.mx)
+ * @since 2025-05-11
+ */
 package life.pahtlicoo.infrastructure.controller;
 
 import jakarta.inject.Inject;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import life.pahtlicoo.application.dto.request.CreateRequestReqDTO;
-import life.pahtlicoo.application.dto.request.UpdateRequestStatusReqDTO;
+import life.pahtlicoo.application.dto.request.*;
 import life.pahtlicoo.application.usecase.request.*;
 import life.pahtlicoo.domain.model.Request;
 
@@ -25,13 +31,21 @@ public class RequestController {
     UpdateRequestStatusUseCase updateRequestStatusUseCase;
     @Inject
     DeleteRequestUseCase deleteRequestUseCase;
+    @Inject
+    GetRequestByFilterUseCase getRequestByFilterUseCase;
+    @Inject
+    GetRequestBySearchUseCase getRequestBySearchUseCase;
+
 
     @POST
     @Path("/create")
-    public Response createRequest(CreateRequestReqDTO createRequestReqDTO){
+    public Response createRequest(@Valid CreateRequestReqDTO createRequestReqDTO){
         try{
-            createRequestUseCase.execute(createRequestReqDTO);
-            return Response.status(Response.Status.CREATED).build();
+            if(createRequestUseCase.execute(createRequestReqDTO)){
+                return Response.status(Response.Status.CREATED).build();
+            }
+            return Response.status(Response.Status.BAD_REQUEST).build();
+
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
@@ -67,7 +81,42 @@ public class RequestController {
     @DELETE
     @Path("/{request_id}")
     public Response deleteRequest(@PathParam("request_id") int requestId){
-        deleteRequestUseCase.execute(requestId);
-        return Response.ok().build();
+       try {
+           if(deleteRequestUseCase.execute(requestId)){
+               return Response.status(Response.Status.NO_CONTENT).build();
+           }
+           return Response.status(Response.Status.NOT_FOUND).build();
+       }catch (Exception e) {
+           return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+       }
+    }
+
+    @POST
+    @Path("/filter/{page}")
+    public Response filterRequest(@PathParam("page") int page,GetRequestFilterReqDTO getRequestFilterReqDTO){
+        try{
+            List<RequestResponseDTO> requestList = getRequestByFilterUseCase.execute(page,getRequestFilterReqDTO);
+            if(requestList == null){
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
+            return Response.ok(requestList).build();
+
+        }catch (Exception e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @POST
+    @Path("/search/{page}")
+    public Response searchRequest(@PathParam("page") int page,GetRequestSearchDTO getRequestSearchDTO){
+        try{
+            List<RequestResponseDTO> requestResponseList = getRequestBySearchUseCase.execute(page,getRequestSearchDTO.getSearch());
+            if(requestResponseList == null){
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
+            return Response.ok(requestResponseList).build();
+        }catch (Exception e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }

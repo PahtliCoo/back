@@ -1,3 +1,8 @@
+/**
+ * Request Service
+ * @Author Santiago Moreno Lacalle Quintero (A01663197@tec.mx)
+ * @since 2025-05-30
+ */
 package life.pahtlicoo.application.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
@@ -12,8 +17,8 @@ public class RequestService {
     @Inject
     RequestRepository requestRepository;
 
-    public void createRequest(Request request){
-        requestRepository.createRequest(request);
+    public boolean createRequest(Request request) {
+        return requestRepository.createRequest(request);
     }
 
     public Request getRequest(int requestId){
@@ -28,7 +33,36 @@ public class RequestService {
         requestRepository.updateRequestStatus(requestId, state);
     }
 
-    public void deleteRequest(int requestId){
-       requestRepository.deleteRequest(requestId);
+    public Boolean deleteRequest(int requestId){
+       return requestRepository.deleteRequest(requestId);
     }
+
+    public List<Request> getAllRequestsByUserIdByState(int userId, int state,int page){
+        return requestRepository.getAllRequestsByUserIdByState(userId, state,page);
+    }
+
+    public List<Request> getAllRequestsByUserIdByStateAndDate(int sysUserId, int state, int year, int month, int day,int page){
+        return requestRepository.getAllRequestsByUserIdByStateAndDate(sysUserId, state, year, month, day,page);
+    }
+
+    public List<Request> getAllRequestsByUserIdByDate(int userId, int year, int month, int day,int page){
+        return requestRepository.getAllRequestsByUserIdByDate(userId,year,month,day, page);
+    }
+
+    public List<Request> getAllRequest(int page){
+        return requestRepository.getAllRequest(page);
+    }
+    public List<Request> getAllRequestsByDate(int year, int month, int day,int page){
+        return requestRepository.getAllRequestsByDate(year,month,day,page);
+    }
+    public List<Request> getAllRequestsByDateByState(int state,int year, int month, int day,int page){
+        return requestRepository.getAllRequestsByDateByState(state,year,month,day,page);
+    }
+    public List<Request> getAllRequestsByState(int state,int page){
+        return requestRepository.getAllRequestsByState(state,page);
+    }
+    public List<Request> getAllRequestsBySearch(String search, int page){
+        return requestRepository.getAllRequestsBySearch(search,page);
+    }
+
 }
