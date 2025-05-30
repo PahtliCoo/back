@@ -5,7 +5,7 @@
  */
 package life.pahtlicoo.application.dto.request;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +16,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetRequestFilterReqDTO {
-    @NotNull
+    @NotBlank
     private int userId;
     private Integer state;
     private Integer day;

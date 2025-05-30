@@ -10,7 +10,6 @@ import jakarta.inject.Inject;
 import life.pahtlicoo.domain.model.Request;
 import life.pahtlicoo.domain.repository.RequestRepository;
 
-import java.util.Date;
 import java.util.List;
 
 @ApplicationScoped

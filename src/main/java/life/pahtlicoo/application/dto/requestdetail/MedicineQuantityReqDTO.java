@@ -6,7 +6,7 @@
 package life.pahtlicoo.application.dto.requestdetail;
 
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,9 +17,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MedicineQuantityReqDTO {
-    @NotNull
+    @NotBlank
     private int medId;
-    @NotNull
+    @NotBlank
     @Min(1)
     private int quantity;
 }
