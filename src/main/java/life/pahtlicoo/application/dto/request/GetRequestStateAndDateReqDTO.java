@@ -12,9 +12,13 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetRequestStatusAndDateReqDTO {
+public class GetRequestStateAndDateReqDTO {
     @NotBlank
     private int state;
     @NotBlank
-    private Date date;
+    private int year;
+    @NotBlank
+    private int month;
+    @NotBlank
+    private int day;
 }

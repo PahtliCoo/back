@@ -1,6 +1,7 @@
 package life.pahtlicoo.infrastructure.controller;
 
 import jakarta.inject.Inject;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -26,10 +27,13 @@ public class RequestController {
     DeleteRequestUseCase deleteRequestUseCase;
     @Inject
     GetAllRequestByUserIdAndStateUseCase getAllRequestByUserIdAndStateUseCase;
+    @Inject
+    GetRequestByUserIdAndStateIdAndDate getRequestByUserIdAndStateIdAndDateUseCase;
+
 
     @POST
     @Path("/create")
-    public Response createRequest(CreateRequestReqDTO createRequestReqDTO){
+    public Response createRequest(@Valid CreateRequestReqDTO createRequestReqDTO){
         try{
             if(createRequestUseCase.execute(createRequestReqDTO)){
                 return Response.status(Response.Status.CREATED).build();
@@ -75,10 +79,10 @@ public class RequestController {
         return Response.ok().build();
     }
     @GET
-    @Path("/state/{user_id}")
-    public Response getRequestByUserIdAndState(@PathParam("user_id") int userId, GetRequestByStateReqDTO getRequestByStateReqDTO){
+    @Path("/state/{user_id}/{state}/{page}")
+    public Response getRequestByUserIdAndState(@PathParam("user_id") int userId,@PathParam("state") int state, @PathParam("page") int page ){
         try{
-            List<Request> request = getAllRequestByUserIdAndStateUseCase.execute(userId,getRequestByStateReqDTO);
+            List<Request> request = getAllRequestByUserIdAndStateUseCase.execute(userId,state,page);
             if(request == null){
                 return Response.status(Response.Status.NOT_FOUND).build();
             }
@@ -87,9 +91,23 @@ public class RequestController {
         } catch (Exception e){
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
+    }
 
-
-    };
+    @GET
+    @Path("/date/{user_id}/{state}/{year}/{month}/{day}/{page}")
+    public Response getRequestByUserIdAndStateAndDate(@PathParam("user_id") int userId,@PathParam("state") int state,
+                                                      @PathParam("year") int year, @PathParam("month") int month,
+                                                      @PathParam("day") int day, @PathParam("page") int page){
+        try{
+            List<Request> requestList = getRequestByUserIdAndStateIdAndDateUseCase.execute(userId,state,year,month,day,page );
+            if(requestList == null){
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
+            return Response.ok(requestList).build();
+        }catch (Exception e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 
 
 }

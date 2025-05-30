@@ -52,7 +52,5 @@ public class FirebaseAuthFilter implements ContainerRequestFilter {
                     .entity("Invalid firebase token")
                     .build());
         }
-
-
     }
 }
