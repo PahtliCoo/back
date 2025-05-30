@@ -66,8 +66,12 @@ public class RequestRepositoryImpl implements RequestRepository, PanacheReposito
     }
 
     @Override
-    public List<Request> getAllRequestsByUserIdByStateAndDate(int sysUserId, int state, Date date){
-        List<RequestEntity> requestEntities = find("sysUserId = ?1 and state = ?2 and createdAt = ?3",sysUserId,state,date).list();
+    public List<Request> getAllRequestsByUserIdByStateAndDate(int sysUserId, int state, int year,int month, int day,int page){
+        List<RequestEntity> requestEntities = find(
+                "sysUserId = ?1 and state = ?2 and YEAR(createdAt) = ?3 and MONTH(createdAt) = ?4 and " +
+                        "DAY(createdAt) = ?5",
+                sysUserId, state, year, month, day
+        ).page(page,5).list();
         if(requestEntities == null){
             return null;
         }
@@ -77,8 +81,8 @@ public class RequestRepositoryImpl implements RequestRepository, PanacheReposito
     }
 
     @Override
-    public List<Request> getAllRequestsByUserIdByState(int sysUserId, int state){
-        List<RequestEntity> requestEntities = find("sysUserId = ?1 and state = ?2",sysUserId,state).list();
+    public List<Request> getAllRequestsByUserIdByState(int sysUserId, int state,int page){
+        List<RequestEntity> requestEntities = find("sysUserId = ?1 and state = ?2",sysUserId,state).page(page,5).list();
         if(requestEntities == null){
             return null;
         }

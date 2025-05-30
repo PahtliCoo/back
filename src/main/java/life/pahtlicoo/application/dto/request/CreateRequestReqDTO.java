@@ -6,8 +6,7 @@
  */
 package life.pahtlicoo.application.dto.request;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.*;
 import life.pahtlicoo.application.dto.requestdetail.MedicineQuantityReqDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,9 +20,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateRequestReqDTO {
-    @NotBlank
+    @NotNull
     private int sys_user_id;
-    @NotBlank
+    @NotNull
     private int state;
 
     private String description;

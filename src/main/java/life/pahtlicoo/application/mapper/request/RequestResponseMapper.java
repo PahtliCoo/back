@@ -10,6 +10,6 @@ import java.util.List;
 @ApplicationScoped
 public class RequestResponseMapper {
     public RequestResponseDTO toRequestResponseDTO(Request request, List<RequestDetail> requestDetail) {
-        return new RequestResponseDTO(request,requestDetail);
+        return null;
     }
 }

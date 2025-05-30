@@ -30,13 +30,19 @@ public class CreateRequestUseCase {
 
     @Inject
     RequestDetailDomainMapper requestDetailDomainMapper;
-    //TODO: Create the delete in case of error.
+
+    @Transactional
     public Boolean execute(CreateRequestReqDTO createRequestReqDTO) {
        try{
-           // Checar que la lista no este vacia
+           // Chek that list is not empty
            if(createRequestReqDTO.getRequestDetailList().isEmpty()){
                return false;
            }
+           // Check state is not largar than 5 or lower than 0
+           if(createRequestReqDTO.getState() >= 5 || createRequestReqDTO.getState() <= 0){
+               return false;
+           }
+
            // 1. Create the main request file
            Request request = requestDomainMapper.createRequestToDomain(createRequestReqDTO);
            requestService.createRequest(request);
@@ -46,8 +52,7 @@ public class CreateRequestUseCase {
            createRequestDetailUseCase.execute(createRequestDetailReqDTO);
            return true;
        }catch (Exception e){
-           // 4. Fallo algo, eliminar todos los casos generados
-
+           // 4. Data failed to create
            return false;
        }
     }

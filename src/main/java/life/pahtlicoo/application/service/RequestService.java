@@ -33,11 +33,11 @@ public class RequestService {
        requestRepository.deleteRequest(requestId);
     }
 
-    public List<Request> getAllRequestsByUserIdByState(int userId, int state){
-        return requestRepository.getAllRequestsByUserIdByState(userId, state);
+    public List<Request> getAllRequestsByUserIdByState(int userId, int state,int page){
+        return requestRepository.getAllRequestsByUserIdByState(userId, state,page);
     }
 
-    public List<Request> getAllRequestsByUserIdByStateAndDate(int sysUserId, int state, Date date){
-        return requestRepository.getAllRequestsByUserIdByStateAndDate(sysUserId, state, date);
+    public List<Request> getAllRequestsByUserIdByStateAndDate(int sysUserId, int state, int year, int month, int day,int page){
+        return requestRepository.getAllRequestsByUserIdByStateAndDate(sysUserId, state, year, month, day,page);
     }
 }
