@@ -33,6 +33,8 @@ public class RequestController {
     DeleteRequestUseCase deleteRequestUseCase;
     @Inject
     GetRequestByFilterUseCase getRequestByFilterUseCase;
+    @Inject
+    GetRequestBySearchUseCase getRequestBySearchUseCase;
 
 
     @POST
@@ -98,5 +100,17 @@ public class RequestController {
         }
     }
 
-
+    @POST
+    @Path("/search/{page}")
+    public Response searchRequest(@PathParam("page") int page,GetRequestSearchDTO getRequestSearchDTO){
+        try{
+            List<RequestResponseDTO> requestResponseList = getRequestBySearchUseCase.execute(page,getRequestSearchDTO.getSearch());
+            if(requestResponseList == null){
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
+            return Response.ok(requestResponseList).build();
+        }catch (Exception e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }

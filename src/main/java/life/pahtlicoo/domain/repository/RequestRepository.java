@@ -18,4 +18,5 @@ public interface RequestRepository {
     public List<Request> getAllRequestsByDate(int year, int month, int day,int page);
     public List<Request> getAllRequestsByDateByState(int state,int year, int month, int day,int page);
     public List<Request> getAllRequestsByState(int state,int page);
+    public List<Request> getAllRequestsBySearch(String search, int page);
 }

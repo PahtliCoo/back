@@ -57,5 +57,8 @@ public class RequestService {
     public List<Request> getAllRequestsByState(int state,int page){
         return requestRepository.getAllRequestsByState(state,page);
     }
+    public List<Request> getAllRequestsBySearch(String search, int page){
+        return requestRepository.getAllRequestsBySearch(search,page);
+    }
 
 }

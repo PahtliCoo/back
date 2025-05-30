@@ -150,4 +150,24 @@ public class RequestRepositoryImpl implements RequestRepository, PanacheReposito
                 .map(requestEntityMapper::toDomain)
                 .toList();
     }
+
+    @Override
+    public List<Request> getAllRequestsBySearch(String search, int page){
+        //TODO, dependiendo del tiempo impleemntar busqueda por estado
+        search = search.toLowerCase();
+        List<RequestEntity> requestEntities = find(
+                "CAST(requestId AS string) LIKE ?1 OR LOWER(name) LIKE ?1",
+                "%" + search + "%"
+        ).page(page, 5).list();
+
+
+        System.out.println("AAAA");
+
+        if(requestEntities == null){
+            return null;
+        }
+        return requestEntities.stream()
+                .map(requestEntityMapper::toDomain)
+                .toList();
+    }
 }
