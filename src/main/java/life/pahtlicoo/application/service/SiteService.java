@@ -1,3 +1,8 @@
+/**
+ * Site Service
+ * @Author Santiago Moreno Lacalle Quintero (A01663197@tec.mx)
+ * @since 2025-05-30
+ */
 package life.pahtlicoo.application.service;
 
 import jakarta.enterprise.context.ApplicationScoped;

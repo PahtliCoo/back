@@ -81,8 +81,14 @@ public class RequestController {
     @DELETE
     @Path("/{request_id}")
     public Response deleteRequest(@PathParam("request_id") int requestId){
-        deleteRequestUseCase.execute(requestId);
-        return Response.ok().build();
+       try {
+           if(deleteRequestUseCase.execute(requestId)){
+               return Response.status(Response.Status.NO_CONTENT).build();
+           }
+           return Response.status(Response.Status.NOT_FOUND).build();
+       }catch (Exception e) {
+           return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+       }
     }
 
     @POST

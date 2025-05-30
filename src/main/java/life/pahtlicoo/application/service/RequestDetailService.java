@@ -16,15 +16,15 @@ public class RequestDetailService {
     @Inject
     RequestDetailRepository requestDetailRepository;
 
-    public void createRequestDetail(List<RequestDetail> requestDetailList){
-        requestDetailRepository.createRequestDetail(requestDetailList);
+    public boolean createRequestDetail(List<RequestDetail> requestDetailList){
+        return requestDetailRepository.createRequestDetail(requestDetailList);
     }
 
     public List<RequestDetail> getRequestDetailList(int requestId){
         return requestDetailRepository.getRequestDetailsByRequestId(requestId);
     }
 
-    public void deleteRequestDetail(int requestId){
-        requestDetailRepository.deleteRequestDetail(requestId);
+    public boolean deleteRequestDetail(int requestId){
+        return requestDetailRepository.deleteRequestDetail(requestId);
     }
 }

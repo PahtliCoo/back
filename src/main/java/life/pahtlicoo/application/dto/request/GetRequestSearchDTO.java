@@ -1,3 +1,8 @@
+/**
+ * Request search DTO.
+ * @Author Santiago Moreno Lacalle Quintero (A01663197@tec.mx)
+ * @since 2025-05-30
+ */
 package life.pahtlicoo.application.dto.request;
 
 import lombok.AllArgsConstructor;

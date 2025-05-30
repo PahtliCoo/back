@@ -23,12 +23,17 @@ public class RequestDetailRepositoryImpl implements RequestDetailRepository, Pan
 
     @Override
     @Transactional
-    public void createRequestDetail(List<RequestDetail> requestDetailList) {
+    public boolean createRequestDetail(List<RequestDetail> requestDetailList) {
         // 1. Get all the quantity and med_id
         for (RequestDetail requestDetail : requestDetailList) {
             RequestDetailEntity requestDetailEntity = requestDetailEntityMapper.toEntity(requestDetail);
             persist(requestDetailEntity);
+            // Didn't create correctly
+            if(!requestDetailEntity.isPersistent()){
+                return false;
+            }
         }
+        return true;
     }
 
     @Override
@@ -43,8 +48,8 @@ public class RequestDetailRepositoryImpl implements RequestDetailRepository, Pan
 
     @Override
     @Transactional
-    public void deleteRequestDetail(int requestId) {
+    public boolean deleteRequestDetail(int requestId) {
         // 1. Delete all cases where requestId is the same
-        RequestDetailEntity.delete("requestDetailID.requestId", requestId);
+        return RequestDetailEntity.delete("requestDetailID.requestId", requestId) > 0;
     }
 }

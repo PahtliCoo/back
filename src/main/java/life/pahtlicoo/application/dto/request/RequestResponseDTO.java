@@ -1,7 +1,7 @@
 /**
- * Rquest response DTO.
+ * Request response DTO.
  * @Author Santiago Moreno Lacalle Quintero (A01663197@tec.mx)
- * @since 2025-05-11
+ * @since 2025-05-30
  */
 package life.pahtlicoo.application.dto.request;
 

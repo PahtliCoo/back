@@ -10,7 +10,7 @@ import life.pahtlicoo.domain.model.RequestDetail;
 import java.util.List;
 
 public interface RequestDetailRepository {
-    public void createRequestDetail(List<RequestDetail> requestDetailList);
+    public boolean createRequestDetail(List<RequestDetail> requestDetailList);
     public List<RequestDetail> getRequestDetailsByRequestId(int requestId);
-    public void deleteRequestDetail(int requestId);
+    public boolean deleteRequestDetail(int requestId);
 }

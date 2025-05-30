@@ -7,6 +7,7 @@ package life.pahtlicoo.application.usecase.requestdetail;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import life.pahtlicoo.application.dto.requestdetail.CreateRequestDetailReqDTO;
 import life.pahtlicoo.application.mapper.RequestDetailDomainMapper;
 import life.pahtlicoo.application.service.RequestDetailService;
@@ -20,8 +21,13 @@ public class CreateRequestDetailUseCase {
     @Inject
     RequestDetailDomainMapper requestDetailDomainMapper;
 
-    public void execute(CreateRequestDetailReqDTO createRequestDetailReqDTO) {
-        List<RequestDetail> requestDetailList = requestDetailDomainMapper.createRequestDetailToDomain(createRequestDetailReqDTO);
-        requestDetailService.createRequestDetail(requestDetailList);
+    @Transactional
+    public boolean execute(CreateRequestDetailReqDTO createRequestDetailReqDTO) {
+        try{
+            List<RequestDetail> requestDetailList = requestDetailDomainMapper.createRequestDetailToDomain(createRequestDetailReqDTO);
+            return requestDetailService.createRequestDetail(requestDetailList);
+        }catch(Exception e){
+            return false;
+        }
     }
 }

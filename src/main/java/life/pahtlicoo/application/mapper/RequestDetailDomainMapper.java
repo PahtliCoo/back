@@ -18,7 +18,13 @@ public class RequestDetailDomainMapper {
         for (MedicineQuantityReqDTO medicineQuantityReqDTO : createRequestDetailReqDTO.getRequestDetailsList()) {
             RequestDetail detail = new RequestDetail();
             detail.setRequestId(createRequestDetailReqDTO.getRequestId());
+            if(medicineQuantityReqDTO.getQuantity() <= 0){
+                return null;
+            }
             detail.setQuantity(medicineQuantityReqDTO.getQuantity());
+            if(medicineQuantityReqDTO.getMedId() <= 0 ){
+                return null;
+            }
             detail.setMedId(medicineQuantityReqDTO.getMedId());
             requestDetailList.add(detail);
         }

@@ -27,10 +27,16 @@ public class RequestRepositoryImpl implements RequestRepository, PanacheReposito
 
     @Override
     @Transactional
-    public void createRequest(Request request){
+    public boolean createRequest(Request request){
         RequestEntity requestEntity = requestEntityMapper.toEntity(request);
         persist(requestEntity);
-        request.setRequestId(requestEntity.getRequestId());
+        // Generated Correctly
+        if(requestEntity.isPersistent()){
+            request.setRequestId(requestEntity.getRequestId());
+            return true;
+        }
+        // Generated Incorrectly
+        return false;
     }
 
     @Override
@@ -62,8 +68,8 @@ public class RequestRepositoryImpl implements RequestRepository, PanacheReposito
 
     @Override
     @Transactional
-    public void deleteRequest(int requestId){
-        deleteById(requestId);
+    public boolean deleteRequest(int requestId){
+        return deleteById(requestId);
     }
 
     @Override

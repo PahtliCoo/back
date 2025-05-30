@@ -1,3 +1,8 @@
+/**
+ * Request Service
+ * @Author Santiago Moreno Lacalle Quintero (A01663197@tec.mx)
+ * @since 2025-05-30
+ */
 package life.pahtlicoo.application.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
@@ -13,8 +18,8 @@ public class RequestService {
     @Inject
     RequestRepository requestRepository;
 
-    public void createRequest(Request request){
-        requestRepository.createRequest(request);
+    public boolean createRequest(Request request) {
+        return requestRepository.createRequest(request);
     }
 
     public Request getRequest(int requestId){
@@ -29,8 +34,8 @@ public class RequestService {
         requestRepository.updateRequestStatus(requestId, state);
     }
 
-    public void deleteRequest(int requestId){
-       requestRepository.deleteRequest(requestId);
+    public Boolean deleteRequest(int requestId){
+       return requestRepository.deleteRequest(requestId);
     }
 
     public List<Request> getAllRequestsByUserIdByState(int userId, int state,int page){
