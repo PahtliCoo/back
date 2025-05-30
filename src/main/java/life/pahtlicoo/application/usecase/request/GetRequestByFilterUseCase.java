@@ -43,63 +43,40 @@ public class GetRequestByFilterUseCase {
             Credential credential = credentialService.getRole(2); // ROLE LOGISTICS ADMIN
             boolean isLogisticsAdmin = (user.getCredentialId() == credential.getCredentialId());
 
-            // State check
-            if(state >= 5 || state <=0){
-                return null;
-            }
-
-            // Day check
-            if(day >= 32 || day <= 0){
-                return null;
-            }
-
-            // Month check
-            if(month >= 13 || month <= 0){
-                return null;
-            }
 
             List<Request> requestList = new ArrayList<>();
 
             // Case for logistics admin filter
-            if(isLogisticsAdmin) {
-                // 1. No filter is selected
+            if (isLogisticsAdmin) {
                 if (state == null && year == null && month == null && day == null) {
+                    // Case 1: No filters selected
                     requestList = requestService.getAllRequest(page);
-                }
-
-                // 2. Date filter selected
-                if (state == null) {
-                     requestList = requestService.getAllRequestsByDate(year, month, day, page);
-                }
-
-                // 3. State filter selected
-                if (month == null || year == null || day == null) {
+                } else if (state == null) {
+                    // Case 2: Only date filter selected
+                    requestList = requestService.getAllRequestsByDate(year, month, day, page);
+                } else if (year == null || month == null || day == null) {
+                    // Case 3: Only state filter selected
                     requestList = requestService.getAllRequestsByState(state, page);
+                } else {
+                    // Case 4: All filters selected
+                    requestList = requestService.getAllRequestsByDateByState(state, year, month, day, page);
                 }
-
-                // 5. ALl filter selected
-                requestList = requestService.getAllRequestsByDateByState( state, year, month, day, page);
-            }else{
-                //Any other User
-
-                // 1. No filter is selected
+            } else {
                 if (state == null && year == null && month == null && day == null) {
-                     requestList = requestService.getAllRequestsByUserId(userId);
+                    // Case 1: No filters selected
+                    requestList = requestService.getAllRequestsByUserId(userId);
+                } else if (state == null) {
+                    // Case 2: Only date filter selected
+                    requestList = requestService.getAllRequestsByUserIdByDate(userId, year, month, day, page);
+                } else if (year == null || month == null || day == null) {
+                    // Case 3: Only state filter selected
+                    requestList = requestService.getAllRequestsByUserIdByState(userId, state, page);
+                } else {
+                    // Case 4: All filters selected
+                    requestList = requestService.getAllRequestsByUserIdByStateAndDate(userId, state, year, month, day, page);
                 }
-
-                // 2. Date filter selected
-                if (state == null) {
-                     requestList = requestService.getAllRequestsByUserIdByDate(userId, year, month, day, page);
-                }
-
-                // 3. State filter selected
-                if (month == null || year == null || day == null) {
-                     requestList = requestService.getAllRequestsByUserIdByState(userId, state, page);
-                }
-
-                // 4. Al filter Selected
-                 requestList = requestService.getAllRequestsByUserIdByStateAndDate(userId, state, year, month, day, page);
             }
+
             // Validate that we have the correct data
             if (requestList == null) {
                 return null;
