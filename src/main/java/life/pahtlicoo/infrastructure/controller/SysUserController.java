@@ -15,6 +15,7 @@ import life.pahtlicoo.application.dto.sysuser.UserRequestResponseDTO;
 import life.pahtlicoo.application.usecase.sysuser.CreateSysUserUseCase;
 import life.pahtlicoo.application.usecase.sysuser.GetUserByFirebaseId;
 import life.pahtlicoo.domain.model.SysUser;
+import life.pahtlicoo.shared.annotation.NoAuthRequired;
 
 @Path("/sysUser")
 public class SysUserController {
@@ -25,7 +26,8 @@ public class SysUserController {
 
     @POST
     @Path("/createUser")
-    public Response createUser(CreateSysUserReqDTO createUserReqDTO) {
+    @NoAuthRequired
+    public Response createUser( CreateSysUserReqDTO createUserReqDTO) {
         try {
             SysUser sysUser = createUserUseCase.execute(createUserReqDTO);
             return Response.ok(sysUser).build();

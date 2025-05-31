@@ -6,12 +6,14 @@ Use case para crear usuario
 package life.pahtlicoo.application.usecase.sysuser;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import life.pahtlicoo.application.dto.sysuser.CreateSysUserReqDTO;
 import life.pahtlicoo.application.mapper.SysUserMapperReqDto;
 import life.pahtlicoo.application.service.SysUserService;
 import life.pahtlicoo.domain.model.SysUser;
 
 @ApplicationScoped
+@Transactional
 public class CreateSysUserUseCase {
     @Inject
     SysUserService sysUserService;
@@ -23,8 +25,9 @@ public class CreateSysUserUseCase {
         user = sysUserService.createUserFirebase(user, createUserReqDTO.getPassword());
         // 2. Try to create user in the database
         user = sysUserService.createUser(user);
+        System.out.println("Created user: " + user);
         // Database creation failed — rollback Firebase user
-        if (user.getFirebaseId() != null) {
+        if (user.getFirebaseId() == null) {
             try {
                 //Delete User from Firebase
                 sysUserService.deleteUserFirebase(user.getFirebaseId());
