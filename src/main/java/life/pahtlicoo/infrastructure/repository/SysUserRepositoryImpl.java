@@ -70,25 +70,11 @@ public class SysUserRepositoryImpl implements SysUserRepository, PanacheReposito
     @Transactional
     @Override
     public SysUser createSysUserFirebase(SysUser user,  String password) {
-        System.out.println("Passowrd: " + password);
         UserRecord.CreateRequest request = new UserRecord.CreateRequest().
                 setEmail(user.getEmail()).
                 setPassword(password);
         try {
             UserRecord userRecord = FirebaseAuth.getInstance().createUser(request);
-            // Checking data.
-            System.out.println(userRecord);
-            System.out.println("Email que se agrega: " + userRecord.getEmail());
-            System.out.println("Firebase que se agrega" + userRecord.getUid());
-            System.out.println("Deshabilitado: " + userRecord.isDisabled());
-
-            // Verificar que el usuario existe consultándolo
-            UserRecord retrievedUser = FirebaseAuth.getInstance().getUser(userRecord.getUid());
-            System.out.println("Usuario recuperado: " + retrievedUser.getEmail());
-            System.out.println(">>> VERIFICACIÓN - Usuario recuperado: " + retrievedUser.getEmail());
-            System.out.println(">>> VERIFICACIÓN - UID recuperado: " + retrievedUser.getUid());
-            System.out.println(">>> VERIFICACIÓN - Estado: " + (retrievedUser.isDisabled() ? "DESHABILITADO" : "ACTIVO"));
-
             //Add the UID from firebase to the user.
             user.setFirebaseId(userRecord.getUid());
 
