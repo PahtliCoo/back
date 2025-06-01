@@ -5,10 +5,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import life.pahtlicoo.application.dto.historicdata.CreateHistoricDataReqDTO;
-import life.pahtlicoo.application.usecase.historicdata.CreateHistoricDataUseCase;
-import life.pahtlicoo.application.usecase.historicdata.DeleteHistoricDataUseCase;
-import life.pahtlicoo.application.usecase.historicdata.GetHistoricDataByDates;
-import life.pahtlicoo.application.usecase.historicdata.GetHistoricDataBySiteIdUseCase;
+import life.pahtlicoo.application.usecase.historicdata.*;
 import life.pahtlicoo.domain.model.HistoricData;
 
 import java.util.List;
@@ -24,7 +21,9 @@ public class HistoricDataController {
     @Inject
     DeleteHistoricDataUseCase deleteHistoricDataUseCase;
     @Inject
-    GetHistoricDataByDates getHistoricData;
+    GetHistoricDataByDatesUseCase getHistoricData;
+    @Inject
+    CreateReportWithHistoricDataUseCase createReportWithHistoricDataUseCase;
 
     @POST
     @Path("/create")
@@ -56,6 +55,18 @@ public class HistoricDataController {
 
         List<HistoricData> data = getHistoricData.execute(year, startMonth, endMonth);
         return Response.ok(data).build();
+    }
+    @GET
+    @Path("/report")
+    @Produces("application/pdf")
+    public Response generatePdfReport(@QueryParam("year") int year,
+                                      @QueryParam("startMonth") int startMonth,
+                                      @QueryParam("endMonth") int endMonth) {
+        byte[] pdfBytes = createReportWithHistoricDataUseCase.execute(year, startMonth, endMonth);
+
+        return Response.ok(pdfBytes)
+                .header("Content-Disposition", "attachment; filename=historical-report-" + year + ".pdf")
+                .build();
     }
 
 

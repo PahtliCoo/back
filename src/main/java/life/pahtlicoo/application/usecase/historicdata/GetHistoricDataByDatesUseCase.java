@@ -8,7 +8,7 @@ import life.pahtlicoo.domain.model.HistoricData;
 import java.util.List;
 
 @ApplicationScoped
-public class GetHistoricDataByDates {
+public class GetHistoricDataByDatesUseCase {
     @Inject
     HistoricDataService historicDataService;
 
