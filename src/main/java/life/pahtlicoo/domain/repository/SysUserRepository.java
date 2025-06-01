@@ -11,8 +11,8 @@ import life.pahtlicoo.domain.model.SysUser;
 public interface SysUserRepository {
     public SysUser createSysUser(SysUser user);
     public SysUser getSysUser(int userId);
-    public void updateSysUserEmail(int userId, String newEmail);
-    public void deleteSysUser(int userId);
+    public SysUser updateSysUserEmail(int userId, String newEmail);
+    public Boolean deleteSysUser(int userId);
     public SysUser createSysUserFirebase(SysUser sysUser, String password);
     public Boolean deleteSysUserFirebase(String userUid);
 }
