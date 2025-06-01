@@ -24,13 +24,11 @@ public class SysUserRepositoryImpl implements SysUserRepository, PanacheReposito
     public SysUser createSysUser(SysUser sysUser) {
         try {
             SysUserEntity sysUserEntity = SysUserEntityMapper.toEntity(sysUser);
-            System.out.println("FirebaseId Entity" + sysUserEntity.getFirebaseId());
             // 1. Persist the SysUser
             sysUserEntity.persist();
 
             // 2. Check if persistance worked
             if (!sysUserEntity.isPersistent()) {
-                System.out.println("SysUser entity was not persisted.");
                 return null;
             }
 
@@ -39,31 +37,35 @@ public class SysUserRepositoryImpl implements SysUserRepository, PanacheReposito
 
         } catch (Exception e) {
             // 4. Failed
-            System.err.println("Error al guardar el sysUser " + e.getMessage());
             return null;
         }
     }
 
     @Override
-    public SysUser getSysUser(int sysUserId){
+    public SysUser getSysUser(int sysUserId) {
         SysUserEntity sysUserEntity = SysUserEntity.findById(sysUserId);
-
         if (sysUserEntity == null) {
             return null;
         }
-
         return SysUserEntityMapper.toDomain(sysUserEntity);
     }
 
     @Override
-    public void updateSysUserEmail(int sysUserId, String newEmail){
-
+    public SysUser updateSysUserEmail(int sysUserId, String newEmail) {
+        SysUserEntity sysUserEntity = SysUserEntity.findById(sysUserId);
+        if (sysUserEntity == null) {
+            return null;
+        }
+        sysUserEntity.setEmail(newEmail);
+        return SysUserEntityMapper.toDomain(sysUserEntity);
     }
 
+    @Transactional
     @Override
-    public void deleteSysUser(int sysUserId){
-
+    public Boolean deleteSysUser(int sysUserId){
+        return SysUserEntity.deleteById(sysUserId);
     }
+
     @Transactional
     @Override
     public SysUser createSysUserFirebase(SysUser user,  String password) {
@@ -72,18 +74,13 @@ public class SysUserRepositoryImpl implements SysUserRepository, PanacheReposito
                 setPassword(password);
         try {
             UserRecord userRecord = FirebaseAuth.getInstance().createUser(request);
-            // Checking data.
-            System.out.println(userRecord);
-            System.out.println("Email que se agrega: " + userRecord.getEmail());
-            System.out.println("Firebase que se agrega" + userRecord.getUid());
 
             //Add the UID from firebase to the user.
             user.setFirebaseId(userRecord.getUid());
-
             return user;
 
         }catch (Exception e) {
-            System.out.println("No se creo el usuario en firebase");
+            // No se creo
             return null;
         }
     }
