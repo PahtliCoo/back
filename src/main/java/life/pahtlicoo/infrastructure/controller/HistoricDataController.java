@@ -7,6 +7,7 @@ import jakarta.ws.rs.core.Response;
 import life.pahtlicoo.application.dto.historicdata.CreateHistoricDataReqDTO;
 import life.pahtlicoo.application.usecase.historicdata.CreateHistoricDataUseCase;
 import life.pahtlicoo.application.usecase.historicdata.DeleteHistoricDataUseCase;
+import life.pahtlicoo.application.usecase.historicdata.GetHistoricDataByDates;
 import life.pahtlicoo.application.usecase.historicdata.GetHistoricDataBySiteIdUseCase;
 import life.pahtlicoo.domain.model.HistoricData;
 
@@ -22,6 +23,8 @@ public class HistoricDataController {
     GetHistoricDataBySiteIdUseCase getHistoricDataBySiteIdUseCase;
     @Inject
     DeleteHistoricDataUseCase deleteHistoricDataUseCase;
+    @Inject
+    GetHistoricDataByDates getHistoricData;
 
     @POST
     @Path("/create")
@@ -43,6 +46,18 @@ public class HistoricDataController {
         }
         return Response.ok(historicData).build();
     }
+
+    @GET
+    @Path("/range")
+    public Response getHistoricDataByRange(
+            @QueryParam("year") int year,
+            @QueryParam("startMonth") int startMonth,
+            @QueryParam("endMonth") int endMonth) {
+
+        List<HistoricData> data = getHistoricData.execute(year, startMonth, endMonth);
+        return Response.ok(data).build();
+    }
+
 
     @DELETE
     @Path("/{site_id}")

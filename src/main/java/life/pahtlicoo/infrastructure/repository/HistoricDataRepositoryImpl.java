@@ -33,6 +33,19 @@ public class HistoricDataRepositoryImpl implements HistoricDataRepository, Panac
     }
 
     @Override
+    public List<HistoricData> getAllByYearAndMonthRange(int year, int startMonth, int endMonth) {
+        List<HistoricDataEntity> entities = find(
+                "dateYear = ?1 AND dateMonth >= ?2 AND dateMonth <= ?3",
+                year, startMonth, endMonth
+        ).list();
+
+        return entities.stream()
+                .map(historicDataEntityMapper::toDomain)
+                .toList();
+    }
+
+
+    @Override
     @Transactional
     public void deleteHistoricData(int historicDataId) {
         deleteById(historicDataId);
