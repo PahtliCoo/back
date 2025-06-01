@@ -34,3 +34,4 @@ public class SysUserService {
         return sysUserRepository.getSysUserByFirebaseId(firebaseId);
     }
 }
+
