@@ -3,6 +3,7 @@ package life.pahtlicoo.application.usecase.historicdata;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import life.pahtlicoo.application.service.HistoricDataService;
+import life.pahtlicoo.application.dto.historicdata.GetHistoricDataByDatesDTO;
 import life.pahtlicoo.domain.model.HistoricData;
 
 import com.lowagie.text.*;
@@ -19,8 +20,8 @@ public class CreateReportWithHistoricDataUseCase {
     @Inject
     GetHistoricDataByDatesUseCase getHistoricDataByDatesUseCase;
 
-    public byte[] execute(int year, int startMonth, int endMonth) {
-        List<HistoricData> dataList = getHistoricDataByDatesUseCase.execute(year, startMonth, endMonth);
+    public byte[] execute(GetHistoricDataByDatesDTO dto) {
+        List<HistoricData> dataList = getHistoricDataByDatesUseCase.execute(dto);
 
         List<HistoricData> sortedDataList = new java.util.ArrayList<>(dataList);
         sortedDataList.sort((a, b) -> {
@@ -39,7 +40,7 @@ public class CreateReportWithHistoricDataUseCase {
             document.open();
 
             document.add(new Paragraph("Reporte de Datos Históricos por Sitio"));
-            document.add(new Paragraph("Año: " + year + ", Meses: " + startMonth + " a " + endMonth));
+            document.add(new Paragraph("Año: " + dto.getYear() + ", Meses: " + dto.getStartMonth() + " a " + dto.getEndMonth()));
             document.add(Chunk.NEWLINE);
 
             Integer previousSiteId = null;
