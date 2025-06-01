@@ -23,14 +23,22 @@ public class CreateReportWithHistoricDataUseCase {
         List<HistoricData> dataList = getHistoricDataByDatesUseCase.execute(year, startMonth, endMonth);
 
         List<HistoricData> sortedDataList = new java.util.ArrayList<>(dataList);
-        sortedDataList.sort((a, b) -> Integer.compare(a.getSiteId(), b.getSiteId()));
+        sortedDataList.sort((a, b) -> {
+            int bySite = Integer.compare(a.getSiteId(), b.getSiteId());
+            if (bySite != 0) return bySite;
+
+            int byMonth = Integer.compare(a.getDateMonth(), b.getDateMonth());
+            if (byMonth != 0) return byMonth;
+
+            return Integer.compare(a.getMedId(), b.getMedId());
+        });
 
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             Document document = new Document();
             PdfWriter.getInstance(document, baos);
             document.open();
 
-            document.add(new Paragraph("Reporte de Datos Históricos"));
+            document.add(new Paragraph("Reporte de Datos Históricos por Sitio"));
             document.add(new Paragraph("Año: " + year + ", Meses: " + startMonth + " a " + endMonth));
             document.add(Chunk.NEWLINE);
 
