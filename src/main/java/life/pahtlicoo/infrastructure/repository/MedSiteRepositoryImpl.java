@@ -24,7 +24,7 @@ public class MedSiteRepositoryImpl implements MedSiteRepository, PanacheReposito
     @Inject
     MedSiteEntityMapper medSiteEntityMapper;
 
-
+    //TODO: Dependiendo del tiempo, lo corregimos a void
     @Override
     @Transactional
     public boolean createMedSite(MedSite medSite){
