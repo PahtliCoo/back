@@ -6,6 +6,7 @@
  */
 package life.pahtlicoo.infrastructure.entity;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -26,7 +27,7 @@ import java.time.OffsetDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MedSiteEntity {
+public class MedSiteEntity extends PanacheEntityBase {
     @EmbeddedId
     private MedSiteID medSiteID;
 
