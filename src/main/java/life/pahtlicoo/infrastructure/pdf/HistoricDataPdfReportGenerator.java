@@ -3,6 +3,8 @@ package life.pahtlicoo.infrastructure.pdf;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.*;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import life.pahtlicoo.application.service.HistoricDataReportService;
 import life.pahtlicoo.domain.model.HistoricData;
 
 import java.awt.Color;
@@ -24,8 +26,13 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
+
+
 @ApplicationScoped
 public class HistoricDataPdfReportGenerator {
+
+    @Inject
+    HistoricDataReportService historicDataReportService;
 
     public byte[] generate(Map<Integer, Map<String, List<HistoricData>>> dataBySite, int year, int startMonth, int endMonth,
                            IntFunction<String> siteNameResolver,
@@ -123,21 +130,9 @@ public class HistoricDataPdfReportGenerator {
                                                java.util.function.IntFunction<String> medNameResolver,
                                                String siteName) throws Exception {
 
-        // Agrupar datos por medicamento
-        Map<String, Map<String, Integer>> dataPorMedicamento = new LinkedHashMap<>();
+        Map<String, Map<String, Integer>> dataPorMedicamento =
+                historicDataReportService.agruparPorMedicamento(datosPorMes, medNameResolver::apply);
 
-        for (Map.Entry<String, List<HistoricData>> entry : datosPorMes.entrySet()) {
-            String[] partes = entry.getKey().split("-");
-            int mesNumero = Integer.parseInt(partes[1]);
-            String mesNombre = getNombreMes(mesNumero);
-
-            for (HistoricData data : entry.getValue()) {
-                String medicamento = medNameResolver.apply(data.getMedId());
-                dataPorMedicamento
-                        .computeIfAbsent(medicamento, k -> new LinkedHashMap<>())
-                        .put(mesNombre, data.getQuantity());
-            }
-        }
 
         for (Map.Entry<String, Map<String, Integer>> entry : dataPorMedicamento.entrySet()) {
             String medicamento = entry.getKey();
