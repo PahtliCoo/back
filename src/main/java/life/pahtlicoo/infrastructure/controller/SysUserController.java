@@ -30,6 +30,9 @@ public class SysUserController {
     public Response createUser( CreateSysUserReqDTO createUserReqDTO) {
         try {
             SysUser sysUser = createUserUseCase.execute(createUserReqDTO);
+            if (sysUser == null) {
+                return Response.status(Response.Status.BAD_REQUEST).build();
+            }
             return Response.ok(sysUser).build();
         }catch (Exception e){
             return Response.serverError().entity(e.getMessage()).build();

@@ -19,23 +19,26 @@ public class CreateSysUserUseCase {
     SysUserService sysUserService;
 
     public SysUser execute (CreateSysUserReqDTO createUserReqDTO) {
-        // Create user with data of DTO.
-        SysUser user = SysUserMapperReqDto.toDomain(createUserReqDTO);
-        // 1. Create Firebase user
-        user = sysUserService.createUserFirebase(user, createUserReqDTO.getPassword());
-        // 2. Try to create user in the database
-        user = sysUserService.createUser(user);
-        System.out.println("Created user: " + user);
-        // Database creation failed — rollback Firebase user
-        if (user.getFirebaseId() == null) {
-            try {
-                //Delete User from Firebase
-                sysUserService.deleteUserFirebase(user.getFirebaseId());
-            } catch (Exception rollbackEx) {
-                System.err.println("Error al revertir usuario en Firebase: " + rollbackEx.getMessage());
+        try{
+            // Create user with data of DTO.
+            SysUser user = SysUserMapperReqDto.toDomain(createUserReqDTO);
+            // 1. Create Firebase user
+            user = sysUserService.createUserFirebase(user, createUserReqDTO.getPassword());
+            // 2. Try to create user in the database
+            user = sysUserService.createUser(user);
+            // Database creation failed — rollback Firebase user
+            if (user.getFirebaseId() == null) {
+                try {
+                    //Delete User from Firebase
+                    sysUserService.deleteUserFirebase(user.getFirebaseId());
+                } catch (Exception rollbackEx) {
+                    return null;
+                }
             }
+            // Success
+            return user;
+        }catch (Exception e) {
+            return null;
         }
-        // Success
-        return user;
     }
 }
