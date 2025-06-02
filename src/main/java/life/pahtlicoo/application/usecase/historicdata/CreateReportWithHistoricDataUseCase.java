@@ -2,8 +2,8 @@ package life.pahtlicoo.application.usecase.historicdata;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import life.pahtlicoo.application.service.HistoricDataService;
 import life.pahtlicoo.application.dto.historicdata.GetHistoricDataByDatesDTO;
+import life.pahtlicoo.application.usecase.med.GetMedByIdUseCase;
 import life.pahtlicoo.application.usecase.site.GetSiteByIdUseCase;
 import life.pahtlicoo.domain.model.HistoricData;
 
@@ -13,13 +13,15 @@ import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 
 
+
 import java.io.ByteArrayOutputStream;
 import java.time.Month;
 import java.util.Locale;
+import java.awt.Color;
+
 
 import java.util.List;
 import java.util.Map;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.stream.Collectors;
 
@@ -30,6 +32,8 @@ public class CreateReportWithHistoricDataUseCase {
     GetHistoricDataByDatesUseCase getHistoricDataByDatesUseCase;
     @Inject
     GetSiteByIdUseCase getSiteByIdUseCase;
+    @Inject
+    GetMedByIdUseCase getMedByIdUseCase;
 
     private String getNombreMes(int numeroMes) {
         return Month.of(numeroMes).getDisplayName(java.time.format.TextStyle.FULL, new Locale("es", "ES"));
@@ -52,8 +56,17 @@ public class CreateReportWithHistoricDataUseCase {
             PdfWriter.getInstance(document, baos);
             document.open();
 
-            document.add(new Paragraph("Reporte de Datos Históricos por Sitio"));
-            document.add(new Paragraph("Año: " + dto.getYear() + ", Meses: " + dto.getStartMonth() + " a " + dto.getEndMonth()));
+            Font titleFont = new Font(Font.HELVETICA, 16, Font.BOLD);
+            Font subtitleFont = new Font(Font.HELVETICA, 12, Font.NORMAL);
+
+            Paragraph title = new Paragraph("Reporte de Datos Históricos por Sitio", titleFont);
+            title.setAlignment(Element.ALIGN_CENTER);
+            document.add(title);
+
+            Paragraph subtitle = new Paragraph("Año: " + dto.getYear() + ", Meses: " + dto.getStartMonth() + " a " + dto.getEndMonth(), subtitleFont);
+            subtitle.setAlignment(Element.ALIGN_CENTER);
+            document.add(subtitle);
+
             document.add(Chunk.NEWLINE);
 
             Integer previousSiteId = null;
@@ -71,37 +84,80 @@ public class CreateReportWithHistoricDataUseCase {
                     if (previousSiteId != null) {
                         document.newPage();
                     }
-                    document.add(new Paragraph("Sitio: " + siteName));
+
+                    Font siteFont = new Font(Font.HELVETICA, 13, Font.BOLD);
+                    Paragraph siteTitle = new Paragraph("Sitio: " + siteName, siteFont);
+                    siteTitle.setSpacingBefore(10f);
+                    siteTitle.setSpacingAfter(10f);
+                    document.add(siteTitle);
+
                     document.add(Chunk.NEWLINE);
                 }
 
                 PdfPTable table = new PdfPTable(6);
                 table.setWidths(new float[]{2.5f, 1f, 1f, 1.5f, 1.5f, 1.5f});
                 table.setWidthPercentage(100);
-                table.addCell("Sitio");
-                table.addCell("Año");
-                table.addCell("Mes");
-                table.addCell("MedId");
-                table.addCell("Cantidad");
-                table.addCell("Proyectado");
+
+                // Estilo del encabezado
+                Font headerFont = new Font(Font.HELVETICA, 12, Font.BOLD);
+                Color headerBackground = new Color(230, 230, 230); // Gris claro
+                // Encabezados centrados y con fondo
+                String[] headers = {"Sitio", "Año", "Mes", "MedId", "Cantidad", "Proyectado"};
+                for (String header : headers) {
+                    PdfPCell headerCell = new PdfPCell(new Phrase(header, headerFont));
+                    headerCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    headerCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                    headerCell.setBackgroundColor(headerBackground);
+                    table.addCell(headerCell);
+                }
+
+
+
+
+
+                table.setWidths(new float[]{2.5f, 1f, 1f, 1.5f, 1.5f, 1.5f});
+                table.setWidthPercentage(100);
+
 
                 PdfPCell mesCell = new PdfPCell(new Phrase(getNombreMes(first.getDateMonth())));
                 mesCell.setRowspan(group.size());
                 mesCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                mesCell.setHorizontalAlignment(Element.ALIGN_CENTER);
 
                 PdfPCell anioCell = new PdfPCell(new Phrase(String.valueOf(first.getDateYear())));
                 anioCell.setRowspan(group.size());
                 anioCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                anioCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+                PdfPCell siteCell = new PdfPCell(new Phrase(siteName));
+                siteCell.setRowspan(group.size());
+                siteCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                siteCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+
 
 
                 for (int i = 0; i < group.size(); i++) {
                     HistoricData data = group.get(i);
-                    table.addCell(siteName);
+                    if (i == 0) table.addCell(siteCell);
                     if(i== 0) table.addCell(anioCell);
                     if (i == 0) table.addCell(mesCell);
-                    table.addCell(String.valueOf(data.getMedId()));
-                    table.addCell(String.valueOf(data.getQuantity()));
-                    table.addCell(String.valueOf(data.getProjectedQuantity()));
+                    String medName = getMedByIdUseCase.execute(data.getMedId());
+                    PdfPCell medIdCell = new PdfPCell(new Phrase(medName));
+                    medIdCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    medIdCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+
+                    PdfPCell quantityCell = new PdfPCell(new Phrase(String.valueOf(data.getQuantity())));
+                    quantityCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    quantityCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+
+                    PdfPCell projectedCell = new PdfPCell(new Phrase(String.valueOf(data.getProjectedQuantity())));
+                    projectedCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    projectedCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+
+                    table.addCell(medIdCell);
+                    table.addCell(quantityCell);
+                    table.addCell(projectedCell);
                 }
 
                 document.add(table);
