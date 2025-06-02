@@ -25,7 +25,7 @@ public class MedDiseaseRepositoryImpl implements MedDiseaseRepository, PanacheRe
     public boolean createMedDisease(MedDisease medDisease){
         MedDiseaseEntity medDiseaseEntity = medDiseaseEntityMapper.toEntity(medDisease);
         persist(medDiseaseEntity);
-        if(medDiseaseEntity.getCreatedAt() == null){
+        if(medDiseaseEntity.getCreatedAt() != null){
             return false;
         }
         return true;
@@ -46,25 +46,13 @@ public class MedDiseaseRepositoryImpl implements MedDiseaseRepository, PanacheRe
     @Override
     @Transactional
     public boolean updateMedDiseaseByMedId(int oldMedId, int newMedId){
-        MedDiseaseEntity medDiseaseEntity = MedDiseaseEntity.find("medDiseaseID.medId", oldMedId).firstResult();
-        if(medDiseaseEntity == null){
-            return false;
-        }
-        MedDiseaseID medDiseaseID = new MedDiseaseID(newMedId,medDiseaseEntity.getMedDiseaseID().getDiseaseId());
-        medDiseaseEntity.setMedDiseaseID(medDiseaseID);
-        return true;
+        return MedDiseaseEntity.update("medDiseaseID.medId = ?1 WHERE medDiseaseID.medId = ?2 ",newMedId, oldMedId) > 0;
     }
 
     @Override
     @Transactional
     public boolean updateMedDiseaseByDiseaseId(int oldDiseaseId,int newDiseaseId){
-        MedDiseaseEntity medDiseaseEntity = MedDiseaseEntity.find("medDiseaseID.diseaseId", oldDiseaseId).firstResult();
-        if(medDiseaseEntity == null){
-            return false;
-        }
-        MedDiseaseID medDiseaseID = new MedDiseaseID(medDiseaseEntity.getMedDiseaseID().getMedId(),newDiseaseId);
-        medDiseaseEntity.setMedDiseaseID(medDiseaseID);
-        return true;
+        return MedDiseaseEntity.update("medDiseaseID.diseaseId = ?1 WHERE medDiseaseID.diseaseId = ?2 ",newDiseaseId,oldDiseaseId) > 0;
     }
 
     @Override

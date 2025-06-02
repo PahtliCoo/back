@@ -9,8 +9,10 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import life.pahtlicoo.application.usecase.meddisease.GetMedDiseaseByDiseaseIdUseCase;
-import life.pahtlicoo.application.usecase.meddisease.GetMedDiseaseByMedIdUseCase;
+import life.pahtlicoo.application.dto.meddisease.CreateMedDiseaseReqDTO;
+import life.pahtlicoo.application.dto.meddisease.UpdateMedDiseaseByDiseaseIdReqDTO;
+import life.pahtlicoo.application.dto.meddisease.UpdateMedDiseaseByMedIdReqDTO;
+import life.pahtlicoo.application.usecase.meddisease.*;
 import life.pahtlicoo.domain.model.MedDisease;
 
 @Path("/med/disease")
@@ -21,6 +23,88 @@ public class MedDiseaseController {
     GetMedDiseaseByMedIdUseCase getMedDiseaseByMedIdUseCase;
     @Inject
     GetMedDiseaseByDiseaseIdUseCase getMedDiseaseByDiseaseIdUseCase;
+    @Inject
+    CreateMedDiseaseUseCase createMedDiseaseUseCase;
+    @Inject
+    DeleteMedDiseaseByMedIdUseCase deleteMedDiseaseByMedIdUseCase;
+    @Inject
+    DeleteMedDiseaseByDiseaseIdUseCase deleteMedDiseaseByDiseaseIdUseCase;
+    @Inject
+    UpdateMedDiseaseByMedIdUseCase updateMedDiseaseByMedIdUseCase;
+    @Inject
+    UpdateMedDiseaseByDiseaseIdUseCase updateMedDiseaseByDiseaseIdUseCase;
+
+    @POST
+    @Path("/create")
+    public Response createMedDisease(CreateMedDiseaseReqDTO createMedDiseaseReqDTO){
+        try{
+            if(createMedDiseaseUseCase.execute(createMedDiseaseReqDTO)){
+                return Response.status(Response.Status.CREATED).build();
+            }
+            return Response.status(Response.Status.BAD_REQUEST).build();
+
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @DELETE
+    @Path("/bymed/{medId}")
+    public Response deleteMedDiseaseByMedId(@PathParam("medId") int medId){
+        try {
+            if(deleteMedDiseaseByMedIdUseCase.execute(medId)){
+                return Response.status(Response.Status.NO_CONTENT).build();
+            }
+            return Response.status(Response.Status.NOT_FOUND).build();
+
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @DELETE
+    @Path("/bydisease/{diseaseId}")
+    public Response deleteMedDiseaseByDiseaseId(@PathParam("diseaseId") int diseaseId){
+        try {
+            if(deleteMedDiseaseByDiseaseIdUseCase.execute(diseaseId)){
+                return Response.status(Response.Status.NO_CONTENT).build();
+            }
+            return Response.status(Response.Status.NOT_FOUND).build();
+
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PATCH
+    @Path("/bymed")
+    public Response updateMedDiseaseByMedId(UpdateMedDiseaseByMedIdReqDTO medDiseaseByMedIdReqDTO){
+        try {
+            if(updateMedDiseaseByMedIdUseCase.execute(medDiseaseByMedIdReqDTO.getOldMedId(),medDiseaseByMedIdReqDTO.getNewMedId())){
+                return Response.status(Response.Status.NO_CONTENT).build();
+            }
+            return Response.status(Response.Status.BAD_REQUEST).build();
+
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PATCH
+    @Path("/bydisease")
+    public Response updateMedDiseaseByMedId(UpdateMedDiseaseByDiseaseIdReqDTO updateMedDiseaseByDiseaseIdReqDTO){
+        try {
+            if(updateMedDiseaseByDiseaseIdUseCase.execute(updateMedDiseaseByDiseaseIdReqDTO.getOldDiseaseId(),updateMedDiseaseByDiseaseIdReqDTO.getNewDiseaseId())){
+                return Response.status(Response.Status.NO_CONTENT).build();
+            }
+            return Response.status(Response.Status.BAD_REQUEST).build();
+
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+
 
     @GET
     @Path("/bymed/{medId}")

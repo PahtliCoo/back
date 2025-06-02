@@ -28,7 +28,7 @@ public class MedDiseaseService {
         return  medDiseaseRepository.updateMedDiseaseByMedId(oldMedId, newMedId);
     }
     public boolean updateMedDiseaseByDiseaseId(int oldDiseaseId,int newDiseaseId){
-        return medDiseaseRepository.updateMedDiseaseByMedId(oldDiseaseId,newDiseaseId);
+        return medDiseaseRepository.updateMedDiseaseByDiseaseId(oldDiseaseId,newDiseaseId);
     }
     public MedDisease getMedDiseaseByMedId(int medId){
         return medDiseaseRepository.getMedDiseaseByMedId(medId);
