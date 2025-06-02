@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.function.IntFunction;
 import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
@@ -26,9 +27,11 @@ import org.jfree.data.category.DefaultCategoryDataset;
 @ApplicationScoped
 public class HistoricDataPdfReportGenerator {
 
-    public byte[] generate(List<HistoricData> sortedDataList, int year, int startMonth, int endMonth,
-                           java.util.function.IntFunction<String> siteNameResolver,
-                           java.util.function.IntFunction<String> medNameResolver) {
+    public byte[] generate(Map<Integer, Map<String, List<HistoricData>>> dataBySite, int year, int startMonth, int endMonth,
+                           IntFunction<String> siteNameResolver,
+                           IntFunction<String> medNameResolver)
+
+    {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             Document document = new Document();
             PdfWriter.getInstance(document, baos);
@@ -46,17 +49,6 @@ public class HistoricDataPdfReportGenerator {
             document.add(subtitle);
 
             document.add(Chunk.NEWLINE);
-
-            Map<Integer, Map<String, List<HistoricData>>> dataBySite = sortedDataList.stream()
-                    .collect(Collectors.groupingBy(
-                            HistoricData::getSiteId,
-                            LinkedHashMap::new,
-                            Collectors.groupingBy(
-                                    d -> d.getDateYear() + "-" + d.getDateMonth(),
-                                    LinkedHashMap::new,
-                                    Collectors.toList()
-                            )
-                    ));
 
             for (Map.Entry<Integer, Map<String, List<HistoricData>>> siteEntry : dataBySite.entrySet()) {
                 Integer siteId = siteEntry.getKey();
