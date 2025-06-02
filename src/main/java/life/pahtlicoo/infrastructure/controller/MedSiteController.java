@@ -1,13 +1,12 @@
 package life.pahtlicoo.infrastructure.controller;
 
-import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import life.pahtlicoo.application.dto.medsite.CreateMedSiteReqDTO;
 import life.pahtlicoo.application.dto.medsite.DeleteMedSiteReqDTO;
-import life.pahtlicoo.application.dto.medsite.GetMedSiteByMedIdAndSiteId;
+import life.pahtlicoo.application.dto.medsite.GetMedSiteByMedIdAndSiteIdReqDTO;
 import life.pahtlicoo.application.dto.medsite.UpdateMedSiteQuantityReqDTO;
 import life.pahtlicoo.application.usecase.medsite.*;
 import life.pahtlicoo.domain.model.MedSite;
@@ -63,9 +62,9 @@ public class MedSiteController {
 
     @POST
     @Path("/get/medandsitebyid")
-    public Response getMedSiteByMedIdAndSiteId(GetMedSiteByMedIdAndSiteId getMedSiteByMedIdAndSiteId) {
+    public Response getMedSiteByMedIdAndSiteId(GetMedSiteByMedIdAndSiteIdReqDTO getMedSiteByMedIdAndSiteIdReqDTO) {
         try {
-            MedSite medSite = getMedSiteByMedIdAndSiteIdUseCase.execute(getMedSiteByMedIdAndSiteId);
+            MedSite medSite = getMedSiteByMedIdAndSiteIdUseCase.execute(getMedSiteByMedIdAndSiteIdReqDTO);
             if(medSite == null){
                 return Response.status(Response.Status.NOT_FOUND).build();
             }

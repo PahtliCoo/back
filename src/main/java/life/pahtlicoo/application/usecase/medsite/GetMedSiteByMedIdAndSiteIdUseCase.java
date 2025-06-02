@@ -2,7 +2,7 @@ package life.pahtlicoo.application.usecase.medsite;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import life.pahtlicoo.application.dto.medsite.GetMedSiteByMedIdAndSiteId;
+import life.pahtlicoo.application.dto.medsite.GetMedSiteByMedIdAndSiteIdReqDTO;
 import life.pahtlicoo.application.service.MedSiteService;
 import life.pahtlicoo.domain.model.MedSite;
 
@@ -11,10 +11,10 @@ public class GetMedSiteByMedIdAndSiteIdUseCase {
     @Inject
     MedSiteService medSiteService;
 
-    public MedSite execute(GetMedSiteByMedIdAndSiteId getMedSiteByMedIdAndSiteId) {
+    public MedSite execute(GetMedSiteByMedIdAndSiteIdReqDTO getMedSiteByMedIdAndSiteIdReqDTO) {
         try{
-            MedSite medSite = medSiteService.getMedSiteByMedIdAndSiteId(getMedSiteByMedIdAndSiteId.getMedId(),
-                    getMedSiteByMedIdAndSiteId.getSiteId());
+            MedSite medSite = medSiteService.getMedSiteByMedIdAndSiteId(getMedSiteByMedIdAndSiteIdReqDTO.getMedId(),
+                    getMedSiteByMedIdAndSiteIdReqDTO.getSiteId());
             if (medSite == null) {
                 return null;
             }
