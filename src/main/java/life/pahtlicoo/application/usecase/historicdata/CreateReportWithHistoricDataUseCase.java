@@ -3,19 +3,24 @@ package life.pahtlicoo.application.usecase.historicdata;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import life.pahtlicoo.application.dto.historicdata.GetHistoricDataByDatesDTO;
+import life.pahtlicoo.application.service.HistoricDataService;
+import life.pahtlicoo.application.service.HistoricDataReportService;
 import life.pahtlicoo.application.usecase.med.GetMedByIdUseCase;
 import life.pahtlicoo.application.usecase.site.GetSiteByIdUseCase;
 import life.pahtlicoo.domain.model.HistoricData;
 import life.pahtlicoo.infrastructure.pdf.HistoricDataPdfReportGenerator;
 
-import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 @ApplicationScoped
 public class CreateReportWithHistoricDataUseCase {
 
     @Inject
-    GetHistoricDataByDatesUseCase getHistoricDataByDatesUseCase;
+    HistoricDataService historicDataService;
+
+    @Inject
+    HistoricDataReportService historicDataReportService;
 
     @Inject
     GetSiteByIdUseCase getSiteByIdUseCase;
@@ -27,13 +32,14 @@ public class CreateReportWithHistoricDataUseCase {
     HistoricDataPdfReportGenerator pdfReportGenerator;
 
     public byte[] execute(GetHistoricDataByDatesDTO dto) {
-        List<HistoricData> dataList = new java.util.ArrayList<>(getHistoricDataByDatesUseCase.execute(dto));
-        dataList.sort(Comparator.comparing(HistoricData::getSiteId)
-                .thenComparing(HistoricData::getDateMonth)
-                .thenComparing(HistoricData::getMedId));
+        List<HistoricData> dataList = historicDataService.getHistoricDataByDateRange(
+                dto.getYear(), dto.getStartMonth(), dto.getEndMonth()
+        );
+
+        Map<Integer, Map<String, List<HistoricData>>> dataBySite = historicDataReportService.agruparPorSitioYMes(dataList);
 
         return pdfReportGenerator.generate(
-                dataList,
+                dataBySite,
                 dto.getYear(),
                 dto.getStartMonth(),
                 dto.getEndMonth(),
