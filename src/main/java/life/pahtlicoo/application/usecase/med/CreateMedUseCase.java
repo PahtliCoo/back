@@ -13,7 +13,6 @@ import life.pahtlicoo.application.service.MedService;
 import life.pahtlicoo.domain.model.Med;
 
 @ApplicationScoped
-
 public class CreateMedUseCase {
     @Inject
     MedService medService;

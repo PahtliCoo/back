@@ -9,9 +9,11 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import life.pahtlicoo.application.dto.med.CreateMedReqDTO;
 import life.pahtlicoo.application.dto.med.MedResponseDTO;
-import life.pahtlicoo.application.usecase.med.GetAllMedsUseCase;
-import life.pahtlicoo.application.usecase.med.GetMedsBySearchNameUseCase;
+import life.pahtlicoo.application.dto.med.MedUpdateNameReqDTO;
+import life.pahtlicoo.application.usecase.med.*;
+import life.pahtlicoo.domain.model.Med;
 
 import java.util.List;
 
@@ -23,6 +25,29 @@ public class MedController {
     GetAllMedsUseCase getAllMedsUseCase;
     @Inject
     GetMedsBySearchNameUseCase getMedsBySearchNameUseCase;
+    @Inject
+    DeleteMedUseCase deleteMedUseCase;
+    @Inject
+    CreateMedUseCase createMedUseCase;
+    @Inject
+    GetMedUseCase getMedUseCase;
+    @Inject
+    UpdateMedNameUseCase updateMedNameUseCase;
+
+    @POST
+    @Path("/create")
+    public Response createMed(CreateMedReqDTO createMedReqDTO) {
+        try{
+            if(createMedUseCase.execute(createMedReqDTO.getName())){
+                return Response.status(Response.Status.CREATED).build();
+            }
+            return Response.status(Response.Status.BAD_REQUEST).build();
+
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 
     @GET
     @Path("/allmeds")
@@ -50,6 +75,50 @@ public class MedController {
             }
             return Response.ok(medResponseDTOList).build();
         } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @DELETE
+    @Path("{medId}")
+    public Response deleteMed(@PathParam("medId") int medId) {
+        try {
+            if(deleteMedUseCase.execute(medId)) {
+                return Response.status(Response.Status.NO_CONTENT).build();
+            }
+            return Response.status(Response.Status.NOT_FOUND).build();
+
+        }catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GET
+    @Path("/{medId}")
+    public Response getMed(@PathParam("medId") int medId) {
+        try{
+            Med med = getMedUseCase.execute(medId);
+            if(med == null) {
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
+            return Response.ok(med).build();
+
+        }catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PATCH
+    @Path("/update")
+    public Response updateMedName(MedUpdateNameReqDTO medUpdateNameReqDTO) {
+        try {
+             Med med = updateMedNameUseCase.execute(medUpdateNameReqDTO.getMedId(),medUpdateNameReqDTO.getName());
+             if(med == null) {
+                 return Response.status(Response.Status.NOT_FOUND).build();
+             }
+             return Response.ok(med).build();
+
+        }catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }

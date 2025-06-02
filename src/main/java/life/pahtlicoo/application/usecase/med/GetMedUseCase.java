@@ -1,9 +1,11 @@
 package life.pahtlicoo.application.usecase.med;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import life.pahtlicoo.application.service.MedService;
 import life.pahtlicoo.domain.model.Med;
 
+@ApplicationScoped
 public class GetMedUseCase {
     @Inject
     MedService medService;

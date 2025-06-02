@@ -4,7 +4,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import life.pahtlicoo.application.service.MedService;
-import life.pahtlicoo.domain.model.Med;
 
 @ApplicationScoped
 public class DeleteMedUseCase {
