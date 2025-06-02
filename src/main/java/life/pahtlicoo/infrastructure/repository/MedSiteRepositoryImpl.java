@@ -30,21 +30,21 @@ public class MedSiteRepositoryImpl implements MedSiteRepository, PanacheReposito
     public boolean createMedSite(MedSite medSite){
         MedSiteEntity medSiteEntity = medSiteEntityMapper.toEntity(medSite);
         persist(medSiteEntity);
-        if(medSiteEntity.getCreatedAt() == null) {
-            return false;
+        if(medSiteEntity.isPersistent()) {
+            return true;
         }
-        return true;
+        return false;
     }
 
     @Override
     @Transactional
     public boolean deleteMedSite(int siteId, int medId) {
-        return MedSiteEntity.delete("medSiteId.medId = ?1 and medSiteId.siteId = ?2",medId,siteId) > 0;
+        return MedSiteEntity.delete("medSiteID.medId = ?1 and medSiteID.siteId = ?2",medId,siteId) > 0;
     }
 
     @Override
     public List<MedSite> getMedSiteBySiteId(int siteId){
-        List<MedSiteEntity> medSiteEntityList = find("medSiteId.siteId", siteId).list();
+        List<MedSiteEntity> medSiteEntityList = find("medSiteID.siteId", siteId).list();
         if(medSiteEntityList.isEmpty()) {
             return null;
         }
@@ -54,7 +54,7 @@ public class MedSiteRepositoryImpl implements MedSiteRepository, PanacheReposito
     @Override
     @Transactional
     public boolean updateMedSiteCurrentQuantity(MedSite medSite, int currentQuantity){
-        MedSiteEntity medSiteEntity =  find("medSiteId.medId = ?1 and medSiteId.siteId = ?2",medSite.getMedId(),medSite.getSiteId()).firstResult();
+        MedSiteEntity medSiteEntity = find("medSiteID.medId = ?1 and medSiteID.siteId = ?2",medSite.getMedId(),medSite.getSiteId()).firstResult();
         if(medSiteEntity == null) {
             return false;
         }
@@ -65,17 +65,17 @@ public class MedSiteRepositoryImpl implements MedSiteRepository, PanacheReposito
     @Override
     @Transactional
     public boolean updateMedSiteInventory(MedSite medSite, int newInitialQuantity){
-        MedSiteEntity medSiteEntity =  find("medSiteId.medId = ?1 and medSiteId.siteId = ?2",medSite.getMedId(),medSite.getSiteId()).firstResult();
+        MedSiteEntity medSiteEntity =  find("medSiteID.medId = ?1 and medSiteID.siteId = ?2",medSite.getMedId(),medSite.getSiteId()).firstResult();
         if(medSiteEntity == null) {
             return false;
         }
         medSiteEntity.setInitialQuantity(newInitialQuantity);
         medSiteEntity.setCurrentQuantity(newInitialQuantity);
-        return false;
+        return true;
     }
     @Override
     public List<MedSite> getMedSiteByMedId(int medId){
-        List<MedSiteEntity> medSiteEntityList = find("medSiteId.medId", medId).list();
+        List<MedSiteEntity> medSiteEntityList = find("medSiteID.medId", medId).list();
         if(medSiteEntityList.isEmpty()) {
             return null;
         }
@@ -83,7 +83,7 @@ public class MedSiteRepositoryImpl implements MedSiteRepository, PanacheReposito
     }
     @Override
     public MedSite getMedSiteByMedIdAndSiteId(int medId, int siteId){
-        MedSiteEntity medSiteEntity = find("medSiteId.medId = ?1 and medSiteId.siteId = ?2",medId,siteId).firstResult();
+        MedSiteEntity medSiteEntity = find("medSiteID.medId = ?1 and medSiteID.siteId = ?2",medId,siteId).firstResult();
         if(medSiteEntity == null) {
             return null;
         }
