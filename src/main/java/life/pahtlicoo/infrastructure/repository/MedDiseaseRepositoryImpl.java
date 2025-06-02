@@ -46,12 +46,14 @@ public class MedDiseaseRepositoryImpl implements MedDiseaseRepository, PanacheRe
     @Override
     @Transactional
     public boolean updateMedDiseaseByMedId(int oldMedId, int newMedId){
+        // En este caso solo lo manejamos de esta forma, debido a ser llaves embeded Id. (No funciona el set)
         return MedDiseaseEntity.update("medDiseaseID.medId = ?1 WHERE medDiseaseID.medId = ?2 ",newMedId, oldMedId) > 0;
     }
 
     @Override
     @Transactional
     public boolean updateMedDiseaseByDiseaseId(int oldDiseaseId,int newDiseaseId){
+        // En este caso solo lo manejamos de esta forma, debido a ser llaves embeded Id. (No funciona el set)
         return MedDiseaseEntity.update("medDiseaseID.diseaseId = ?1 WHERE medDiseaseID.diseaseId = ?2 ",newDiseaseId,oldDiseaseId) > 0;
     }
 
