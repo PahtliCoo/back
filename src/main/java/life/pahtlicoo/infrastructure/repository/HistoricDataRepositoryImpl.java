@@ -33,7 +33,7 @@ public class HistoricDataRepositoryImpl implements HistoricDataRepository, Panac
     }
 
     @Override
-    public List<HistoricData> getAllByYearAndMonthRange(int year, int startMonth, int endMonth) {
+    public List<HistoricData> getAllByYearAndMonthRange(int year, int startMonth, int endMonth, String type) {
         List<HistoricDataEntity> entities = find(
                 "dateYear = ?1 AND dateMonth >= ?2 AND dateMonth <= ?3",
                 year, startMonth, endMonth

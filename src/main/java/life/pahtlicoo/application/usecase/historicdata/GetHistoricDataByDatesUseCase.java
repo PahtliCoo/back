@@ -14,7 +14,7 @@ public class GetHistoricDataByDatesUseCase {
     HistoricDataService historicDataService;
 
     public List<HistoricData> execute(GetHistoricDataByDatesDTO dto) {
-        return historicDataService.getHistoricDataByDateRange(dto.getYear(), dto.getStartMonth(), dto.getEndMonth());
+        return historicDataService.getHistoricDataByDateRange(dto.getYear(), dto.getStartMonth(), dto.getEndMonth(), dto.getType());
     }
 
 

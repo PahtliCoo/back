@@ -1,4 +1,4 @@
-package life.pahtlicoo.infrastructure.pdf;
+package life.pahtlicoo.shared.pdf;
 
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.*;
@@ -15,9 +15,7 @@ import java.util.*;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.function.IntFunction;
-import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
@@ -25,8 +23,6 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
-
-
 
 @ApplicationScoped
 public class HistoricDataPdfReportGenerator {
@@ -36,9 +32,8 @@ public class HistoricDataPdfReportGenerator {
 
     public byte[] generate(Map<Integer, Map<String, List<HistoricData>>> dataBySite, int year, int startMonth, int endMonth,
                            IntFunction<String> siteNameResolver,
-                           IntFunction<String> medNameResolver)
-
-    {
+                           IntFunction<String> medNameResolver,
+                           String type) {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             Document document = new Document();
             PdfWriter.getInstance(document, baos);
@@ -55,6 +50,8 @@ public class HistoricDataPdfReportGenerator {
             subtitle.setAlignment(Element.ALIGN_CENTER);
             document.add(subtitle);
 
+
+
             document.add(Chunk.NEWLINE);
 
             for (Map.Entry<Integer, Map<String, List<HistoricData>>> siteEntry : dataBySite.entrySet()) {
@@ -68,54 +65,58 @@ public class HistoricDataPdfReportGenerator {
                 document.add(siteTitle);
                 document.add(Chunk.NEWLINE);
 
-                for (List<HistoricData> group : siteEntry.getValue().values()) {
-                    HistoricData first = group.get(0);
+                if (type.equalsIgnoreCase("table") || type.equalsIgnoreCase("all")) {                    for (List<HistoricData> group : siteEntry.getValue().values()) {
+                        HistoricData first = group.get(0);
 
-                    PdfPTable table = new PdfPTable(6);
-                    table.setWidths(new float[]{2.5f, 1f, 1f, 1.5f, 1.5f, 1.5f});
-                    table.setWidthPercentage(100);
+                        PdfPTable table = new PdfPTable(6);
+                        table.setWidths(new float[]{2.5f, 1f, 1f, 1.5f, 1.5f, 1.5f});
+                        table.setWidthPercentage(100);
 
-                    Font headerFont = new Font(Font.HELVETICA, 12, Font.BOLD);
-                    Color headerBackground = new Color(230, 230, 230);
-                    String[] headers = {"Sitio", "Año", "Mes", "MedId", "Cantidad", "Proyectado"};
-                    for (String header : headers) {
-                        PdfPCell cell = new PdfPCell(new Phrase(header, headerFont));
-                        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                        cell.setBackgroundColor(headerBackground);
-                        table.addCell(cell);
+                        Font headerFont = new Font(Font.HELVETICA, 12, Font.BOLD);
+                        Color headerBackground = new Color(230, 230, 230);
+                        String[] headers = {"Sitio", "Año", "Mes", "MedId", "Cantidad", "Proyectado"};
+                        for (String header : headers) {
+                            PdfPCell cell = new PdfPCell(new Phrase(header, headerFont));
+                            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                            cell.setBackgroundColor(headerBackground);
+                            table.addCell(cell);
+                        }
+
+                        PdfPCell siteCell = new PdfPCell(new Phrase(siteName));
+                        siteCell.setRowspan(group.size());
+                        siteCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                        siteCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+
+                        PdfPCell yearCell = new PdfPCell(new Phrase(String.valueOf(first.getDateYear())));
+                        yearCell.setRowspan(group.size());
+                        yearCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                        yearCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+
+                        PdfPCell monthCell = new PdfPCell(new Phrase(getNombreMes(first.getDateMonth())));
+                        monthCell.setRowspan(group.size());
+                        monthCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                        monthCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+
+                        for (int i = 0; i < group.size(); i++) {
+                            HistoricData data = group.get(i);
+                            if (i == 0) table.addCell(siteCell);
+                            if (i == 0) table.addCell(yearCell);
+                            if (i == 0) table.addCell(monthCell);
+
+                            table.addCell(centeredCell(medNameResolver.apply(data.getMedId())));
+                            table.addCell(centeredCell(String.valueOf(data.getQuantity())));
+                            table.addCell(centeredCell(String.valueOf(data.getProjectedQuantity())));
+                        }
+
+                        document.add(table);
+                        document.add(Chunk.NEWLINE);
                     }
-
-                    PdfPCell siteCell = new PdfPCell(new Phrase(siteName));
-                    siteCell.setRowspan(group.size());
-                    siteCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                    siteCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-
-                    PdfPCell yearCell = new PdfPCell(new Phrase(String.valueOf(first.getDateYear())));
-                    yearCell.setRowspan(group.size());
-                    yearCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                    yearCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-
-                    PdfPCell monthCell = new PdfPCell(new Phrase(getNombreMes(first.getDateMonth())));
-                    monthCell.setRowspan(group.size());
-                    monthCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                    monthCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-
-                    for (int i = 0; i < group.size(); i++) {
-                        HistoricData data = group.get(i);
-                        if (i == 0) table.addCell(siteCell);
-                        if (i == 0) table.addCell(yearCell);
-                        if (i == 0) table.addCell(monthCell);
-
-                        table.addCell(centeredCell(medNameResolver.apply(data.getMedId())));
-                        table.addCell(centeredCell(String.valueOf(data.getQuantity())));
-                        table.addCell(centeredCell(String.valueOf(data.getProjectedQuantity())));
-                    }
-
-                    document.add(table);
-                    document.add(Chunk.NEWLINE);
                 }
 
-                agregarGraficasPorMedicamento(document, siteEntry.getValue(), medNameResolver, siteName);
+                if (type.equalsIgnoreCase("graph") || type.equalsIgnoreCase("all")) {
+                    agregarGraficasPorMedicamento(document, siteEntry.getValue(), medNameResolver, siteName);
+                }
+
                 document.newPage();
             }
 
@@ -125,14 +126,14 @@ public class HistoricDataPdfReportGenerator {
             throw new RuntimeException("Error al generar el PDF", e);
         }
     }
+
     private void agregarGraficasPorMedicamento(Document document,
                                                Map<String, List<HistoricData>> datosPorMes,
-                                               java.util.function.IntFunction<String> medNameResolver,
+                                               IntFunction<String> medNameResolver,
                                                String siteName) throws Exception {
 
         Map<String, Map<String, Integer>> dataPorMedicamento =
                 historicDataReportService.agruparPorMedicamento(datosPorMes, medNameResolver::apply);
-
 
         for (Map.Entry<String, Map<String, Integer>> entry : dataPorMedicamento.entrySet()) {
             String medicamento = entry.getKey();
@@ -145,7 +146,7 @@ public class HistoricDataPdfReportGenerator {
 
             JFreeChart chart = ChartFactory.createBarChart(
                     "Consumo mensual - " + medicamento,
-                    "Mes",
+                    "Meses" ,
                     "Cantidad",
                     dataset,
                     PlotOrientation.VERTICAL,
@@ -159,7 +160,6 @@ public class HistoricDataPdfReportGenerator {
             chart.getCategoryPlot().setDomainGridlinesVisible(false);
             chart.getTitle().setFont(new java.awt.Font("SansSerif", java.awt.Font.PLAIN, 14));
 
-
             BufferedImage bufferedImage = chart.createBufferedImage(500, 350);
             ByteArrayOutputStream chartBaos = new ByteArrayOutputStream();
             ImageIO.write(bufferedImage, "png", chartBaos);
@@ -171,10 +171,9 @@ public class HistoricDataPdfReportGenerator {
             document.add(Chunk.NEWLINE);
             document.add(chartImage);
         }
+
         document.newPage();
-
     }
-
 
     private String getNombreMes(int numeroMes) {
         return Month.of(numeroMes).getDisplayName(java.time.format.TextStyle.FULL, new Locale("es", "ES"));

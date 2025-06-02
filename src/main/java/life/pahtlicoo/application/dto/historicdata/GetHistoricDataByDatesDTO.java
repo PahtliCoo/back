@@ -16,6 +16,5 @@ public class GetHistoricDataByDatesDTO {
     private int year;
     private int startMonth;
     private int endMonth;
-
-
+    private String type;
 }

@@ -8,7 +8,7 @@ import life.pahtlicoo.application.service.HistoricDataReportService;
 import life.pahtlicoo.application.usecase.med.GetMedByIdUseCase;
 import life.pahtlicoo.application.usecase.site.GetSiteByIdUseCase;
 import life.pahtlicoo.domain.model.HistoricData;
-import life.pahtlicoo.infrastructure.pdf.HistoricDataPdfReportGenerator;
+import life.pahtlicoo.shared.pdf.HistoricDataPdfReportGenerator;
 
 import java.util.List;
 import java.util.Map;
@@ -33,7 +33,7 @@ public class CreateReportWithHistoricDataUseCase {
 
     public byte[] execute(GetHistoricDataByDatesDTO dto) {
         List<HistoricData> dataList = historicDataService.getHistoricDataByDateRange(
-                dto.getYear(), dto.getStartMonth(), dto.getEndMonth()
+                dto.getYear(), dto.getStartMonth(), dto.getEndMonth(), dto.getType()
         );
 
         Map<Integer, Map<String, List<HistoricData>>> dataBySite = historicDataReportService.agruparPorSitioYMes(dataList);
@@ -44,7 +44,8 @@ public class CreateReportWithHistoricDataUseCase {
                 dto.getStartMonth(),
                 dto.getEndMonth(),
                 siteId -> getSiteByIdUseCase.execute(siteId),
-                medId -> getMedByIdUseCase.execute(medId)
+                medId -> getMedByIdUseCase.execute(medId),
+                dto.getType()
         );
     }
 }
