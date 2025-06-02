@@ -47,7 +47,8 @@ public class CreateReportWithHistoricDataUseCase {
                 dto.getType(),
                 dataBySite,
                 siteId -> getSiteByIdUseCase.execute(siteId),
-                medId -> getMedByIdUseCase.execute(medId)
+                medId -> getMedByIdUseCase.execute(medId),
+                dto.getType()
         );
 
         return pdfReportGenerator.generate(reportDTO);
