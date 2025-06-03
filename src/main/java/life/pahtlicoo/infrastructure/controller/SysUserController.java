@@ -1,6 +1,7 @@
 /**
  * SysUserController.
  * @author Santiago Moreno Lacalle Quintero (A01663197@tec.mx)
+ * @co-author Adolfo Hernandez Fernandez (A01664412@tec.mx)
  * @since 2025-05-26
  */
 package life.pahtlicoo.infrastructure.controller;
@@ -17,7 +18,7 @@ import life.pahtlicoo.application.usecase.sysuser.GetUserByFirebaseId;
 import life.pahtlicoo.domain.model.SysUser;
 import life.pahtlicoo.shared.annotation.NoAuthRequired;
 
-@Path("/sysUser")
+@Path("/sys-user")
 public class SysUserController {
     @Inject
     CreateSysUserUseCase createUserUseCase;
@@ -25,9 +26,9 @@ public class SysUserController {
     GetUserByFirebaseId getUserByFirebaseId;
 
     @POST
-    @Path("/createUser")
+    @Path("/create")
     @NoAuthRequired
-    public Response createUser( CreateSysUserReqDTO createUserReqDTO) {
+    public Response createUser(CreateSysUserReqDTO createUserReqDTO) {
         try {
             SysUser sysUser = createUserUseCase.execute(createUserReqDTO);
             return Response.ok(sysUser).build();

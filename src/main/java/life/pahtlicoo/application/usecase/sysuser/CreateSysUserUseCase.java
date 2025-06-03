@@ -23,6 +23,12 @@ public class CreateSysUserUseCase {
         SysUser user = SysUserMapperReqDto.toDomain(createUserReqDTO);
         // 1. Create Firebase user
         user = sysUserService.createUserFirebase(user, createUserReqDTO.getPassword());
+
+        // Verify response from firebase is not null for better handling
+        if (user == null || user.getFirebaseId() == null) {
+            throw new RuntimeException("Error creating user in Firebase.");
+        }
+
         // 2. Try to create user in the database
         user = sysUserService.createUser(user);
         System.out.println("Created user: " + user);

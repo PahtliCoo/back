@@ -44,4 +44,4 @@ nb-configuration.xml
 # TLS Certificates
 .certs/
 #FirebaseFile
-/src/main/resources/pahtlicoo-ecommerce-firebase-adminsdk-fbsvc-eedcc26ea0.json
+pahtlicoo-firebase-config.json
