@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.UserRecord;
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import life.pahtlicoo.domain.model.SysUser;
 import life.pahtlicoo.domain.repository.SysUserRepository;
@@ -18,12 +19,14 @@ import life.pahtlicoo.infrastructure.mapper.SysUserEntityMapper;
 
 @ApplicationScoped
 public class SysUserRepositoryImpl implements SysUserRepository, PanacheRepositoryBase<SysUserEntity,Integer> {
+    @Inject
+    SysUserEntityMapper sysUserEntityMapper;
 
     @Override
     @Transactional
     public SysUser createSysUser(SysUser sysUser) {
         try {
-            SysUserEntity sysUserEntity = SysUserEntityMapper.toEntity(sysUser);
+            SysUserEntity sysUserEntity = sysUserEntityMapper.toEntity(sysUser);
             System.out.println("FirebaseId Entity" + sysUserEntity.getFirebaseId());
             // 1. Persist the SysUser
             sysUserEntity.persist();
@@ -35,7 +38,7 @@ public class SysUserRepositoryImpl implements SysUserRepository, PanacheReposito
             }
 
             // 3. Return SysUser
-            return SysUserEntityMapper.toDomain(sysUserEntity);
+            return sysUserEntityMapper.toDomain(sysUserEntity);
 
         } catch (Exception e) {
             // 4. Failed
@@ -52,7 +55,7 @@ public class SysUserRepositoryImpl implements SysUserRepository, PanacheReposito
             return null;
         }
 
-        return SysUserEntityMapper.toDomain(sysUserEntity);
+        return sysUserEntityMapper.toDomain(sysUserEntity);
     }
 
     @Override
@@ -75,11 +78,6 @@ public class SysUserRepositoryImpl implements SysUserRepository, PanacheReposito
                 .setDisabled(false);
         try {
             UserRecord userRecord = FirebaseAuth.getInstance().createUser(request);
-            // Checking data.
-            System.out.println(userRecord);
-            System.out.println("Email que se agrega: " + userRecord.getEmail());
-            System.out.println("Firebase que se agrega: " + userRecord.getUid());
-
             //Add the UID from firebase to the user.
             user.setFirebaseId(userRecord.getUid());
 
@@ -100,6 +98,15 @@ public class SysUserRepositoryImpl implements SysUserRepository, PanacheReposito
         } catch (Exception e) {
             throw new RuntimeException("Error deleting sysUser from Firebase: " + e.getMessage(), e);
         }
-
     }
+
+    @Override
+    public SysUser getSysUserByFirebaseId(String firebaseId) {
+        SysUserEntity sysUserEntity = find("firebaseId", firebaseId).firstResult();
+        if (sysUserEntity == null) {
+            return null;
+        }
+        return sysUserEntityMapper.toDomain(sysUserEntity);
+    }
+
 }

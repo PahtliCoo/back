@@ -29,4 +29,8 @@ public class SysUserService {
     public SysUser getSysUserByUid(int userId) {
         return sysUserRepository.getSysUser(userId);
     }
+
+    public SysUser getSysUserByFirebaseId(String firebaseId){
+        return sysUserRepository.getSysUserByFirebaseId(firebaseId);
+    }
 }
