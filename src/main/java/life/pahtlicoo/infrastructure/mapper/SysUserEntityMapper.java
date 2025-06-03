@@ -12,7 +12,7 @@ import life.pahtlicoo.infrastructure.entity.SysUserEntity;
 
 @ApplicationScoped
 public class SysUserEntityMapper {
-    public static SysUser toDomain(SysUserEntity sysUserEntity){
+    public SysUser toDomain(SysUserEntity sysUserEntity){
         SysUser sysUser = new SysUser();
         // userId
         sysUser.setSysUserId(sysUserEntity.getSysUserId());
@@ -35,7 +35,7 @@ public class SysUserEntityMapper {
         return sysUser;
     };
 
-    public static SysUserEntity toEntity(SysUser sysUser){
+    public SysUserEntity toEntity(SysUser sysUser){
         SysUserEntity sysUserEntity = new SysUserEntity();
         // userId
         sysUserEntity.setSysUserId(sysUser.getSysUserId());
