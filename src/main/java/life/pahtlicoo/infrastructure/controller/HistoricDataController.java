@@ -49,8 +49,8 @@ public class HistoricDataController {
 
     @POST
     @Path("/range")
-    @Consumes("application/json")
-    @Produces("application/json")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getHistoricDataByRange(GetHistoricDataByDatesDTO dto) {
         List<HistoricData> data = getHistoricData.execute(dto);
         return Response.ok(data).build();
@@ -58,8 +58,8 @@ public class HistoricDataController {
 
     @POST
     @Path("/report")
-    @Produces("application/pdf")
-    @Consumes("application/json")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response generatePdfReport(GetHistoricDataByDatesDTO dto) {
         byte[] pdf = createReportWithHistoricDataUseCase.execute(dto);
         return Response.ok(pdf)
