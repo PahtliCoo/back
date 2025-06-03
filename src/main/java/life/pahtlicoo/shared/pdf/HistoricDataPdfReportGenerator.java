@@ -74,7 +74,7 @@ public class HistoricDataPdfReportGenerator {
 
                         Font headerFont = new Font(Font.HELVETICA, 12, Font.BOLD);
                         Color headerBackground = new Color(230, 230, 230);
-                        String[] headers = {"Sitio", "Año", "Mes", "MedId", "Cantidad", "Proyectado"};
+                        String[] headers = {"Sitio", "Año", "Mes", "Medicamento", "Cantidad", "Proyectado"};
                         for (String header : headers) {
                             PdfPCell cell = new PdfPCell(new Phrase(header, headerFont));
                             cell.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -92,7 +92,7 @@ public class HistoricDataPdfReportGenerator {
                         yearCell.setHorizontalAlignment(Element.ALIGN_CENTER);
                         yearCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 
-                        PdfPCell monthCell = new PdfPCell(new Phrase(getNombreMes(first.getDateMonth())));
+                        PdfPCell monthCell = new PdfPCell(new Phrase(getMonthName(first.getDateMonth())));
                         monthCell.setRowspan(group.size());
                         monthCell.setHorizontalAlignment(Element.ALIGN_CENTER);
                         monthCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -103,9 +103,9 @@ public class HistoricDataPdfReportGenerator {
                             if (i == 0) table.addCell(yearCell);
                             if (i == 0) table.addCell(monthCell);
 
-                            table.addCell(centeredCell(medNameResolver.apply(data.getMedId())));
-                            table.addCell(centeredCell(String.valueOf(data.getQuantity())));
-                            table.addCell(centeredCell(String.valueOf(data.getProjectedQuantity())));
+                            table.addCell(createCenteredCell(medNameResolver.apply(data.getMedId())));
+                            table.addCell(createCenteredCell(String.valueOf(data.getQuantity())));
+                            table.addCell(createCenteredCell(String.valueOf(data.getProjectedQuantity())));
                         }
 
                         document.add(table);
@@ -114,7 +114,7 @@ public class HistoricDataPdfReportGenerator {
                 }
 
                 if (type.equalsIgnoreCase("graph") || type.equalsIgnoreCase("all")) {
-                    agregarGraficasPorMedicamento(document, siteEntry.getValue(), medNameResolver, siteName);
+                    addGraphsPerMed(document, siteEntry.getValue(), medNameResolver, siteName);
                 }
 
                 document.newPage();
@@ -127,7 +127,7 @@ public class HistoricDataPdfReportGenerator {
         }
     }
 
-    private void agregarGraficasPorMedicamento(Document document,
+    private void addGraphsPerMed(Document document,
                                                Map<String, List<HistoricData>> datosPorMes,
                                                IntFunction<String> medNameResolver,
                                                String siteName) throws Exception {
@@ -175,11 +175,11 @@ public class HistoricDataPdfReportGenerator {
         document.newPage();
     }
 
-    private String getNombreMes(int numeroMes) {
-        return Month.of(numeroMes).getDisplayName(java.time.format.TextStyle.FULL, new Locale("es", "ES"));
+    private String getMonthName(int monthNumber) {
+        return Month.of(monthNumber).getDisplayName(java.time.format.TextStyle.FULL, new Locale("es", "ES"));
     }
 
-    private PdfPCell centeredCell(String content) {
+    private PdfPCell createCenteredCell(String content) {
         PdfPCell cell = new PdfPCell(new Phrase(content));
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
         cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
