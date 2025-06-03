@@ -4,6 +4,7 @@ import com.lowagie.text.*;
 import com.lowagie.text.pdf.*;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import life.pahtlicoo.application.dto.historicdata.HistoricReportRequestDTO;
 import life.pahtlicoo.application.service.HistoricDataReportService;
 import life.pahtlicoo.domain.model.HistoricData;
 
@@ -30,10 +31,7 @@ public class HistoricDataPdfReportGenerator {
     @Inject
     HistoricDataReportService historicDataReportService;
 
-    public byte[] generate(Map<Integer, Map<String, List<HistoricData>>> dataBySite, int year, int startMonth, int endMonth,
-                           IntFunction<String> siteNameResolver,
-                           IntFunction<String> medNameResolver,
-                           String type) {
+    public byte[] generate(HistoricReportRequestDTO dto){
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             Document document = new Document();
             PdfWriter.getInstance(document, baos);
@@ -46,7 +44,7 @@ public class HistoricDataPdfReportGenerator {
             title.setAlignment(Element.ALIGN_CENTER);
             document.add(title);
 
-            Paragraph subtitle = new Paragraph("Año: " + year + ", Meses: " + startMonth + " a " + endMonth, subtitleFont);
+            Paragraph subtitle = new Paragraph("Año: " + dto.getYear() + ", Meses: " + dto.getStartMonth() + " a " + dto.getEndMonth(), subtitleFont);
             subtitle.setAlignment(Element.ALIGN_CENTER);
             document.add(subtitle);
 
@@ -54,9 +52,9 @@ public class HistoricDataPdfReportGenerator {
 
             document.add(Chunk.NEWLINE);
 
-            for (Map.Entry<Integer, Map<String, List<HistoricData>>> siteEntry : dataBySite.entrySet()) {
+            for (Map.Entry<Integer, Map<String, List<HistoricData>>> siteEntry : dto.getDataBySite().entrySet()) {
                 Integer siteId = siteEntry.getKey();
-                String siteName = siteNameResolver.apply(siteId);
+                String siteName = dto.getSiteNameResolver().apply(siteId);
 
                 Font siteFont = new Font(Font.HELVETICA, 13, Font.BOLD);
                 Paragraph siteTitle = new Paragraph("Sitio: " + siteName, siteFont);
@@ -65,7 +63,7 @@ public class HistoricDataPdfReportGenerator {
                 document.add(siteTitle);
                 document.add(Chunk.NEWLINE);
 
-                if (type.equalsIgnoreCase("table") || type.equalsIgnoreCase("all")) {                    for (List<HistoricData> group : siteEntry.getValue().values()) {
+                if (dto.getType().equalsIgnoreCase("table") || dto.getType().equalsIgnoreCase("all")) {                    for (List<HistoricData> group : siteEntry.getValue().values()) {
                         HistoricData first = group.get(0);
 
                         PdfPTable table = new PdfPTable(6);
@@ -103,7 +101,7 @@ public class HistoricDataPdfReportGenerator {
                             if (i == 0) table.addCell(yearCell);
                             if (i == 0) table.addCell(monthCell);
 
-                            table.addCell(createCenteredCell(medNameResolver.apply(data.getMedId())));
+                            table.addCell(createCenteredCell(dto.getMedNameResolver().apply(data.getMedId())));
                             table.addCell(createCenteredCell(String.valueOf(data.getQuantity())));
                             table.addCell(createCenteredCell(String.valueOf(data.getProjectedQuantity())));
                         }
@@ -113,8 +111,8 @@ public class HistoricDataPdfReportGenerator {
                     }
                 }
 
-                if (type.equalsIgnoreCase("graph") || type.equalsIgnoreCase("all")) {
-                    addGraphsPerMed(document, siteEntry.getValue(), medNameResolver, siteName);
+                if (dto.getType().equalsIgnoreCase("graph") || dto.getType().equalsIgnoreCase("all")) {
+                    addGraphsPerMed(document, siteEntry.getValue(), dto.getMedNameResolver(), siteName);
                 }
 
                 document.newPage();

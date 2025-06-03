@@ -3,6 +3,7 @@ package life.pahtlicoo.application.usecase.historicdata;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import life.pahtlicoo.application.dto.historicdata.GetHistoricDataByDatesDTO;
+import life.pahtlicoo.application.dto.historicdata.HistoricReportRequestDTO;
 import life.pahtlicoo.application.service.HistoricDataService;
 import life.pahtlicoo.application.service.HistoricDataReportService;
 import life.pahtlicoo.application.usecase.med.GetMedByIdUseCase;
@@ -36,16 +37,19 @@ public class CreateReportWithHistoricDataUseCase {
                 dto.getYear(), dto.getStartMonth(), dto.getEndMonth(), dto.getType()
         );
 
-        Map<Integer, Map<String, List<HistoricData>>> dataBySite = historicDataReportService.agruparPorSitioYMes(dataList);
+        Map<Integer, Map<String, List<HistoricData>>> dataBySite =
+                historicDataReportService.agruparPorSitioYMes(dataList);
 
-        return pdfReportGenerator.generate(
-                dataBySite,
+        HistoricReportRequestDTO reportDTO = new HistoricReportRequestDTO(
                 dto.getYear(),
                 dto.getStartMonth(),
                 dto.getEndMonth(),
+                dto.getType(),
+                dataBySite,
                 siteId -> getSiteByIdUseCase.execute(siteId),
-                medId -> getMedByIdUseCase.execute(medId),
-                dto.getType()
+                medId -> getMedByIdUseCase.execute(medId)
         );
+
+        return pdfReportGenerator.generate(reportDTO);
     }
 }
