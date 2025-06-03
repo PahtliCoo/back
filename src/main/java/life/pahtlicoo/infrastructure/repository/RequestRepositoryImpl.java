@@ -16,7 +16,6 @@ import life.pahtlicoo.domain.repository.RequestRepository;
 import life.pahtlicoo.infrastructure.entity.RequestEntity;
 import life.pahtlicoo.infrastructure.mapper.RequestEntityMapper;
 
-import java.util.Date;
 import java.util.List;
 
 @ApplicationScoped
@@ -165,9 +164,6 @@ public class RequestRepositoryImpl implements RequestRepository, PanacheReposito
                 "CAST(requestId AS string) LIKE ?1 OR LOWER(name) LIKE ?1",
                 "%" + search + "%"
         ).page(page, 5).list();
-
-
-        System.out.println("AAAA");
 
         if(requestEntities == null){
             return null;

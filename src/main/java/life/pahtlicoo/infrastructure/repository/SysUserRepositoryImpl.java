@@ -70,9 +70,12 @@ public class SysUserRepositoryImpl implements SysUserRepository, PanacheReposito
     @Transactional
     @Override
     public SysUser createSysUserFirebase(SysUser user,  String password) {
-        UserRecord.CreateRequest request = new UserRecord.CreateRequest().
-                setEmail(user.getEmail()).
-                setPassword(password);
+
+        UserRecord.CreateRequest request = new UserRecord.CreateRequest()
+                .setEmail(user.getEmail())
+                .setPassword(password)
+                .setEmailVerified(false)
+                .setDisabled(false);
         try {
             UserRecord userRecord = FirebaseAuth.getInstance().createUser(request);
             //Add the UID from firebase to the user.
@@ -82,6 +85,7 @@ public class SysUserRepositoryImpl implements SysUserRepository, PanacheReposito
 
         }catch (Exception e) {
             System.out.println("No se creo el usuario en firebase");
+            e.printStackTrace(); //print full stack trace
             return null;
         }
     }
