@@ -31,7 +31,6 @@ public class CreateSysUserUseCase {
 
         // 2. Try to create user in the database
         user = sysUserService.createUser(user);
-        System.out.println("Created user: " + user);
         // Database creation failed — rollback Firebase user
         if (user.getFirebaseId() == null) {
             try {
