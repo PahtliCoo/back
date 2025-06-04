@@ -1,8 +1,8 @@
 /**
  * Request Controller.
- * @author Adolfo Hernández Fernández (a01664412@tec.mx)
- * @co-author Santiago Moreno Lacalle Quintero (A01663197@tec.mx)
- * @since 2025-05-11
+ * @author Santiago Moreno Lacalle Quintero (A01663197@tec.mx)
+ * @co-author Adolfo Hernández Fernández (a01664412@tec.mx)
+ * @since 2025-06-02
  */
 package life.pahtlicoo.infrastructure.controller;
 
@@ -35,7 +35,8 @@ public class RequestController {
     GetRequestByFilterUseCase getRequestByFilterUseCase;
     @Inject
     GetRequestBySearchUseCase getRequestBySearchUseCase;
-
+    @Inject
+    SearchUserRequestsByNameUseCase searchUserRequestsByNameUseCase;
 
     @POST
     @Path("/create")
@@ -119,4 +120,19 @@ public class RequestController {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @POST
+    @Path("/pruebita-search")
+    public Response searchUserRequests(SearchUserRequestsByNameReqDTO searchUserRequestsByNameReqDTO){
+        try{
+            List<RequestResponseDTO> requestResponseList = searchUserRequestsByNameUseCase.execute(searchUserRequestsByNameReqDTO);
+            if(requestResponseList == null){
+                return Response.status(Response.Status.NOT_FOUND).build(); //TODO no se si lo mejor igual y es devolver que es vacío en vez de null
+            }
+            return Response.ok(requestResponseList).build();
+        }catch (Exception e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 }
