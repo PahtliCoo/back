@@ -2,7 +2,7 @@
  * Request Controller.
  * @author Santiago Moreno Lacalle Quintero (A01663197@tec.mx)
  * @co-author Adolfo Hernández Fernández (a01664412@tec.mx)
- * @since 2025-06-02
+ * @since 2025-06-04
  */
 package life.pahtlicoo.infrastructure.controller;
 
@@ -121,14 +121,19 @@ public class RequestController {
         }
     }
 
-    @POST
-    @Path("/pruebita-search")
-    public Response searchUserRequests(SearchUserRequestsByNameReqDTO searchUserRequestsByNameReqDTO){
+    @GET
+    @Path("/sys_user/{sys_user_id}")
+    public Response searchUserRequests(@QueryParam("name") String name, @QueryParam("page") @DefaultValue("0") int page,
+                                       @PathParam("sys_user_id") int sys_user_id) {
+
+        if (page < 0) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("Invalid page number. Must be >= 0.")
+                    .build();
+        }
+
         try{
-            List<RequestResponseDTO> requestResponseList = searchUserRequestsByNameUseCase.execute(searchUserRequestsByNameReqDTO);
-            if(requestResponseList == null){
-                return Response.status(Response.Status.NOT_FOUND).build(); //TODO no se si lo mejor igual y es devolver que es vacío en vez de null
-            }
+            List<RequestResponseDTO> requestResponseList = searchUserRequestsByNameUseCase.execute(sys_user_id, page, name);
             return Response.ok(requestResponseList).build();
         }catch (Exception e){
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
