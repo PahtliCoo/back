@@ -5,12 +5,16 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import life.pahtlicoo.application.dto.shipmentorder.CreateShipmentOrderReqDTO;
+import life.pahtlicoo.application.dto.shipmentorder.GetShipmentOrderReqDTO;
 import life.pahtlicoo.application.dto.shipmentorder.UpdateShipmentOrderStatusReqDTO;
 import life.pahtlicoo.application.usecase.shipmentorder.CreateShipmentOrderUseCase;
 import life.pahtlicoo.application.usecase.shipmentorder.DeleteShipmentOrderUseCase;
+import life.pahtlicoo.application.usecase.shipmentorder.GetAllShipmentOrderUseCase;
 import life.pahtlicoo.application.usecase.shipmentorder.GetShipmentOrderUseCase;
 import life.pahtlicoo.application.usecase.shipmentorder.UpdateShipmentOrderStatusUseCase;
 import life.pahtlicoo.domain.model.ShipmentOrder;
+
+import java.util.List;
 
 @Path("/shipment-order")
 @Produces(MediaType.APPLICATION_JSON)
@@ -19,11 +23,13 @@ public class ShipmentOrderController {
     @Inject
     CreateShipmentOrderUseCase createShipmentOrderUseCase;
     @Inject
-    GetShipmentOrderUseCase getShipmentOrderUseCase;
+    GetAllShipmentOrderUseCase getAllShipmentOrderUseCase;
     @Inject
     UpdateShipmentOrderStatusUseCase updateShipmentOrderStatusUseCase;
     @Inject
     DeleteShipmentOrderUseCase deleteShipmentOrderUseCase;
+    @Inject
+    GetShipmentOrderUseCase getShipmentOrderUseCase;
 
     @POST
     @Path("/create")
@@ -35,6 +41,18 @@ public class ShipmentOrderController {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @GET
+    @Path("/list_all")
+    public Response getAllShipmentOrders(){
+        List<GetShipmentOrderReqDTO> shipmentOrders = getAllShipmentOrderUseCase.execute();
+        if(shipmentOrders == null){
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(shipmentOrders).build();
+
+    }
+
 
     @GET
     @Path("/{shipment_order_id}")
