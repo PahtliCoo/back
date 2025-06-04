@@ -1,10 +1,13 @@
+/**
+ * Get all user requests and filter by name search
+ * @Author Adolfo Hernandez Fernandez
+ * @since 2025-06-04
+ */
 package life.pahtlicoo.application.usecase.request;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import life.pahtlicoo.application.dto.request.RequestResponseDTO;
-import life.pahtlicoo.application.dto.request.SearchUserRequestsByNameReqDTO;
-import life.pahtlicoo.application.mapper.RequestDomainMapper;
 import life.pahtlicoo.application.mapper.RequestResponseDomainMapper;
 import life.pahtlicoo.application.service.RequestService;
 import life.pahtlicoo.application.service.SiteService;
@@ -29,16 +32,13 @@ public class SearchUserRequestsByNameUseCase {
     SiteService siteService;
 
     @Inject
-    RequestDomainMapper requestDomainMapper;
-
-    @Inject
     RequestResponseDomainMapper requestResponseDomainMapper;
 
-    public List<RequestResponseDTO> execute(SearchUserRequestsByNameReqDTO searchUserRequestsByNameReqDTO) {
-        List<Request> requestList = requestService.searchUserRequestsByName(searchUserRequestsByNameReqDTO.getSys_user_id(), searchUserRequestsByNameReqDTO.getName(), searchUserRequestsByNameReqDTO.getSys_user_id());
+    public List<RequestResponseDTO> execute(int sys_user_id, int page, String name) {
+        List<Request> requestList = requestService.searchUserRequestsByName(sys_user_id, name, page);
 
-        if(requestList == null) {
-            return null;
+        if (requestList == null || requestList.isEmpty()) {
+            return new ArrayList<>();
         }
 
         // Make change from domain to RequestResponse

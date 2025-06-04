@@ -2,7 +2,7 @@
  * Request Repository.
  * @author Adolfo Hernández Fernández (a01664412@tec.mx)
  * @Co-Author Santiago Moreno Lacalle Quintero (A01663197@tec.mx)
- * @since 2025-05-11
+ * @since 2025-06-04
  */
 package life.pahtlicoo.infrastructure.repository;
 
@@ -181,27 +181,13 @@ public class RequestRepositoryImpl implements RequestRepository, PanacheReposito
 
     @Override
     public List<Request> searchUserRequestsByName(int sysUserId, String name, int page){
-        name = name.toLowerCase(); //TODO porque no necesito implementar otra variable o poner String al inicio?
-        System.out.println("Esto es lo que va a buscar: "+ name);
-        System.out.println("Esto es lo que va a buscar de sys user id: "+ sysUserId);
-        System.out.println("Esto es lo que va a buscar de page: "+ page);
-
-        List<RequestEntity> requestitasEntities = find("sysUserId", Sort.descending("createdAt") ,sysUserId).list(); //TODO hacer lo de paginación pero que devuelva todo aunque no llegue al minimo de elementos de una pagina
-        System.out.println("Esto es lo que encuentra solo por user Id: "+ requestitasEntities);
-
-        List<RequestEntity> requestEntities = find("sysUserId = ?1 AND LOWER(name) LIKE ?2", Sort.descending("createdAt") ,sysUserId,"%"+name+"%").list();
-        //TODO vale la pena tener paginacion?
-
-        System.out.println("Estas son las request entities: "+ requestEntities);
-
-//        if(requestEntities == null){
-//            return null;
-//        }
+        name = name.toLowerCase();
+        List<RequestEntity> requestEntities = find("sysUserId = ?1 AND LOWER(name) LIKE ?2",
+                Sort.descending("createdAt") ,sysUserId,"%"+name+"%").page(page, 5).list();
 
         return requestEntities.stream()
                 .map(requestEntityMapper::toDomain)
                 .toList();
-
     }
 
 }
