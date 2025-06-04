@@ -1,6 +1,7 @@
 /**
  * Use case para crear usuario
  * @Author: Santiago Moreno Lacalle Quintero
+ * @Coauthor: Emiliano tavera
  * @Since: 2025-05-13
  */
 package life.pahtlicoo.application.usecase.sysuser;
