@@ -5,7 +5,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import life.pahtlicoo.application.dto.historicdata.CreateHistoricDataReqDTO;
-import life.pahtlicoo.application.dto.historicdata.GetHistoricDataByDatesDTO;
+import life.pahtlicoo.application.dto.historicdata.GetHistoricDataReqDTO;
 import life.pahtlicoo.application.usecase.historicdata.*;
 import life.pahtlicoo.domain.model.HistoricData;
 
@@ -51,7 +51,7 @@ public class HistoricDataController {
     @Path("/range")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getHistoricDataByRange(GetHistoricDataByDatesDTO dto) {
+    public Response getHistoricDataByRange(GetHistoricDataReqDTO dto) {
         List<HistoricData> data = getHistoricData.execute(dto);
         return Response.ok(data).build();
     }
@@ -60,7 +60,7 @@ public class HistoricDataController {
     @Path("/report")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response generatePdfReport(GetHistoricDataByDatesDTO dto) {
+    public Response generatePdfReport(GetHistoricDataReqDTO dto) {
         byte[] pdf = createReportWithHistoricDataUseCase.execute(dto);
         return Response.ok(pdf)
                 .header("Content-Disposition", "attachment; filename=report-" + dto.getYear() + ".pdf")

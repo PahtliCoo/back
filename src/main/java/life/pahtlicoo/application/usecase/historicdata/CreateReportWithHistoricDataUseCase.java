@@ -2,7 +2,7 @@ package life.pahtlicoo.application.usecase.historicdata;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import life.pahtlicoo.application.dto.historicdata.GetHistoricDataByDatesDTO;
+import life.pahtlicoo.application.dto.historicdata.GetHistoricDataReqDTO;
 import life.pahtlicoo.application.dto.historicdata.HistoricReportRequestDTO;
 import life.pahtlicoo.application.service.HistoricDataService;
 import life.pahtlicoo.application.service.HistoricDataReportService;
@@ -32,7 +32,7 @@ public class CreateReportWithHistoricDataUseCase {
     @Inject
     HistoricDataPdfReportGenerator pdfReportGenerator;
 
-    public byte[] execute(GetHistoricDataByDatesDTO dto) {
+    public byte[] execute(GetHistoricDataReqDTO dto) {
         List<HistoricData> dataList = historicDataService.getHistoricDataByDateRange(
                 dto.getYear(), dto.getStartMonth(), dto.getEndMonth(), dto.getType()
         );

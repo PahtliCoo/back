@@ -4,13 +4,8 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import life.pahtlicoo.application.dto.historicdata.CreateHistoricDataReqDTO;
-import life.pahtlicoo.application.dto.historicdata.GetHistoricDataByDatesDTO;
-import life.pahtlicoo.application.usecase.historicdata.*;
-import life.pahtlicoo.domain.model.HistoricData;
 import life.pahtlicoo.application.usecase.site.GetSiteByIdUseCase;
 
-import java.util.List;
 @Path("/sites")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)

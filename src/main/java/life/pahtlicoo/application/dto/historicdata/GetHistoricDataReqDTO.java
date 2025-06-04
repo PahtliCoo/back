@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetHistoricDataByDatesDTO {
+public class GetHistoricDataReqDTO {
     @NotBlank
     private int year;
     private int startMonth;
