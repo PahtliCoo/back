@@ -52,17 +52,24 @@ public class RequestService {
     public List<Request> getAllRequest(int page){
         return requestRepository.getAllRequest(page);
     }
+
     public List<Request> getAllRequestsByDate(int year, int month, int day,int page){
         return requestRepository.getAllRequestsByDate(year,month,day,page);
     }
+
     public List<Request> getAllRequestsByDateByState(int state,int year, int month, int day,int page){
         return requestRepository.getAllRequestsByDateByState(state,year,month,day,page);
     }
+
     public List<Request> getAllRequestsByState(int state,int page){
         return requestRepository.getAllRequestsByState(state,page);
     }
+
     public List<Request> getAllRequestsBySearch(String search, int page){
         return requestRepository.getAllRequestsBySearch(search,page);
     }
 
+    public List<Request> searchUserRequestsByName(int sysUserId, String search, int page){
+        return requestRepository.searchUserRequestsByName(sysUserId,search,page);
+    }
 }

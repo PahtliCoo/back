@@ -22,10 +22,10 @@ public class RequestDetailDomainMapper {
                 return null;
             }
             detail.setQuantity(medicineQuantityReqDTO.getQuantity());
-            if(medicineQuantityReqDTO.getMedId() <= 0 ){
+            if(medicineQuantityReqDTO.getMed_id() <= 0 ){
                 return null;
             }
-            detail.setMedId(medicineQuantityReqDTO.getMedId());
+            detail.setMedId(medicineQuantityReqDTO.getMed_id());
             requestDetailList.add(detail);
         }
         return requestDetailList;
@@ -34,7 +34,7 @@ public class RequestDetailDomainMapper {
     public CreateRequestDetailReqDTO createRequestToRequestDetailReqDTO(Request request, CreateRequestReqDTO createRequestReqDTO){
         CreateRequestDetailReqDTO requestDetailReqDTO = new CreateRequestDetailReqDTO();
         requestDetailReqDTO.setRequestId(request.getRequestId());
-        requestDetailReqDTO.setRequestDetailsList(createRequestReqDTO.getRequestDetailList());
+        requestDetailReqDTO.setRequestDetailsList(createRequestReqDTO.getRequest_detail_list());
         return requestDetailReqDTO;
     }
 }
