@@ -20,6 +20,11 @@ public class HistoricDataService {
         return historicDataRepository.getAllHistoricDataBySiteId(siteId);
     }
 
+    public List<HistoricData> getHistoricDataByDateRange(int year, int startMonth, int endMonth, String type) {
+        return historicDataRepository.getAllByYearAndMonthRange(year, startMonth, endMonth, type);
+    }
+
+
     public void deleteHistoricData(int historicDataId) {
         historicDataRepository.deleteHistoricData(historicDataId);
     }
