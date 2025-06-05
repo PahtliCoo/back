@@ -4,14 +4,13 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import life.pahtlicoo.application.dto.shipmentorder.GetShipmentOrderSearchReqDTO;
+import life.pahtlicoo.application.dto.request.GetRequestSearchDTO;
+import life.pahtlicoo.application.dto.shipmentorder.GetShipmentOrderFilterReqDTO;
 import life.pahtlicoo.application.dto.shipmentorder.CreateShipmentOrderReqDTO;
 import life.pahtlicoo.application.dto.shipmentorder.GetShipmentOrderReqDTO;
 import life.pahtlicoo.application.dto.shipmentorder.UpdateShipmentOrderStatusReqDTO;
-import life.pahtlicoo.application.usecase.shipmentorder.CreateShipmentOrderUseCase;
-import life.pahtlicoo.application.usecase.shipmentorder.DeleteShipmentOrderUseCase;
-import life.pahtlicoo.application.usecase.shipmentorder.GetAllShipmentOrderUseCase;
-import life.pahtlicoo.application.usecase.shipmentorder.GetShipmentOrderUseCase;
-import life.pahtlicoo.application.usecase.shipmentorder.UpdateShipmentOrderStatusUseCase;
+import life.pahtlicoo.application.usecase.shipmentorder.*;
 import life.pahtlicoo.domain.model.ShipmentOrder;
 
 import java.util.List;
@@ -30,6 +29,10 @@ public class ShipmentOrderController {
     DeleteShipmentOrderUseCase deleteShipmentOrderUseCase;
     @Inject
     GetShipmentOrderUseCase getShipmentOrderUseCase;
+    @Inject
+    GetShipmentOrderByFilterUseCase getShipmentOrderByFilterUseCase;
+    @Inject
+    GetShipmentOrderBySearchUseCase getShipmentOrderBySearchUseCase;
 
     @POST
     @Path("/create")
@@ -44,8 +47,8 @@ public class ShipmentOrderController {
 
     @GET
     @Path("/list_all")
-    public Response getAllShipmentOrders(){
-        List<GetShipmentOrderReqDTO> shipmentOrders = getAllShipmentOrderUseCase.execute();
+    public Response getAllShipmentOrders(@PathParam("page") int page){
+        List<GetShipmentOrderReqDTO> shipmentOrders = getAllShipmentOrderUseCase.execute(page);
         if(shipmentOrders == null){
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -78,4 +81,34 @@ public class ShipmentOrderController {
         deleteShipmentOrderUseCase.execute(shipmentOrderId);
         return Response.ok().build();
     }
+
+    @POST
+    @Path("/filter/{page}")
+    public Response filterRequest(@PathParam("page") int page, GetShipmentOrderFilterReqDTO getShipmentOrderFilterReqDTO){
+        try{
+            List<GetShipmentOrderReqDTO> shipmentOrders = getShipmentOrderByFilterUseCase.execute(page,getShipmentOrderFilterReqDTO);
+            if(shipmentOrders == null){
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
+            return Response.ok(shipmentOrders).build();
+
+        }catch (Exception e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @POST
+    @Path("/search/{page}")
+    public Response searchRequest(@PathParam("page") int page, GetShipmentOrderSearchReqDTO getShipmentOrderSearchReqDTO){
+        try{
+            List<GetShipmentOrderReqDTO> shipmentOrders = getShipmentOrderBySearchUseCase.execute(page,getShipmentOrderSearchReqDTO.getSearch());
+            if(shipmentOrders == null){
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
+            return Response.ok(shipmentOrders).build();
+        }catch (Exception e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 }

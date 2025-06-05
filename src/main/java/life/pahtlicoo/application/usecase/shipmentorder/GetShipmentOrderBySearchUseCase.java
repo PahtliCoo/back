@@ -1,7 +1,11 @@
 package life.pahtlicoo.application.usecase.shipmentorder;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import life.pahtlicoo.application.dto.request.RequestResponseDTO;
 import life.pahtlicoo.application.dto.shipmentorder.GetShipmentOrderReqDTO;
+import life.pahtlicoo.application.mapper.RequestResponseDomainMapper;
+import life.pahtlicoo.application.mapper.ShipmentOrderResponseDomainMapper;
 import life.pahtlicoo.application.service.RequestService;
 import life.pahtlicoo.application.service.ShipmentOrderService;
 import life.pahtlicoo.application.service.SiteService;
@@ -10,42 +14,49 @@ import life.pahtlicoo.domain.model.Request;
 import life.pahtlicoo.domain.model.ShipmentOrder;
 import life.pahtlicoo.domain.model.Site;
 import life.pahtlicoo.domain.model.SysUser;
-import life.pahtlicoo.application.mapper.ShipmentOrderResponseDomainMapper;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
-@ApplicationScoped
-public class GetAllShipmentOrderUseCase {
+public class GetShipmentOrderBySearchUseCase {
     @Inject
     ShipmentOrderService shipmentOrderService;
     @Inject
     RequestService requestService;
     @Inject
-    SysUserService sysUserService;
-    @Inject
     SiteService siteService;
+    @Inject
+    SysUserService sysUserService;
     @Inject
     ShipmentOrderResponseDomainMapper shipmentOrderResponseDomainMapper;
 
-    public List<GetShipmentOrderReqDTO> execute(int page){
-
-        //check if there are any shipmentOrders yet
-        List<ShipmentOrder> shipmentOrderList = shipmentOrderService.getAllShipmentOrder(page);
-        if(shipmentOrderList == null || shipmentOrderList.isEmpty()){
+    public List<GetShipmentOrderReqDTO> execute(int page, String search) {
+        if(search == null || search.isEmpty()) {
             return null;
         }
+        List<ShipmentOrder> shipmentOrderList = shipmentOrderService.getAllShipmentOrdersBySearch(search,page);
 
-        List<GetShipmentOrderReqDTO> shipmentOrderResponeseDTOList = new ArrayList<>();
+        if(shipmentOrderList == null) {
+            return null;
+        }
+        // Make change from domain to ShipmentOrderResponse
+        List<GetShipmentOrderReqDTO> shipmentOrderResponseDTOList = new ArrayList<>();
         for (ShipmentOrder shipmentOrder : shipmentOrderList) {
+            //Get the correct site name
             Request request = requestService.getRequest(shipmentOrder.getRequestId());
             SysUser sysUser = sysUserService.getSysUserByUid(request.getSysUserId());
             Site site = siteService.findSite(sysUser.getSiteId());
             GetShipmentOrderReqDTO getShipmentOrderReqDTO = shipmentOrderResponseDomainMapper.toShipmentOrderResponse(shipmentOrder, request, site);
-            shipmentOrderResponeseDTOList.add(getShipmentOrderReqDTO);
+            shipmentOrderResponseDTOList.add(getShipmentOrderReqDTO);
         }
-
-        return shipmentOrderResponeseDTOList;
+        // Check that it does have data
+        if(shipmentOrderResponseDTOList.isEmpty()){
+            return null;
+        }
+        // Return result
+        return shipmentOrderResponseDTOList;
     }
 }
+
+
+
