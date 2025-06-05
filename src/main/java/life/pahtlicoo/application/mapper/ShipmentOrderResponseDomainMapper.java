@@ -17,7 +17,7 @@ import java.time.OffsetDateTime;
 @ApplicationScoped
 public class ShipmentOrderResponseDomainMapper {
     public GetShipmentOrderReqDTO toShipmentOrderResponse(ShipmentOrder shipmentOrder, Request request, Site site) {
-        return new GetShipmentOrderReqDTO(shipmentOrder.getShipmentOrderId(), request.getName(), shipmentOrder.getCreatedAt(),
+        return new GetShipmentOrderReqDTO(request.getName(), shipmentOrder.getCreatedAt(),
                 request.getState(), site.getName(), request.getRequestId(), shipmentOrder.getDescription());
     }
 

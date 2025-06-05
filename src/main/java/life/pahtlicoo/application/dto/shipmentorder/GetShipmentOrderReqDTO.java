@@ -20,8 +20,6 @@ import java.time.OffsetDateTime;
 
 public class GetShipmentOrderReqDTO {
     @NotBlank
-    private int shipmentOrderId;
-    @NotBlank
     private String orderName;
     private OffsetDateTime createdAt;
     private int state;
