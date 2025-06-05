@@ -59,7 +59,7 @@ public class HistoricDataController {
     @POST
     @Path("/report")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces("application/pdf")
     public Response generatePdfReport(GetHistoricDataReqDTO dto) {
         byte[] pdf = createReportWithHistoricDataUseCase.execute(dto);
         return Response.ok(pdf)

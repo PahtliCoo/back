@@ -7,7 +7,7 @@ import java.util.List;
 public interface HistoricDataRepository {
     public void createHistoricData(HistoricData historicData);
     public List<HistoricData> getAllHistoricDataBySiteId(int siteId);
-    List<HistoricData> getAllByYearAndMonthRange(int year, int startMonth, int endMonth, String Type);
+    public List<HistoricData> getAllByYearAndMonthRange(int year, int startMonth, int endMonth, String Type);
     //public void updateHistoricData(HistoricData historicData);
     public void deleteHistoricData(int historicDataId);
 }
