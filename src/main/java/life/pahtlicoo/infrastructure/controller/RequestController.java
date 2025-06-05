@@ -132,8 +132,8 @@ public class RequestController {
     @GET
     @Path("/sys-user/{sys_user_id}")
     public Response searchUserRequests(@QueryParam("name") String name, @QueryParam("page") @DefaultValue("0") int page,
-                                       @QueryParam("date") String date, @QueryParam("state") int state,
-                                       @PathParam("sys_user_id") Integer sysUserId) {
+                                       @QueryParam("date") String date, @QueryParam("state") Integer state,
+                                       @PathParam("sys_user_id") int sysUserId) {
 
         if (page < 0) {
             return Response.status(Response.Status.BAD_REQUEST)
