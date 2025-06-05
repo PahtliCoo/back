@@ -14,7 +14,7 @@ import java.util.Map;
 public class PromptBuilder {
 
     public String buildPrompt(HistoricReportRequestDTO dto) {
-        StringBuilder sb = new StringBuilder("Este es un informe de consumo histórico de medicamentos para centros de salud.\n");
+        StringBuilder sb = new StringBuilder("Este es un informe de consumo histórico de medicamentos para centros de salud en México.\n");
 
         dto.getDataBySite().forEach((siteId, dataPorMes) -> {
             String siteName = dto.getSiteNameResolver().apply(siteId);
@@ -41,10 +41,10 @@ public class PromptBuilder {
             );
         });
 
-        sb.append("\nAnaliza si hay una tendencia de crecimiento o reducción por medicamento.\n");
+        sb.append("\nAnaliza si hay una tendencia de crecimiento o reducción por cada medicamento.\n");
         sb.append("No repitas los datos textualmente.\n");
         sb.append("Resume tu conclusión general en no más de 6 frases claras y concretas.\n");
-        sb.append("Separa en párrafos.");
+        sb.append("Separa en párrafos");
 
         return sb.toString();
     }
