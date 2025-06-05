@@ -1,14 +1,14 @@
 /**
- * Get all user requests and filter by name search
- * DEPRECATED
- * @Author Adolfo Hernandez Fernandez
- * @since 2025-06-04
+ * Search all user requests and filter if provided.
+ * @author Adolfo Hernández Fernández (a01664412@tec.mx)
+ * @since 2025-06-05
  */
 package life.pahtlicoo.application.usecase.request;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import life.pahtlicoo.application.dto.request.RequestResponseDTO;
+import life.pahtlicoo.application.dto.request.SearchUserRequestsReqDTO;
 import life.pahtlicoo.application.mapper.RequestResponseDomainMapper;
 import life.pahtlicoo.application.service.RequestService;
 import life.pahtlicoo.application.service.SiteService;
@@ -21,27 +21,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ApplicationScoped
-public class SearchUserRequestsByNameUseCase {
-
+public class SearchUserRequestsUseCase {
     @Inject
     RequestService requestService;
-
     @Inject
     SysUserService sysUserService;
-
     @Inject
     SiteService siteService;
-
     @Inject
     RequestResponseDomainMapper requestResponseDomainMapper;
 
-    public List<RequestResponseDTO> execute(int sys_user_id, int page, String name) {
-        List<Request> requestList = requestService.searchUserRequestsByName(sys_user_id, name, page);
+    public List<RequestResponseDTO> execute(SearchUserRequestsReqDTO searchUserRequestsReqDTO) {
+        List<Request> requestList =requestService.searchUserRequests(searchUserRequestsReqDTO);
 
         if (requestList == null || requestList.isEmpty()) {
             return new ArrayList<>();
         }
-
         // Make change from domain to RequestResponse
         List<RequestResponseDTO> requestResponseDTOList = new ArrayList<>();
         for (Request request : requestList) {
@@ -51,7 +46,6 @@ public class SearchUserRequestsByNameUseCase {
             RequestResponseDTO requestResponseDTO = requestResponseDomainMapper.toRequestResponse(request, siteTemp);
             requestResponseDTOList.add(requestResponseDTO);
         }
-        // Return result
         return requestResponseDTOList;
     }
 }
