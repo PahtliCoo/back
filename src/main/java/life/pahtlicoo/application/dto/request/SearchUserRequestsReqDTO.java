@@ -18,6 +18,6 @@ public class SearchUserRequestsReqDTO {
     private int sysUserId;
     private String name;
     private String date;  // YYYY-MM-DD
-    private String state;
+    private Integer state;
     private int page;
 }
