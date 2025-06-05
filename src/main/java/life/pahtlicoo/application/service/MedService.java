@@ -17,8 +17,8 @@ public class MedService {
     @Inject
     MedRepository medRepository;
 
-    public boolean createMed(Med med){
-        return medRepository.createMed(med);
+    public void createMed(Med med){
+        medRepository.createMed(med);
     }
     public Med getMed(int medId){
         return medRepository.getMed(medId);
@@ -34,6 +34,9 @@ public class MedService {
     }
     public List<Med> getMedsBySearchName(String name){
         return medRepository.getMedsBySearchName(name);
+    }
+    public Med getMedByName(String name){
+        return medRepository.getMedByName(name);
     }
 
 

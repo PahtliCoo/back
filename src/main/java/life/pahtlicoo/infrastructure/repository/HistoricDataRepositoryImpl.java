@@ -4,6 +4,7 @@ import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import life.pahtlicoo.application.dto.historicdata.SearchHistoricDataReqDTO;
 import life.pahtlicoo.domain.model.HistoricData;
 import life.pahtlicoo.domain.repository.HistoricDataRepository;
 import life.pahtlicoo.infrastructure.entity.HistoricDataEntity;
@@ -36,5 +37,26 @@ public class HistoricDataRepositoryImpl implements HistoricDataRepository, Panac
     @Transactional
     public void deleteHistoricData(int historicDataId) {
         deleteById(historicDataId);
+    }
+
+    @Override
+    public HistoricData getHistoricDataBySiteIdAndMedIdAndDate(SearchHistoricDataReqDTO searchHistoricDataReqDTO){
+        HistoricDataEntity historicDataEntity = find("siteId = ?1 AND medId = ?2 AND dateMonth = ?3 AND " +
+                "dateYear = ?4", searchHistoricDataReqDTO.getSiteId(),
+                searchHistoricDataReqDTO.getMedId(),
+                searchHistoricDataReqDTO.getDateMonth(),
+                searchHistoricDataReqDTO.getDateYear()).firstResult();
+
+        if(historicDataEntity == null){
+            return null;
+        }
+
+        return historicDataEntityMapper.toDomain(historicDataEntity);
+    }
+
+    @Override
+    @Transactional
+    public void updateHistoricData(HistoricData historicData){
+        HistoricDataEntity.update("quantity = ?1 WHERE id = ?2", historicData.getQuantity(), historicData.getHistoricDataId());
     }
 }

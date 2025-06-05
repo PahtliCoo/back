@@ -27,5 +27,8 @@ public class SiteService {
     public void deleteSite(int siteId){
         siteRepository.deleteSite(siteId);
     }
+    public Site findSiteByName(String siteName){
+        return siteRepository.findByName(siteName);
+    }
 
 }

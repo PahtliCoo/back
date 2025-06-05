@@ -1,5 +1,6 @@
 package life.pahtlicoo.infrastructure.controller;
 
+import io.grpc.netty.shaded.io.netty.handler.codec.http.multipart.FileUpload;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -8,8 +9,13 @@ import life.pahtlicoo.application.dto.historicdata.CreateHistoricDataReqDTO;
 import life.pahtlicoo.application.usecase.historicdata.CreateHistoricDataUseCase;
 import life.pahtlicoo.application.usecase.historicdata.DeleteHistoricDataUseCase;
 import life.pahtlicoo.application.usecase.historicdata.GetHistoricDataBySiteIdUseCase;
+import life.pahtlicoo.application.usecase.historicdata.ReadHistoricDataCSVUseCase;
 import life.pahtlicoo.domain.model.HistoricData;
+import org.jboss.resteasy.reactive.MultipartForm;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.List;
 
 @Path("/historic-data")
@@ -22,6 +28,8 @@ public class HistoricDataController {
     GetHistoricDataBySiteIdUseCase getHistoricDataBySiteIdUseCase;
     @Inject
     DeleteHistoricDataUseCase deleteHistoricDataUseCase;
+    @Inject
+    ReadHistoricDataCSVUseCase readHistoricDataCSVUseCase;
 
     @POST
     @Path("/create")
@@ -50,4 +58,24 @@ public class HistoricDataController {
         deleteHistoricDataUseCase.execute(site_id);
         return Response.ok().build();
     }
+
+    @POST
+    @Path("/add-data")
+   // @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response importHistoricData(){
+        try{
+            File file = new File("src/main/resources/test.csv");
+            InputStream inputStream = new FileInputStream(file);
+            if(readHistoricDataCSVUseCase.execute(inputStream)){
+                return Response.ok().build();
+            }
+            return Response.status(Response.Status.BAD_REQUEST).build();
+
+
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+
+    }
+
 }
