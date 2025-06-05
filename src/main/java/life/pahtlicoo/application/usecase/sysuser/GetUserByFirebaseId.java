@@ -19,6 +19,7 @@ public class GetUserByFirebaseId {
     public UserRequestResponseDTO execute(UserFirebaseContentDTO userFirebaseContentDTO) {
         try{
             SysUser sysUser = sysUserService.getSysUserByFirebaseId(userFirebaseContentDTO.getUid());
+            System.out.println(sysUser.getName());
             return sysUserResponseDomainMapper.toUserRequestResponseDTO(sysUser);
         }catch (Exception e){
             return null;
