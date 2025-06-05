@@ -26,7 +26,7 @@ public class TableBuilder {
         for (List<HistoricData> grupo : dataPorMes.values()) {
             if (grupo.isEmpty()) continue;
 
-            HistoricData first = grupo.get(0);
+            HistoricData first = grupo.getFirst();
 
             PdfPTable table = new PdfPTable(6);
             table.setWidths(new float[]{2.5f, 1f, 1f, 1.5f, 1.5f, 1.5f});

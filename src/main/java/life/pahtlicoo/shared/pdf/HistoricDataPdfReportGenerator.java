@@ -1,47 +1,20 @@
 package life.pahtlicoo.shared.pdf;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.google.gson.Gson;
+
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.*;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import life.pahtlicoo.application.dto.historicdata.HistoricReportRequestDTO;
-import life.pahtlicoo.application.service.HistoricDataReportService;
 import life.pahtlicoo.domain.model.HistoricData;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.time.Month;
-import java.util.*;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.function.IntFunction;
-
-import javax.imageio.ImageIO;
-
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.data.category.DefaultCategoryDataset;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ApplicationScoped
 public class HistoricDataPdfReportGenerator {
 
-    @Inject
-    HistoricDataReportService historicDataReportService;
     @Inject
     OpenAIServiceImp openAIServiceImp;
     @Inject
@@ -97,7 +70,7 @@ public class HistoricDataPdfReportGenerator {
                 }
 
                 if (dto.getType().equalsIgnoreCase("graph") || dto.getType().equalsIgnoreCase("all")) {
-                    graphBuilder.addGraphsToDocument(document,  siteEntry.getValue(),  dto.getMedNameResolver(),  siteName
+                    graphBuilder.addGraphsToDocument(document,  siteEntry.getValue(),  dto.getMedNameResolver()
                     );
                 }
 

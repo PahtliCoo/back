@@ -18,7 +18,6 @@ import javax.imageio.ImageIO;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.util.*;
 import java.util.List;
 import java.util.Map;
 import java.util.function.IntFunction;
@@ -34,8 +33,8 @@ public class GraphBuilder {
 
     public void addGraphsToDocument(Document document,
                                     Map<String, List<HistoricData>> datosPorMes,
-                                    IntFunction<String> medNameResolver,
-                                    String siteName) throws Exception {
+                                    IntFunction<String> medNameResolver
+                                    ) throws Exception {
 
         Map<String, Map<String, Integer>> dataPorMedicamento =
                 historicDataReportService.agruparPorMedicamento(datosPorMes, medNameResolver::apply);
