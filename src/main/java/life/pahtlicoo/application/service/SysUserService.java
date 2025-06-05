@@ -17,11 +17,12 @@ public class SysUserService {
 
     public SysUser createUser(SysUser sysUser) {
         return sysUserRepository.createSysUser(sysUser);
-    };
+    }
 
     public SysUser createUserFirebase(SysUser user, String password) {
         return sysUserRepository.createSysUserFirebase(user, password);
     }
+
     public Boolean deleteUserFirebase(String userUid){
         return sysUserRepository.deleteSysUserFirebase(userUid);
     }
@@ -30,9 +31,11 @@ public class SysUserService {
         return sysUserRepository.getSysUser(userId);
     }
 
+    // Método para obtener SysUser por Firebase ID
     public SysUser getSysUserByFirebaseId(String firebaseId){
         return sysUserRepository.getSysUserByFirebaseId(firebaseId);
     }
+
     public SysUser updateSysUserEmail(int sysUserId, String newEmail) {
         SysUser updatedUser = sysUserRepository.updateSysUserEmail(sysUserId, newEmail);
         return updatedUser;
