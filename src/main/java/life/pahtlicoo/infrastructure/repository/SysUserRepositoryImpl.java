@@ -6,6 +6,7 @@ Implementation of all the methods fore SysUser
 package life.pahtlicoo.infrastructure.repository;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -59,12 +60,64 @@ public class SysUserRepositoryImpl implements SysUserRepository, PanacheReposito
     }
 
     @Override
-    public void updateSysUserEmail(int sysUserId, String newEmail){
+    @Transactional
+    public SysUser updateSysUserEmail(int sysUserId, String newEmail){
+        SysUserEntity sysUserEntity = SysUserEntity.findById(sysUserId);
+        if (sysUserEntity == null) {
+            return null;
+        }
+        sysUserEntity.setEmail(newEmail);
+        return sysUserEntityMapper.toDomain(sysUserEntity);
+    }
 
+    @Override
+    @Transactional
+    public SysUser updateSysUserPassword(int sysUserId, String newPassword){
+        SysUserEntity sysUserEntity = SysUserEntity.findById(sysUserId);
+        if (sysUserEntity == null) {
+            return null;
+        }
+
+        String firebaseId = sysUserEntity.getFirebaseId();
+        if (firebaseId == null || firebaseId.isEmpty()) {
+            return null;
+        }
+        Boolean firebaseUpdateSuccess = updateSysUserPasswordFirebase(firebaseId, newPassword);
+
+        if (firebaseUpdateSuccess) {
+            return sysUserEntityMapper.toDomain(sysUserEntity);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public Boolean updateSysUserEmailFirebase(String firebaseId, String newEmail) {
+        try {
+            UserRecord.UpdateRequest request = new UserRecord.UpdateRequest(firebaseId)
+                    .setEmail(newEmail);
+            FirebaseAuth.getInstance().updateUser(request);
+            return true;
+        } catch (FirebaseAuthException e) {
+            return false;
+        }
+    }
+
+    @Override
+    public Boolean updateSysUserPasswordFirebase(String firebaseId, String newPassword) {
+        try {
+            UserRecord.UpdateRequest request = new UserRecord.UpdateRequest(firebaseId)
+                    .setPassword(newPassword);
+            FirebaseAuth.getInstance().updateUser(request);
+            return true;
+        } catch (FirebaseAuthException e) {
+            return false;
+        }
     }
 
     @Override
     public void deleteSysUser(int sysUserId){
+
 
     }
     @Transactional
