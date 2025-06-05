@@ -29,7 +29,7 @@ public class CreateRequestUseCase {
     public boolean execute(CreateRequestReqDTO createRequestReqDTO) {
        try{
            // Chek that list is not empty
-           if(createRequestReqDTO.getRequestDetailList().isEmpty()){
+           if(createRequestReqDTO.getRequest_detail_list().isEmpty()){
                return false;
            }
            // Check state is not largar than 5 or lower than 0

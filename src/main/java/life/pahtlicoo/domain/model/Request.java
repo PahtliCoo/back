@@ -2,7 +2,8 @@
  * Request class.
  * @author Adolfo Hernández Fernández (a01664412@tec.mx)
  * @co-author Nicole Kapellmann Lepine (a01664563@tec.mx)
- * @since 2025-05-26
+ * @co-author Santiago Moreno Lacalle Quintero (a01663197@tec.mx)
+ * @since 2025-06-02
  */
 package life.pahtlicoo.domain.model;
 

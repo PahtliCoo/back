@@ -1,11 +1,11 @@
 /**
- * MedicineQuantity dTO.
- * @author Santiago Moreno Lacalle Quintero (A01663197@tec.mx)
- * @since 2025-05-28
+ * Get all request detail Use case.
+ * @author Adolfo Hernández Fernández (a01664412@tec.mx)
+ * @since 2025-06-05
  */
+
 package life.pahtlicoo.application.dto.requestdetail;
 
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,10 +16,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MedicineQuantityReqDTO {
+public class GetRequestDetailResDTO {
+    private int med_quantity;
     @NotBlank
-    private int med_id;
-    @NotBlank
-    @Min(1)
-    private int quantity;
+    private String med_name;
 }
