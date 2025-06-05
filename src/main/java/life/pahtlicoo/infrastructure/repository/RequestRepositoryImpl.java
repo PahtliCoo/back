@@ -210,9 +210,9 @@ public class RequestRepositoryImpl implements RequestRepository, PanacheReposito
             paramIndex++;
         }
 
-        if (searchUserRequestsReqDTO.getState() != null && !searchUserRequestsReqDTO.getState().isBlank()) {
+        if (searchUserRequestsReqDTO.getState() != null) {
             query.append(" AND state = ?" + paramIndex);
-            params.add(Integer.parseInt(searchUserRequestsReqDTO.getState()));
+            params.add(searchUserRequestsReqDTO.getState());
             paramIndex++;
         }
 
