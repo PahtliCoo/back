@@ -33,5 +33,24 @@ public class SysUserService {
     public SysUser getSysUserByFirebaseId(String firebaseId){
         return sysUserRepository.getSysUserByFirebaseId(firebaseId);
     }
+    public SysUser updateSysUserEmail(int sysUserId, String newEmail) {
+        SysUser updatedUser = sysUserRepository.updateSysUserEmail(sysUserId, newEmail);
+        return updatedUser;
+    }
+
+    public SysUser updateSysUserPassword(int sysUserId, String newPassword) {
+        SysUser updatedUser = sysUserRepository.updateSysUserPassword(sysUserId, newPassword);
+        return updatedUser;
+    }
+
+    public Boolean updateSysUserEmailFirebase(String firebaseId, String newEmail) {
+        Boolean success = sysUserRepository.updateSysUserEmailFirebase(firebaseId, newEmail);
+        return success;
+    }
+
+    public Boolean updateSysUserPasswordFirebase(String firebaseId, String newPassword) {
+        Boolean success = sysUserRepository.updateSysUserPasswordFirebase(firebaseId, newPassword);
+        return success;
+    }
 }
 

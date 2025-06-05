@@ -1,15 +1,13 @@
-/**
- * SysUserController.
- * @author Santiago Moreno Lacalle Quintero (A01663197@tec.mx)
- * @co-author Adolfo Hernandez Fernandez (A01664412@tec.mx)
- * @since 2025-05-26
- */
 package life.pahtlicoo.infrastructure.controller;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.validation.Valid;
+
 import life.pahtlicoo.application.dto.sysuser.CreateSysUserReqDTO;
 import life.pahtlicoo.application.dto.sysuser.UserFirebaseContentDTO;
 import life.pahtlicoo.application.dto.sysuser.UserRequestResponseDTO;
@@ -27,8 +25,9 @@ public class SysUserController {
 
     @POST
     @Path("/create")
+    @Consumes(MediaType.APPLICATION_JSON)
     @NoAuthRequired
-    public Response createUser(CreateSysUserReqDTO createUserReqDTO) {
+    public Response createUser(@Valid CreateSysUserReqDTO createUserReqDTO) {
         try {
             SysUser sysUser = createUserUseCase.execute(createUserReqDTO);
             if (sysUser == null) {
