@@ -1,12 +1,14 @@
 /**
  * Request Service
  * @Author Santiago Moreno Lacalle Quintero (A01663197@tec.mx)
- * @since 2025-05-30
+ * @co-author Adolfo Hernández Fernández (a01664412@tec.mx)
+ * @since 2025-06-05
  */
 package life.pahtlicoo.application.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import life.pahtlicoo.application.dto.request.SearchUserRequestsReqDTO;
 import life.pahtlicoo.domain.model.Request;
 import life.pahtlicoo.domain.repository.RequestRepository;
 
@@ -71,5 +73,9 @@ public class RequestService {
 
     public List<Request> searchUserRequestsByName(int sysUserId, String search, int page){
         return requestRepository.searchUserRequestsByName(sysUserId,search,page);
+    }
+
+    public List<Request> searchUserRequests(SearchUserRequestsReqDTO searchUserRequestsReqDTO){
+        return requestRepository.searchUserRequests(searchUserRequestsReqDTO);
     }
 }

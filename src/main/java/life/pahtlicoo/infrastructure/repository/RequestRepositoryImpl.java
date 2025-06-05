@@ -2,7 +2,7 @@
  * Request Repository.
  * @author Adolfo Hernández Fernández (a01664412@tec.mx)
  * @Co-Author Santiago Moreno Lacalle Quintero (A01663197@tec.mx)
- * @since 2025-06-04
+ * @since 2025-06-05
  */
 package life.pahtlicoo.infrastructure.repository;
 
@@ -11,11 +11,16 @@ import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import life.pahtlicoo.application.dto.request.SearchUserRequestsReqDTO;
 import life.pahtlicoo.domain.model.Request;
 import life.pahtlicoo.domain.repository.RequestRepository;
 import life.pahtlicoo.infrastructure.entity.RequestEntity;
 import life.pahtlicoo.infrastructure.mapper.RequestEntityMapper;
 
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.List;
 
 @ApplicationScoped
@@ -184,6 +189,53 @@ public class RequestRepositoryImpl implements RequestRepository, PanacheReposito
         name = name.toLowerCase();
         List<RequestEntity> requestEntities = find("sysUserId = ?1 AND LOWER(name) LIKE ?2",
                 Sort.descending("createdAt") ,sysUserId,"%"+name+"%").page(page, 5).list();
+
+        return requestEntities.stream()
+                .map(requestEntityMapper::toDomain)
+                .toList();
+    }
+
+    @Override
+    public List<Request> searchUserRequests(SearchUserRequestsReqDTO searchUserRequestsReqDTO){
+
+        StringBuilder query = new StringBuilder("sysUserId = ?1");
+        List<Object> params = new ArrayList<>();
+        params.add(searchUserRequestsReqDTO.getSysUserId()); // Posición 1
+
+        int paramIndex = 2;
+
+        if (searchUserRequestsReqDTO.getName() != null && !searchUserRequestsReqDTO.getName().isBlank()) {
+            query.append(" AND LOWER(name) LIKE ?" + paramIndex);
+            params.add("%" + searchUserRequestsReqDTO.getName().toLowerCase() + "%");
+            paramIndex++;
+        }
+
+        if (searchUserRequestsReqDTO.getState() != null && !searchUserRequestsReqDTO.getState().isBlank()) {
+            query.append(" AND state = ?" + paramIndex);
+            params.add(Integer.parseInt(searchUserRequestsReqDTO.getState()));
+            paramIndex++;
+        }
+
+        if (searchUserRequestsReqDTO.getDate() != null && !searchUserRequestsReqDTO.getDate().isBlank()) {
+            LocalDate date = LocalDate.parse(searchUserRequestsReqDTO.getDate());
+            OffsetDateTime start = date.atStartOfDay().atOffset(ZoneOffset.UTC);
+            OffsetDateTime end = date.plusDays(1).atStartOfDay().atOffset(ZoneOffset.UTC);
+
+            query.append(" AND createdAt >= ?" + paramIndex);
+            params.add(start);
+            paramIndex++;
+
+            query.append(" AND createdAt < ?" + paramIndex);
+            params.add(end);
+            paramIndex++; //Solo se va a usar si añadimos un if nuevo
+        }
+
+        // Ejecutar la consulta construida
+        List<RequestEntity> requestEntities = find(query.toString(),
+                Sort.descending("createdAt"),
+                params.toArray())
+                .page(searchUserRequestsReqDTO.getPage(), 5)
+                .list();
 
         return requestEntities.stream()
                 .map(requestEntityMapper::toDomain)
