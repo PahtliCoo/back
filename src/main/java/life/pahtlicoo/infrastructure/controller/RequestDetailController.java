@@ -10,14 +10,14 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import life.pahtlicoo.application.dto.requestdetail.CreateRequestDetailReqDTO;
+import life.pahtlicoo.application.dto.requestdetail.GetRequestDetailResDTO;
 import life.pahtlicoo.application.usecase.requestdetail.CreateRequestDetailUseCase;
 import life.pahtlicoo.application.usecase.requestdetail.DeleteAllRequestDetailUseCase;
 import life.pahtlicoo.application.usecase.requestdetail.GetRequestDetailsUseCase;
-import life.pahtlicoo.domain.model.RequestDetail;
 
 import java.util.List;
 
-@Path("/request/request-detail")
+@Path("/request-detail")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class RequestDetailController {
@@ -40,11 +40,11 @@ public class RequestDetailController {
     }
 
     @GET
-    @Path("/get/{request_id}")
+    @Path("/{request_id}")
     public Response getRequestDetail(@PathParam("request_id") int requestId) {
         try {
-            List<RequestDetail> requestDetailList =  getRequestDetailsUseCase.execute(requestId);
-            return Response.ok(requestDetailList).build();
+            List<GetRequestDetailResDTO> requestDetailResponseList =  getRequestDetailsUseCase.execute(requestId);
+            return Response.ok(requestDetailResponseList).build();
         }catch (Exception e) {
             return Response.serverError().entity("Error").build();
 
