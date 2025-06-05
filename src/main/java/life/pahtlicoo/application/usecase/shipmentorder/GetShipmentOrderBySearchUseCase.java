@@ -18,6 +18,7 @@ import life.pahtlicoo.domain.model.SysUser;
 import java.util.ArrayList;
 import java.util.List;
 
+@ApplicationScoped
 public class GetShipmentOrderBySearchUseCase {
     @Inject
     ShipmentOrderService shipmentOrderService;

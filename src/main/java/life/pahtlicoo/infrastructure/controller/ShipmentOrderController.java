@@ -47,7 +47,7 @@ public class ShipmentOrderController {
 
     @GET
     @Path("/list_all")
-    public Response getAllShipmentOrders(@PathParam("page") int page){
+    public Response getAllShipmentOrders(@QueryParam("page") int page){
         List<GetShipmentOrderReqDTO> shipmentOrders = getAllShipmentOrderUseCase.execute(page);
         if(shipmentOrders == null){
             return Response.status(Response.Status.NOT_FOUND).build();
