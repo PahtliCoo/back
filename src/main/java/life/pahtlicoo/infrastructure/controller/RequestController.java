@@ -36,8 +36,6 @@ public class RequestController {
     @Inject
     GetRequestBySearchUseCase getRequestBySearchUseCase;
     @Inject
-    SearchUserRequestsByNameUseCase searchUserRequestsByNameUseCase; //TODO remove, deprecated
-    @Inject
     SearchUserRequestsUseCase searchUserRequestsUseCase;
 
     @POST
