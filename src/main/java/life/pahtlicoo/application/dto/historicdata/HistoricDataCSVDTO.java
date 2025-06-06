@@ -1,7 +1,6 @@
 package life.pahtlicoo.application.dto.historicdata;
 
-import com.opencsv.bean.CsvBindByName;
-import jakarta.validation.constraints.NotBlank;
+import com.opencsv.bean.CsvBindByPosition;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,24 +11,18 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class HistoricDataCSVDTO  {
-    @CsvBindByName(column = "nombre_medicamento")
-    @NotBlank
+    @CsvBindByPosition(position = 0)
     private String medName;
 
-    @CsvBindByName(column = "cantidad_medicamento")
-    @NotBlank
-    private int quantity;
+    @CsvBindByPosition(position = 1)
+    private Integer quantity;
 
-    @CsvBindByName(column = "nombre_hospital")
-    @NotBlank
+    @CsvBindByPosition(position = 2)
     private String siteName;
 
-    @CsvBindByName(column = "numero_mes")
-    @NotBlank
-    private int month;
+    @CsvBindByPosition(position = 3)
+    private Integer month;
 
-    @CsvBindByName(column = "año")
-    @NotBlank
-    private int year;
-
+    @CsvBindByPosition(position = 4)
+    private Integer year;
 }

@@ -1,5 +1,6 @@
 package life.pahtlicoo.application.usecase.historicdata;
 
+import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -12,11 +13,10 @@ import life.pahtlicoo.domain.model.HistoricData;
 import life.pahtlicoo.domain.model.Med;
 import life.pahtlicoo.domain.model.Site;
 
-
-import java.io.InputStream;
-import java.io.InputStreamReader;
-
+import java.io.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @ApplicationScoped
 @Transactional
@@ -31,76 +31,86 @@ public class ReadHistoricDataCSVUseCase {
     HistoricDataDomainMapper historicDataDomainMapper;
 
     public boolean execute(InputStream csvInputStream) {
-        try{
-            List<HistoricDataCSVDTO> historicDataCSVDTOList;
-            // 1. Read all lines of the CSV.
-            try (InputStreamReader reader = new InputStreamReader(csvInputStream)) {
-                historicDataCSVDTOList = new CsvToBeanBuilder<HistoricDataCSVDTO>(reader)
-                        .withType(HistoricDataCSVDTO.class)
-                        .withIgnoreLeadingWhiteSpace(true)
-                        .withIgnoreEmptyLine(true)
-                        .withSkipLines(0)
-                        .build()
-                        .parse();
-            }catch (Exception e){
-                System.out.println("Error en leer el csv");
+        // Header names and variables
+        Map<String, Integer> headersEsperados = new HashMap<>();
+        headersEsperados.put("nombre_medicamento", 0);
+        headersEsperados.put("cantidad_medicamento", 1);
+        headersEsperados.put("nombre_hospital", 2);
+        headersEsperados.put("número_mes", 3);
+        headersEsperados.put("año", 4);
+
+        try {
+            // Obtain all the values
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(csvInputStream));
+            String headerLine = bufferedReader.readLine();
+
+            if (headerLine == null) {
                 return false;
             }
 
-            // 2. Check that the list is not empty
-            if(historicDataCSVDTOList.isEmpty()){
+            // Check and parse headers
+            String[] headersLeidosArray = headerLine.split(",");
+            Map<String, Integer> headersLeidos = new HashMap<>();
+            for (int i = 0; i < headersLeidosArray.length; i++) {
+                headersLeidos.put(headersLeidosArray[i].trim(), i);
+            }
+
+            // Check the headers
+            if (!headersLeidos.keySet().containsAll(headersEsperados.keySet())) {
                 return false;
             }
 
-            // 3. Pass through all the objects
-            for(HistoricDataCSVDTO row : historicDataCSVDTOList) {
-                try{
-                    // 1. See if the med exists
+            // Obtain all the remaining data
+            CsvToBean<HistoricDataCSVDTO> csvToBean = new CsvToBeanBuilder<HistoricDataCSVDTO>(bufferedReader)
+                    .withType(HistoricDataCSVDTO.class)
+                    .build();
+
+            List<HistoricDataCSVDTO> historicDataCSVDTOList = csvToBean.parse();
+
+            // Check that list is not empty
+            if (historicDataCSVDTOList.isEmpty()) {
+                return false;
+            }
+
+            // Procesar todos los objetos de la lista
+            for (HistoricDataCSVDTO row : historicDataCSVDTOList) {
+                try {
+                    // 1. Verificar si el medicamento existe
                     Med med = medService.getMedByName(row.getMedName().toLowerCase());
-                    if(med == null){
+                    if (med == null) {
                         med = new Med();
-
                         med.setName(row.getMedName().toLowerCase());
-                        System.out.println("Nombre que estamos guardando:" + med.getName());
                         medService.createMed(med);
-                        System.out.println("Med que estamos recibiendio:" + med.getName());
                         med = medService.getMedByName(row.getMedName().toLowerCase());
-                        System.out.println("Med que estamos recibiendio:" + med.getMedId());
-
                     }
 
-                    System.out.println("Entrando a fase 2");
-                    // 2. Get site name
+                    // 2. Obtener sitio
                     Site site = siteService.findSiteByName(row.getSiteName().toLowerCase());
-                    if(site == null){
+                    if (site == null) {
                         return false;
                     }
-                    System.out.println("Entrando a fase 3");
-                    // 3. Review Historic Data
-                    SearchHistoricDataReqDTO searchHistoricDataReqDTO = historicDataDomainMapper.searchHistoricDataToDomain(site,med,row);
+
+                    // 3. Revisar datos históricos
+                    SearchHistoricDataReqDTO searchHistoricDataReqDTO = historicDataDomainMapper.searchHistoricDataToDomain(site, med, row);
                     HistoricData historicData = historicDataService.getHistoricDataBySiteIdAndMedIdAndDate(searchHistoricDataReqDTO);
-                    System.out.println("Entrando a fase 4");
-                    // 4. Create the historic data
-                    if(historicData == null){
-                        System.out.println("Entrando a fase 4.1");
+
+                    // 4. Crear o actualizar datos históricos
+                    if (historicData == null) {
                         historicData = historicDataDomainMapper.createHistoricDataDomainFromSearchHistoricData(searchHistoricDataReqDTO);
                         historicDataService.createHistoricData(historicData);
-                    }else{
-                        System.out.println("Entrando a fase 5");
-                        // 5. Make update Changes to Quantity
+                    } else {
                         historicData.setQuantity(row.getQuantity());
                         historicDataService.updateHistoricData(historicData);
                     }
-
-                }catch (Exception e){
-                    System.out.println("Error en leer el csv");
+                } catch (Exception e) {
+                    return false;
                 }
-
             }
             return true;
-
         } catch (Exception e) {
             return false;
         }
     }
+
+
 }
