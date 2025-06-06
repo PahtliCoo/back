@@ -1,5 +1,6 @@
 package life.pahtlicoo.application.dto.sysuser;
 
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
