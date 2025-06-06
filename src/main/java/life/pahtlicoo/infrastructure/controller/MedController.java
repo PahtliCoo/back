@@ -15,6 +15,7 @@ import life.pahtlicoo.application.dto.med.MedResponseDTO;
 import life.pahtlicoo.application.dto.med.MedUpdateNameReqDTO;
 import life.pahtlicoo.application.usecase.med.*;
 import life.pahtlicoo.domain.model.Med;
+import life.pahtlicoo.shared.annotation.NoAuthRequired;
 
 import java.util.List;
 
@@ -65,10 +66,10 @@ public class MedController {
         }
     }
 
-    // TODO: ESTO PUEDE SER UN GET CON UN PATHPARAM pero para probar lo dejare con get
     @GET
-    @Path("/{name}")
-    public Response searchMeds(@PathParam("name") String name) {
+    @Path("")
+    @NoAuthRequired
+    public Response searchMeds(@QueryParam("name") String name) {
         try{
             List<MedResponseDTO> medResponseDTOList = getMedsBySearchNameUseCase.execute(name);
             if(medResponseDTOList == null || medResponseDTOList.isEmpty()) {
