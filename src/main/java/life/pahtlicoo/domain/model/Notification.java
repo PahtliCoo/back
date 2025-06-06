@@ -23,6 +23,7 @@ public class Notification {
     private String description;
     private int senderId;
     private int receiverId;
+    private int requestPhase;
     private int requestId;
     private OffsetDateTime createdAt;
     private OffsetDateTime updatedAt;

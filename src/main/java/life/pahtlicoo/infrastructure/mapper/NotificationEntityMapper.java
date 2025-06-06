@@ -15,13 +15,15 @@ public class NotificationEntityMapper {
     public Notification toDomain(NotificationEntity notificationEntity){
         return new Notification(notificationEntity.getNotificationId(), notificationEntity.isSeen(),
                 notificationEntity.getDescription(), notificationEntity.getSenderId(),
-                notificationEntity.getReceiverId(), notificationEntity.getRequestId(), notificationEntity.getCreatedAt(),
+                notificationEntity.getReceiverId(),notificationEntity.getRequestPhase(),
+                notificationEntity.getRequestId(), notificationEntity.getCreatedAt(),
                 notificationEntity.getUpdatedAt());
     }
 
     public NotificationEntity toEntity(Notification notification){
         return new NotificationEntity(notification.getNotificationId(), notification.isSeen(),
                 notification.getDescription(), notification.getSenderId(), notification.getReceiverId(),
-                notification.getRequestId(), notification.getCreatedAt(), notification.getUpdatedAt());
+                notification.getRequestPhase(), notification.getRequestId(), notification.getCreatedAt(),
+                notification.getUpdatedAt());
     }
 }

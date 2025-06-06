@@ -30,7 +30,7 @@ public class NotificationEntity extends PanacheEntityBase {
     @Column(name="notification_id")
     private int notificationId;
 
-    @Column(name="seen")
+    @Column(name="seen", nullable = false, insertable = false)
     private boolean seen;
 
     @Column(name="description")
@@ -41,6 +41,9 @@ public class NotificationEntity extends PanacheEntityBase {
 
     @Column(name="receiver_id")
     private int receiverId;
+
+    @Column(name="request_phase")
+    private int requestPhase;
 
     @Column(name="request_id")
     private int requestId;
