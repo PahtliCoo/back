@@ -1,5 +1,5 @@
 /**
- * Med entity.
+ * Holt Winters Methods
  * @author Fernando Emiliano Tavera Moreno (a01663197@tec.mx)
  * @co-author Adolfo Hernandez Fernandez (a01664412@tec.mx)
  * @since 2025-05-29

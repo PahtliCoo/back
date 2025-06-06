@@ -20,14 +20,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateRequestReqDTO {
-    @NotBlank
     private int sys_user_id;
-    @NotBlank
     private int state;
     @NotBlank
     private String name;
     private String description;
-
     @NotEmpty
-    private List<MedicineQuantityReqDTO> requestDetailList;
+    private List<MedicineQuantityReqDTO> request_detail_list;
 }
