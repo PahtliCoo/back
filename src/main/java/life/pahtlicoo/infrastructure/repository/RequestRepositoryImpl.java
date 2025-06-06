@@ -202,7 +202,7 @@ public class RequestRepositoryImpl implements RequestRepository, PanacheReposito
         List<Object> params = new ArrayList<>();
         params.add(searchUserRequestsReqDTO.getSysUserId()); // Posición 1
 
-        int paramIndex = 2;
+        int paramIndex = 1;
 
         if (searchUserRequestsReqDTO.getName() != null && !searchUserRequestsReqDTO.getName().isBlank()) {
             query.append(" AND LOWER(name) LIKE ?" + paramIndex);

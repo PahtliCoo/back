@@ -7,8 +7,11 @@
 package life.pahtlicoo.application.mapper;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import life.pahtlicoo.application.dto.request.RequestResponseDTO;
 import life.pahtlicoo.application.dto.shipmentorder.CreateShipmentOrderReqDTO;
+import life.pahtlicoo.domain.model.Request;
 import life.pahtlicoo.domain.model.ShipmentOrder;
+import life.pahtlicoo.domain.model.Site;
 
 @ApplicationScoped
 public class ShipmentOrderDomainMapper {
@@ -20,3 +23,4 @@ public class ShipmentOrderDomainMapper {
         return shipmentOrder;
     }
 }
+

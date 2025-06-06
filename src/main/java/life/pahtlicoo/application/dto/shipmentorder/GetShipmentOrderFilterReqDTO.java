@@ -10,9 +10,13 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateShipmentOrderReqDTO {
+
+
+public class GetShipmentOrderFilterReqDTO {
     @NotBlank
-    private int request_id;
-    private String description;
-    private int state;
+    private int userId; //maaaybe no lo necesitas
+    private Integer state;
+    private Integer day;
+    private Integer month;
+    private Integer year;
 }
