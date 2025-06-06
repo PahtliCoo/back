@@ -11,8 +11,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateMedSiteReqDTO {
-    @NotBlank
-    private int siteId;
-    @NotBlank
-    private int medId;
+    private int site_id;
+    private int med_id;
+    private int current_quantity;
+    private int initial_quantity;
 }

@@ -27,13 +27,9 @@ public class MedSiteRepositoryImpl implements MedSiteRepository, PanacheReposito
     //TODO: Dependiendo del tiempo, lo corregimos a void
     @Override
     @Transactional
-    public boolean createMedSite(MedSite medSite){
+    public void createMedSite(MedSite medSite){
         MedSiteEntity medSiteEntity = medSiteEntityMapper.toEntity(medSite);
         persist(medSiteEntity);
-        if(medSiteEntity.isPersistent()) {
-            return true;
-        }
-        return false;
     }
 
     @Override

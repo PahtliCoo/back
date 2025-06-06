@@ -1,7 +1,8 @@
 /**
  * MedSite Service
  * @Author Santiago Moreno Lacalle Quintero (A01663197@tec.mx)
- * @since 2025-06-1
+ * @co-author Adolfo Hernandez Fernández (a01664412@tec.mx)
+ * @since 2025-06-06
  */
 package life.pahtlicoo.application.service;
 
@@ -17,8 +18,8 @@ public class MedSiteService {
     @Inject
     MedSiteRepository medSiteRepository;
 
-    public boolean createMedSite(MedSite medSite){
-        return medSiteRepository.createMedSite(medSite);
+    public void createMedSite(MedSite medSite){
+        medSiteRepository.createMedSite(medSite);
     }
     public boolean deleteMedSite(int siteId,int medId){
         return medSiteRepository.deleteMedSite(siteId,medId);
