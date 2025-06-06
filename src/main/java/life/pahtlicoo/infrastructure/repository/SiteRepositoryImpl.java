@@ -54,4 +54,13 @@ public class SiteRepositoryImpl implements SiteRepository, PanacheRepositoryBase
         deleteById(siteId);
     }
 
+    @Override
+    public Site findByName(String name){
+        SiteEntity siteEntity = find("name", name).firstResult();
+        if(siteEntity == null){
+            return null;
+        }
+        return siteEntityMapper.toDomain(siteEntity);
+    }
+
 }

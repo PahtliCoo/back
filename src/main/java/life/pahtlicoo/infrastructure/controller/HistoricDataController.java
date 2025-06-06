@@ -8,7 +8,10 @@ import life.pahtlicoo.application.dto.historicdata.CreateHistoricDataReqDTO;
 import life.pahtlicoo.application.dto.historicdata.GetHistoricDataReqDTO;
 import life.pahtlicoo.application.usecase.historicdata.*;
 import life.pahtlicoo.domain.model.HistoricData;
+import org.jboss.resteasy.reactive.RestForm;
 
+
+import java.io.InputStream;
 import java.util.List;
 
 @Path("/historic-data")
@@ -25,6 +28,8 @@ public class HistoricDataController {
     GetHistoricDataByDatesUseCase getHistoricData;
     @Inject
     CreateReportWithHistoricDataUseCase createReportWithHistoricDataUseCase;
+    @Inject
+    ReadHistoricDataCSVUseCase readHistoricDataCSVUseCase;
 
     @POST
     @Path("/create")
@@ -75,4 +80,22 @@ public class HistoricDataController {
         deleteHistoricDataUseCase.execute(site_id);
         return Response.ok().build();
     }
+
+    @POST
+    @Path("/add-data")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response importHistoricData(@RestForm("file") InputStream file){
+        try{
+            if(readHistoricDataCSVUseCase.execute(file)){
+                return Response.ok().build();
+            }
+            return Response.status(Response.Status.BAD_REQUEST).build();
+
+
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+
+    }
+
 }

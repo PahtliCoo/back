@@ -1,5 +1,6 @@
 package life.pahtlicoo.domain.repository;
 
+import life.pahtlicoo.application.dto.historicdata.SearchHistoricDataReqDTO;
 import life.pahtlicoo.domain.model.HistoricData;
 
 import java.util.List;
@@ -9,6 +10,8 @@ public interface HistoricDataRepository {
     public List<HistoricData> getAllHistoricDataBySiteId(int siteId);
     public List<HistoricData> getAllByYearAndMonthRange(int year, int startMonth, int endMonth, String Type);
     //public void updateHistoricData(HistoricData historicData);
+    public void updateHistoricData(HistoricData historicData);
     public void deleteHistoricData(int historicDataId);
+    public HistoricData getHistoricDataBySiteIdAndMedIdAndDate(SearchHistoricDataReqDTO searchHistoricDataReqDTO);
 }
 //TODO aqui debe haber un endpoint para cargar un friego de data

@@ -27,7 +27,11 @@ public class CreateMedUseCase {
             Med med = new Med();
             med.setName(name);
             // 2. Returns boolean if created or not
-            return medService.createMed(med);
+            medService.createMed(med);
+             if(med.getMedId() != 0 && med.getCreatedAt() != null) {
+                 return true;
+             }
+             return false;
 
         } catch (Exception e) {
             return false;
