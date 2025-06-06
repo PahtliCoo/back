@@ -1,3 +1,9 @@
+/**
+ * Med site (current inventory) Controller
+ * @author Santiago Moreno Lacalle Quintero (a01663197@tec.mx)
+ * @co-author Adolfo Hernández Fernández (a01664412@tec.mx)
+ * @since 2025-06-06
+ */
 package life.pahtlicoo.infrastructure.controller;
 
 import jakarta.inject.Inject;
@@ -10,10 +16,11 @@ import life.pahtlicoo.application.dto.medsite.GetMedSiteByMedIdAndSiteIdReqDTO;
 import life.pahtlicoo.application.dto.medsite.UpdateMedSiteQuantityReqDTO;
 import life.pahtlicoo.application.usecase.medsite.*;
 import life.pahtlicoo.domain.model.MedSite;
+import life.pahtlicoo.shared.annotation.NoAuthRequired;
 
 import java.util.List;
 
-@Path("/med/site")
+@Path("/med-site")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class MedSiteController {
@@ -34,13 +41,12 @@ public class MedSiteController {
 
     @POST
     @Path("/create")
+    @NoAuthRequired
     public Response createMedSite(CreateMedSiteReqDTO createMedSiteReqDTO) {
         try{
-            if(createMedSiteUseCase.execute(createMedSiteReqDTO)){
-                return Response.status(Response.Status.CREATED).build();
-            }
-            return Response.status(Response.Status.BAD_REQUEST).build();
-
+            createMedSiteUseCase.execute(createMedSiteReqDTO);
+            //TODO capaz se puede añadir solo algo para que valide que los datos estan bien y tal
+            return Response.status(Response.Status.CREATED).build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
