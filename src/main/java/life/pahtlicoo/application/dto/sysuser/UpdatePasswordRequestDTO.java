@@ -12,10 +12,6 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class UpdatePasswordRequestDTO {
     private int sysUserId;
-
-    @NotBlank
-    private String firebaseId;
-
     @NotBlank
     private String newPassword;
 }

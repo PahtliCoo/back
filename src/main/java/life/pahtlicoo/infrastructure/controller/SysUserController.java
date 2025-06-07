@@ -2,9 +2,7 @@ package life.pahtlicoo.infrastructure.controller;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.POST;
-import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
@@ -17,13 +15,10 @@ import life.pahtlicoo.application.dto.sysuser.UserRequestResponseDTO;
 import life.pahtlicoo.application.dto.sysuser.UpdateEmailRequestDTO;
 import life.pahtlicoo.application.dto.sysuser.UpdatePasswordRequestDTO;
 import life.pahtlicoo.application.dto.sysuser.UserResponseDTO;
-import life.pahtlicoo.application.dto.sysuser.UpdateEmailUnifiedRequestDTO;
 
 import life.pahtlicoo.application.usecase.sysuser.CreateSysUserUseCase;
 import life.pahtlicoo.application.usecase.sysuser.GetUserByFirebaseId;
 import life.pahtlicoo.application.usecase.sysuser.UpdateUserEmailUseCase;
-import life.pahtlicoo.application.usecase.sysuser.UpdateUserFirebaseEmailUseCase;
-import life.pahtlicoo.application.usecase.sysuser.UpdateUserPasswordUseCase;
 import life.pahtlicoo.application.usecase.sysuser.UpdateUserFirebasePasswordUseCase;
 
 import life.pahtlicoo.application.mapper.UserResponseMapper;
@@ -43,10 +38,6 @@ public class SysUserController {
 
     @Inject
     UpdateUserEmailUseCase updateUserEmailUseCase;
-    @Inject
-    UpdateUserFirebaseEmailUseCase updateUserFirebaseEmailUseCase;
-    @Inject
-    UpdateUserPasswordUseCase updateUserPasswordUseCase;
 
     @Inject
     UpdateUserFirebasePasswordUseCase updateUserFirebasePasswordUseCase;
@@ -88,9 +79,7 @@ public class SysUserController {
     @Path("/update-email")
     public Response updateEmail(@Valid UpdateEmailRequestDTO updateEmailReqDTO) {
         try {
-            UserResponseDTO updatedSysUserDTO = updateUserEmailUseCase.execute(
-                    updateEmailReqDTO.getSysUserId(), updateEmailReqDTO.getNewEmail()
-            );
+            UserRequestResponseDTO updatedSysUserDTO = updateUserEmailUseCase.execute(updateEmailReqDTO);
             if (updatedSysUserDTO == null) {
                 return Response.status(Response.Status.NOT_FOUND).build();
             }
@@ -101,58 +90,18 @@ public class SysUserController {
     }
 
     @POST
-    @Path("/firebase/update-email")
-    public Response updateFirebaseEmail(@Valid UpdateEmailRequestDTO updateFirebaseEmailReqDTO) {
-        try {
-            UserResponseDTO resultDTO = updateUserFirebaseEmailUseCase.execute(
-                    updateFirebaseEmailReqDTO.getFirebaseId(), updateFirebaseEmailReqDTO.getNewEmail()
-            );
-            if (resultDTO == null) {
-                return Response.status(Response.Status.NOT_FOUND).build();
-            }
-            return Response.ok(resultDTO).build();
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    @POST
-    @Path("/firebase/update-password")
+    @Path("/update-password")
     public Response updateFirebasePassword(@Valid UpdatePasswordRequestDTO updatePasswordReqDTO) {
         try {
-            UserResponseDTO resultDTO = updateUserFirebasePasswordUseCase.execute(
-                    updatePasswordReqDTO.getFirebaseId(), updatePasswordReqDTO.getNewPassword()
-            );
-            if (resultDTO == null) {
-                return Response.status(Response.Status.NOT_FOUND).build();
+            if(updateUserFirebasePasswordUseCase.execute(updatePasswordReqDTO)){
+                return Response.status(Response.Status.NO_CONTENT).build();
             }
-            return Response.ok(resultDTO).build();
+            return Response.status(Response.Status.BAD_REQUEST).build();
+
+
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
 
-    @POST
-    @Path("/unified-update-email")
-    public Response unifiedUpdateEmail(@Valid UpdateEmailUnifiedRequestDTO updateEmailUnifiedReqDTO) {
-        try {
-            UserResponseDTO firebaseUpdateResult = updateUserFirebaseEmailUseCase.execute(
-                    updateEmailUnifiedReqDTO.getFirebaseId(),
-                    updateEmailUnifiedReqDTO.getNewEmail()
-            );
-            if (firebaseUpdateResult == null) {
-                return Response.status(Response.Status.BAD_REQUEST).entity("Firebase email update failed.").build();
-            }
-            UserResponseDTO localUpdateResult = updateUserEmailUseCase.execute(
-                    updateEmailUnifiedReqDTO.getSysUserId(),
-                    updateEmailUnifiedReqDTO.getNewEmail()
-            );
-            if (localUpdateResult == null) {
-                return Response.status(Response.Status.BAD_REQUEST).entity("Local email update failed after Firebase update.").build();
-            }
-            return Response.ok(localUpdateResult).build();
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-        }
-    }
 }

@@ -27,25 +27,20 @@ public class SysUserService {
         return sysUserRepository.deleteSysUserFirebase(userUid);
     }
 
-    public SysUser getSysUserByUid(int userId) {
+    public SysUser getSysUserByUserId(int userId) {
         return sysUserRepository.getSysUser(userId);
     }
 
-    // Método para obtener SysUser por Firebase ID
     public SysUser getSysUserByFirebaseId(String firebaseId){
         return sysUserRepository.getSysUserByFirebaseId(firebaseId);
     }
 
-    public SysUser updateSysUserEmail(int sysUserId, String newEmail) {
-        return sysUserRepository.updateSysUserEmail(sysUserId, newEmail);
+    public SysUser updateSysUserEmail(SysUser sysUser) {
+        return sysUserRepository.updateSysUserEmail(sysUser);
     }
 
-    public SysUser updateSysUserPassword(int sysUserId, String newPassword) {
-        return sysUserRepository.updateSysUserPassword(sysUserId, newPassword);
-    }
-
-    public Boolean updateSysUserEmailFirebase(String firebaseId, String newEmail) {
-        return sysUserRepository.updateSysUserEmailFirebase(firebaseId, newEmail);
+    public Boolean updateSysUserEmailFirebase(SysUser sysUser, String newEmail) {
+        return sysUserRepository.updateSysUserEmailFirebase(sysUser, newEmail);
     }
 
     public Boolean updateSysUserPasswordFirebase(String firebaseId, String newPassword) {

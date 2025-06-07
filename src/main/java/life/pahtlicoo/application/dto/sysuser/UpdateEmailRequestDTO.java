@@ -12,10 +12,8 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class UpdateEmailRequestDTO {
     private int sysUserId;
-
+    @NotBlank
+    private String oldEmail;
     @NotBlank
     private String newEmail;
-
-    @NotBlank
-    private String firebaseId;
 }

@@ -44,7 +44,7 @@ public class GetRequestByFilterUseCase {
             Integer day = getRequestFilterReqDTO.getDay();
 
             // 1. Filter / validate data
-            SysUser user = sysUserService.getSysUserByUid(userId);
+            SysUser user = sysUserService.getSysUserByUserId(userId);
             Credential credential = credentialService.getRole(2); // ROLE LOGISTICS ADMIN
             boolean isLogisticsAdmin = (user.getCredentialId() == credential.getCredentialId());
 
@@ -91,7 +91,7 @@ public class GetRequestByFilterUseCase {
             List<RequestResponseDTO> requestResponseDTOList = new ArrayList<>();
             for (Request request : requestList) {
                 //Get the correct site name
-                SysUser sysUser = sysUserService.getSysUserByUid(request.getSysUserId());
+                SysUser sysUser = sysUserService.getSysUserByUserId(request.getSysUserId());
                 Site siteTemp = siteService.findSite(sysUser.getSiteId());
                 RequestResponseDTO requestResponseDTO = requestResponseDomainMapper.toRequestResponse(request, siteTemp);
                 requestResponseDTOList.add(requestResponseDTO);

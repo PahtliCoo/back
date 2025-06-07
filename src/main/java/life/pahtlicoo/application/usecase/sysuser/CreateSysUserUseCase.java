@@ -30,46 +30,36 @@ public class CreateSysUserUseCase {
             if (!createUserReqDTO.getEmail().matches(EMAIL_REGEX)) {
                 return null;
             }
-
             // Validar contraseña
             if (!createUserReqDTO.getPassword().matches(PASSWORD_REGEX)) {
                 return null;
             }
-
             // 1. Convertir DTO a Modelo de Dominio
             SysUser user = SysUserMapperReqDto.toDomain(createUserReqDTO);
             if (user == null) {
                 return null;
             }
-
             // 2. Crear usuario en Firebase Authentication
             SysUser firebaseUser = sysUserService.createUserFirebase(user, createUserReqDTO.getPassword());
-
             if (firebaseUser == null) {
                 return null;
             }
-
             // 3. Intentar crear el usuario en la base de datos principal
             SysUser createdDbUser = sysUserService.createUser(firebaseUser);
 
             if (createdDbUser == null) {
+
                 try {
                     sysUserService.deleteUserFirebase(firebaseUser.getFirebaseId());
-                    return null; // significa que no se creo el user
+                    return null;
                 } catch (Exception rollbackEx) {
-                    rollbackEx.printStackTrace();
                     return null;
                 }
             }
             return createdDbUser;
 
-        } catch (IllegalArgumentException iae) {
-            iae.printStackTrace();
+        } catch (Exception e) {
             return null;
-        } catch (Exception e){
-            e.printStackTrace();
-            return null;
-        } finally {
         }
     }
 }
