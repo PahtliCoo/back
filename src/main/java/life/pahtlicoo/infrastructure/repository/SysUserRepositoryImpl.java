@@ -92,7 +92,6 @@ public class SysUserRepositoryImpl implements SysUserRepository, PanacheReposito
     @Override
     public void deleteSysUser(int sysUserId){
         //TODO: REVIEW or move
-
     }
 
     @Transactional
