@@ -2,6 +2,7 @@ package life.pahtlicoo.application.usecase.sysuser;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import life.pahtlicoo.application.dto.sysuser.UpdateEmailRequestDTO;
 import life.pahtlicoo.application.dto.sysuser.UserRequestResponseDTO;
 import life.pahtlicoo.application.mapper.SysUserResponseDomainMapper;
@@ -11,6 +12,7 @@ import life.pahtlicoo.application.dto.sysuser.UserResponseDTO;
 import life.pahtlicoo.domain.model.SysUser;
 
 @ApplicationScoped
+@Transactional
 public class UpdateUserEmailUseCase {
 
     @Inject
