@@ -39,20 +39,6 @@ public class ShipmentOrderService {
         return shipmentOrderRepository.getAllShipmentOrder(page);
     }
 
-    /*
-    public List<ShipmentOrder> getAllShipmentOrdersByUserIdByState(int userId, int state,int page){
-        return shipmentOrderRepository.getAllShipmentOrdersByUserIdByState(userId, state,page);
-    }
-
-    public List<ShipmentOrder> getAllShipmentOrdersByUserIdByStateAndDate(int sysUserId, int state, int year, int month, int day,int page){
-        return shipmentOrderRepository.getAllShipmentOrdersByUserIdByStateAndDate(sysUserId, state, year, month, day,page);
-    }
-
-    public List<ShipmentOrder> getAllShipmentOrdersByUserIdByDate(int userId, int year, int month, int day,int page){
-        return shipmentOrderRepository.getAllShipmentOrdersByUserIdByDate(userId,year,month,day, page);
-    }
-    */
-
     public List<ShipmentOrder> getAllShipmentOrdersByDate(int year, int month, int day,int page){
         return shipmentOrderRepository.getAllShipmentOrdersByDate(year,month,day,page);
     }
@@ -68,6 +54,9 @@ public class ShipmentOrderService {
 
     public List<ShipmentOrder> searchShipmentOrders(SearchShipmentOrdersReqDTO searchShipmentOrdersReqDTO){
         return shipmentOrderRepository.searchShipmentOrders(searchShipmentOrdersReqDTO);
+    }
+    public void updateShipmentOrderDetails(int shipmentOrderId, String shipmentOrderDetails){
+        shipmentOrderRepository.updateShipmentOrderDetails(shipmentOrderId, shipmentOrderDetails);
     }
 }
 

@@ -34,6 +34,8 @@ public class ShipmentOrderController {
     GetShipmentOrderBySearchUseCase getShipmentOrderBySearchUseCase;
     @Inject
     SearchShipmentOrdersUseCase searchShipmentOrdersUseCase;
+    @Inject
+    UpdateShipmentOrderFormat updateShipmentOrderFormat;
 
     @POST
     @Path("/create")
@@ -132,6 +134,19 @@ public class ShipmentOrderController {
             }
             return Response.ok(shipmentOrders).build();
         }catch (Exception e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PATCH
+    @Path("/update-format/{shipment_order_id}")
+    public Response updateShipmentOrderFormat(@PathParam("shipment_order_id") int shipment_order_id, UpdateShipmentOrderFormatReqDTO updateShipmentOrderFormatReqDTO) {
+        try {
+            if (updateShipmentOrderFormat.execute(shipment_order_id, updateShipmentOrderFormatReqDTO)) {
+                return Response.status(Response.Status.NO_CONTENT).build();
+            }
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }

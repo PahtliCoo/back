@@ -37,6 +37,8 @@ public class RequestController {
     GetRequestBySearchUseCase getRequestBySearchUseCase;
     @Inject
     SearchUserRequestsUseCase searchUserRequestsUseCase;
+    @Inject
+    UpdateRequestFormatUseCase updateRequestFormatUseCase;
 
     @POST
     @Path("/create")
@@ -150,6 +152,20 @@ public class RequestController {
             return Response.ok(requestResponseList).build();
         }catch (Exception e){
             System.out.println(e);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PATCH
+    @Path("update-format/{request_id}")
+    public Response updateOrderFormat(@PathParam("request_id") int request_id,UpdateRequestFormatReqDTO updateRequestFormatReqDTO){
+        try {
+            if(updateRequestFormatUseCase.execute(request_id, updateRequestFormatReqDTO)){
+                return Response.status(Response.Status.NO_CONTENT).build();
+            }
+            return Response.status(Response.Status.BAD_REQUEST).build();
+
+        }catch (Exception e){
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }

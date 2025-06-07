@@ -174,5 +174,13 @@ public class ShipmentOrderRepositoryImpl implements ShipmentOrderRepository, Pan
                 .map(shipmentOrderEntityMapper::toDomain)
                 .toList();
     }
+    @Override
+    @Transactional
+    public void updateShipmentOrderDetails(int shipmentOrderId, String shipmentOrderDetails){
+        ShipmentOrderEntity shipmentOrderEntity = ShipmentOrderEntity.findById(shipmentOrderId);
+        if (shipmentOrderEntity != null) {
+            shipmentOrderEntity.setDescription(shipmentOrderDetails);
+        }
+    }
 
 }
