@@ -24,14 +24,12 @@ public class MedRepositoryImpl implements MedRepository , PanacheRepositoryBase<
 
     @Override
     @Transactional
-    public boolean createMed(Med med){
+    public void createMed(Med med){
         MedEntity medEntity = medEntityMapper.toEntity(med);
         persist(medEntity);
         if(medEntity.isPersistent()){
-            medEntity.setMedId(med.getMedId());
-            return true;
+            med.setMedId(med.getMedId());
         }
-        return false;
     }
 
     @Override
@@ -44,6 +42,7 @@ public class MedRepositoryImpl implements MedRepository , PanacheRepositoryBase<
     }
 
     @Override
+    @Transactional
     public Med updateMedName(int medId, String name){
         MedEntity medEntity = findById(medId);
         if(medEntity == null){
@@ -76,5 +75,14 @@ public class MedRepositoryImpl implements MedRepository , PanacheRepositoryBase<
         }
         return medEntityList.stream()
                 .map(medEntityMapper::toDomain).toList();
+    }
+
+    @Override
+    public Med getMedByName(String name){
+        MedEntity med = find("name = ?1",name).firstResult();
+        if(med == null){
+            return null;
+        }
+        return medEntityMapper.toDomain(med);
     }
 }
