@@ -5,12 +5,7 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import life.pahtlicoo.application.dto.sysuser.UpdatePasswordRequestDTO;
 import life.pahtlicoo.application.service.SysUserService;
-import life.pahtlicoo.application.mapper.UserResponseMapper;
-import life.pahtlicoo.application.dto.sysuser.UserResponseDTO;
 import life.pahtlicoo.domain.model.SysUser;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @ApplicationScoped
 @Transactional
@@ -24,14 +19,14 @@ public class UpdateUserFirebasePasswordUseCase {
 
     public boolean execute(UpdatePasswordRequestDTO updatePasswordRequestDTO) {
         try{
-            SysUser sysUser = sysUserService.getSysUserByUserId(updatePasswordRequestDTO.getSysUserId());
+            SysUser sysUser = sysUserService.getSysUserByUserId(updatePasswordRequestDTO.getSys_user_id());
             if (sysUser == null) {
                 return false;
             }
-            if (!updatePasswordRequestDTO.getNewPassword().matches(PASSWORD_REGEX)) {
+            if (!updatePasswordRequestDTO.getNew_password().matches(PASSWORD_REGEX)) {
                 return false;
             }
-            return sysUserService.updateSysUserPasswordFirebase(sysUser.getFirebaseId(), updatePasswordRequestDTO.getNewPassword());
+            return sysUserService.updateSysUserPasswordFirebase(sysUser.getFirebaseId(), updatePasswordRequestDTO.getNew_password());
 
         }catch (Exception e) {
              return false;
