@@ -12,4 +12,6 @@ public interface MedSiteRepository {
     public boolean updateMedSiteInventory(MedSite medSite, int newInitialQuantity);
     public List<MedSite> getMedSiteByMedId(int medId);
     public MedSite getMedSiteByMedIdAndSiteId(int medId, int siteId);
+
+    public List<MedSite> getMedSiteByUserId(int sysUserId, String medName, int page);
 }
