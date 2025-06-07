@@ -19,7 +19,12 @@ import life.pahtlicoo.application.dto.sysuser.UpdatePasswordRequestDTO;
 import life.pahtlicoo.application.dto.sysuser.UserResponseDTO;
 import life.pahtlicoo.application.dto.sysuser.UpdateEmailUnifiedRequestDTO;
 
-import life.pahtlicoo.application.usecase.sysuser.*;
+import life.pahtlicoo.application.usecase.sysuser.CreateSysUserUseCase;
+import life.pahtlicoo.application.usecase.sysuser.GetUserByFirebaseId;
+import life.pahtlicoo.application.usecase.sysuser.UpdateUserEmailUseCase;
+import life.pahtlicoo.application.usecase.sysuser.UpdateUserFirebaseEmailUseCase;
+import life.pahtlicoo.application.usecase.sysuser.UpdateUserPasswordUseCase;
+import life.pahtlicoo.application.usecase.sysuser.UpdateUserFirebasePasswordUseCase;
 
 import life.pahtlicoo.application.mapper.UserResponseMapper;
 
@@ -44,25 +49,24 @@ public class SysUserController {
     UpdateUserPasswordUseCase updateUserPasswordUseCase;
 
     @Inject
-    UpdateUserFirebasePasswordUseCase updateUserFirebasePasswordUseCas;
+    UpdateUserFirebasePasswordUseCase updateUserFirebasePasswordUseCase;
 
     @Inject
     UserResponseMapper userResponseMapper;
-
 
     @POST
     @Path("/create")
     @Consumes(MediaType.APPLICATION_JSON)
     @NoAuthRequired
-    public Response createUser(@Valid CreateSysUserReqDTO createUserReqDTO) {
+    public Response createUser(@Valid CreateSysUserReqDTO createSysUserReqDTO) {
         try {
-            SysUser sysUser = createUserUseCase.execute(createUserReqDTO);
+            SysUser sysUser = createUserUseCase.execute(createSysUserReqDTO);
             if (sysUser == null) {
                 return Response.status(Response.Status.BAD_REQUEST).build();
             }
-            return Response.ok(sysUser).build();
-        }catch (Exception e){
-            return Response.serverError().entity(e.getMessage()).build();
+            return Response.status(Response.Status.CREATED).entity(userResponseMapper.toDTO(sysUser)).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
 
@@ -71,102 +75,84 @@ public class SysUserController {
     public Response getUser(UserFirebaseContentDTO userFirebaseContentDTO) {
         try {
             UserRequestResponseDTO userRequestResponseDTO = getUserByFirebaseId.execute(userFirebaseContentDTO);
+            if (userRequestResponseDTO == null) {
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
             return Response.ok(userRequestResponseDTO).build();
-        }catch (Exception e){
+        } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
 
     @POST
     @Path("/update-email")
-    public Response updateEmail(@Valid UpdateEmailRequestDTO requestDTO) {
+    public Response updateEmail(@Valid UpdateEmailRequestDTO updateEmailReqDTO) {
         try {
             UserResponseDTO updatedSysUserDTO = updateUserEmailUseCase.execute(
-                    requestDTO.getSysUserId(), requestDTO.getNewEmail()
+                    updateEmailReqDTO.getSysUserId(), updateEmailReqDTO.getNewEmail()
             );
+            if (updatedSysUserDTO == null) {
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
             return Response.ok(updatedSysUserDTO).build();
         } catch (Exception e) {
-            if (e instanceof IllegalArgumentException) {
-                return Response.status(Response.Status.BAD_REQUEST)
-                        .entity("Error al actualizar el email local: " + e.getMessage())
-                        .build();
-            } else {
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                        .entity("Error interno al actualizar el email local: " + e.getMessage())
-                        .build();
-            }
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
 
-
     @POST
     @Path("/firebase/update-email")
-    public Response updateFirebaseEmail(@Valid UpdateEmailRequestDTO requestDTO) {
+    public Response updateFirebaseEmail(@Valid UpdateEmailRequestDTO updateFirebaseEmailReqDTO) {
         try {
             UserResponseDTO resultDTO = updateUserFirebaseEmailUseCase.execute(
-                    requestDTO.getFirebaseId(), requestDTO.getNewEmail()
+                    updateFirebaseEmailReqDTO.getFirebaseId(), updateFirebaseEmailReqDTO.getNewEmail()
             );
+            if (resultDTO == null) {
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
             return Response.ok(resultDTO).build();
         } catch (Exception e) {
-            if (e instanceof IllegalArgumentException || e instanceof IllegalStateException) {
-                return Response.status(Response.Status.BAD_REQUEST)
-                        .entity("Error al actualizar el email en Firebase: " + e.getMessage())
-                        .build();
-            } else {
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                        .entity("Error interno al actualizar el email en Firebase: " + e.getMessage())
-                        .build();
-            }
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
 
     @POST
     @Path("/firebase/update-password")
-    public Response updateFirebasePassword(@Valid UpdatePasswordRequestDTO requestDTO) {
+    public Response updateFirebasePassword(@Valid UpdatePasswordRequestDTO updatePasswordReqDTO) {
         try {
-            UserResponseDTO resultDTO = updateUserFirebasePasswordUseCas.execute(
-                    requestDTO.getFirebaseId(), requestDTO.getNewPassword()
+            UserResponseDTO resultDTO = updateUserFirebasePasswordUseCase.execute(
+                    updatePasswordReqDTO.getFirebaseId(), updatePasswordReqDTO.getNewPassword()
             );
+            if (resultDTO == null) {
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
             return Response.ok(resultDTO).build();
         } catch (Exception e) {
-            if (e instanceof IllegalArgumentException || e instanceof IllegalStateException) {
-                return Response.status(Response.Status.BAD_REQUEST)
-                        .entity("Error al actualizar la contraseña en Firebase: " + e.getMessage())
-                        .build();
-            } else {
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                        .entity("Error interno al actualizar la contraseña en Firebase: " + e.getMessage())
-                        .build();
-            }
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
 
     @POST
     @Path("/unified-update-email")
-    public Response unifiedUpdateEmail(@Valid UpdateEmailUnifiedRequestDTO requestDTO) {
+    public Response unifiedUpdateEmail(@Valid UpdateEmailUnifiedRequestDTO updateEmailUnifiedReqDTO) {
         try {
-            updateUserFirebaseEmailUseCase.execute(
-                    requestDTO.getFirebaseId(),
-                    requestDTO.getNewEmail()
+            UserResponseDTO firebaseUpdateResult = updateUserFirebaseEmailUseCase.execute(
+                    updateEmailUnifiedReqDTO.getFirebaseId(),
+                    updateEmailUnifiedReqDTO.getNewEmail()
             );
-
-            UserResponseDTO localUpdateResult = updateUserEmailUseCase.execute(
-                    requestDTO.getSysUserId(),
-                    requestDTO.getNewEmail()
-            );
-
-            return Response.ok(localUpdateResult).build();
-
-        } catch (Exception e) {
-            if (e instanceof IllegalArgumentException || e instanceof IllegalStateException) {
-                return Response.status(Response.Status.BAD_REQUEST)
-                        .entity("Error unificado al actualizar el email: " + e.getMessage())
-                        .build();
-            } else {
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                        .entity("Error interno del servidor al actualizar el email de forma unificada: " + e.getMessage())
-                        .build();
+            if (firebaseUpdateResult == null) {
+                return Response.status(Response.Status.BAD_REQUEST).entity("Firebase email update failed.").build();
             }
+            UserResponseDTO localUpdateResult = updateUserEmailUseCase.execute(
+                    updateEmailUnifiedReqDTO.getSysUserId(),
+                    updateEmailUnifiedReqDTO.getNewEmail()
+            );
+            if (localUpdateResult == null) {
+                return Response.status(Response.Status.BAD_REQUEST).entity("Local email update failed after Firebase update.").build();
+            }
+            return Response.ok(localUpdateResult).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
 }

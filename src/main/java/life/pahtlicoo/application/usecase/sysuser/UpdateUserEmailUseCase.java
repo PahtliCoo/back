@@ -15,15 +15,18 @@ public class UpdateUserEmailUseCase {
 
     @Inject
     UserResponseMapper userResponseMapper;
-
     public UserResponseDTO execute(int sysUserId, String newEmail) {
-        if (newEmail == null || !newEmail.contains("@")) {
-            throw new IllegalArgumentException("El email proporcionado es inválido.");
+        try {
+            if (newEmail == null || !newEmail.contains("@")) {
+                throw new IllegalArgumentException("El email proporcionado es inválido.");
+            }
+            SysUser updatedUser = sysUserService.updateSysUserEmail(sysUserId, newEmail);
+            if (updatedUser == null) {
+                throw new IllegalArgumentException("No se pudo actualizar el email local. Usuario no encontrado o error en el servicio.");
+            }
+            return userResponseMapper.toDTO(updatedUser);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Error en el Use Case al actualizar el email local: " + e.getMessage());
         }
-        SysUser updatedUser = sysUserService.updateSysUserEmail(sysUserId, newEmail);
-        if (updatedUser == null) {
-            throw new IllegalArgumentException("No se pudo actualizar el email local. Usuario no encontrado o error en el servicio.");
-        }
-        return userResponseMapper.toDTO(updatedUser);
     }
 }

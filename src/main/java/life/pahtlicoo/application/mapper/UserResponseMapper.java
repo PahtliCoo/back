@@ -8,15 +8,13 @@ import life.pahtlicoo.application.dto.sysuser.UserResponseDTO;
 @ApplicationScoped
 public class UserResponseMapper {
 
-
     public UserResponseDTO toDTO(SysUser sysUser) {
-        UserResponseDTO dto = new UserResponseDTO();
-        dto.setSysUserId(sysUser.getSysUserId());
-        dto.setName(sysUser.getName());
-        dto.setLastName(sysUser.getLastName());
-        dto.setEmail(sysUser.getEmail());
-        dto.setFirebaseId(sysUser.getFirebaseId());
-
-        return dto;
+        UserResponseDTO userResponseDTO = new UserResponseDTO();
+        userResponseDTO.setSysUserId(sysUser.getSysUserId());
+        userResponseDTO.setName(sysUser.getName());
+        userResponseDTO.setLastName(sysUser.getLastName());
+        userResponseDTO.setEmail(sysUser.getEmail());
+        userResponseDTO.setFirebaseId(sysUser.getFirebaseId());
+        return userResponseDTO;
     }
 }
