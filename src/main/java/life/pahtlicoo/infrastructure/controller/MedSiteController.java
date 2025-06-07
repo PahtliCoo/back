@@ -124,6 +124,7 @@ public class MedSiteController {
         }
     }
 
+    //TODO básiocamente estas dos de arriba son lo mismo, pero, la de abajo le pone al initial y al current el mismo dato
     @PATCH
     @Path("/update/inventory")
     public Response updateMedSiteInventory(UpdateMedSiteQuantityReqDTO updateMedSiteQuantityReqDTO ) {
