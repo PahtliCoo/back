@@ -121,13 +121,25 @@ public class ShipmentOrderRepositoryImpl implements ShipmentOrderRepository, Pan
         List<Object> params = new ArrayList<>();
         int paramIndex = 1;
 
-      //  int paramIndex = 2;
-
+        // 1. Buscar dentro de REQUESTENTITY
         if (searchShipmentOrdersReqDTO.getName() != null && !searchShipmentOrdersReqDTO.getName().isBlank()) {
-            query.append(" AND LOWER(name) LIKE ?" + paramIndex);
-            params.add("%" + searchShipmentOrdersReqDTO.getName().toLowerCase() + "%");
-            paramIndex++;
+            // Si existe nos regresa la entidad de request
+            List<RequestEntity> requests = RequestEntity.find("LOWER(name) LIKE ?1",
+                    "%" + searchShipmentOrdersReqDTO.getName().toLowerCase() + "%").list();
+
+            if (requests.isEmpty()) {
+                return new ArrayList<>();
+            }
+
+            // Utilizamos sus id para la busqueda
+            StringBuilder inClause = new StringBuilder();
+            for (int i = 0; i < requests.size(); i++) {
+                if (i > 0) inClause.append(",");
+                inClause.append(requests.get(i).getRequestId());
+            }
+            query.append(" AND requestId IN (" + inClause + ")");
         }
+
 
         if (searchShipmentOrdersReqDTO.getState() != null) {
             query.append(" AND state = ?" + paramIndex);
@@ -155,6 +167,8 @@ public class ShipmentOrderRepositoryImpl implements ShipmentOrderRepository, Pan
                 params.toArray())
                 .page(searchShipmentOrdersReqDTO.getPage(), 5)
                 .list();
+
+
 
         return shipmentOrderEntities.stream()
                 .map(shipmentOrderEntityMapper::toDomain)

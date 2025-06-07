@@ -60,7 +60,7 @@ public class ShipmentOrderController {
     @GET
     @Path("/list-shipments")
     public Response searchShipmentOrders(@QueryParam("name") String name, @QueryParam("page") @DefaultValue("0") int page,
-                                       @QueryParam("date") String date, @QueryParam("state") Integer state) {
+                                       @QueryParam("date") String date, @QueryParam("state") Integer state){
 
         if (page < 0) {
             return Response.status(Response.Status.BAD_REQUEST)
