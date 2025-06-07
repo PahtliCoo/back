@@ -10,6 +10,7 @@ import life.pahtlicoo.domain.repository.HistoricDataRepository;
 import life.pahtlicoo.infrastructure.entity.HistoricDataEntity;
 import life.pahtlicoo.infrastructure.mapper.HistoricDataEntityMapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @ApplicationScoped
@@ -53,12 +54,12 @@ public class HistoricDataRepositoryImpl implements HistoricDataRepository, Panac
     }
 
     @Override
-    public HistoricData getHistoricDataBySiteIdAndMedIdAndDate(SearchHistoricDataReqDTO searchHistoricDataReqDTO){
+    public HistoricData getHistoricDataBySiteIdAndMedIdAndDate( HistoricData historicData){
         HistoricDataEntity historicDataEntity = find("siteId = ?1 AND medId = ?2 AND dateMonth = ?3 AND " +
-                "dateYear = ?4", searchHistoricDataReqDTO.getSiteId(),
-                searchHistoricDataReqDTO.getMedId(),
-                searchHistoricDataReqDTO.getDateMonth(),
-                searchHistoricDataReqDTO.getDateYear()).firstResult();
+                "dateYear = ?4", historicData.getSiteId(),
+                historicData.getMedId(),
+                historicData.getDateMonth(),
+                historicData.getDateYear()).firstResult();
 
         if(historicDataEntity == null){
             return null;
@@ -69,7 +70,31 @@ public class HistoricDataRepositoryImpl implements HistoricDataRepository, Panac
 
     @Override
     @Transactional
-    public void updateHistoricData(HistoricData historicData){
-        HistoricDataEntity.update("quantity = ?1 WHERE id = ?2", historicData.getQuantity(), historicData.getHistoricDataId());
+    public void updateHistoricDataByDateMedSite(List<HistoricData> historicDataList){
+        for (int i = 0; i < historicDataList.size(); i++) {
+            HistoricData historicData = historicDataList.get(i);
+            HistoricDataEntity historicDataEntity = findById(historicData.getHistoricDataId());
+            if(historicDataEntity != null){
+                historicDataEntity.setQuantity(historicData.getQuantity());
+            }
+        }
+    }
+
+    @Override
+    @Transactional
+    public boolean createListOfHistoricData(List<HistoricData> historicDataList) {
+
+        try{
+            List<HistoricDataEntity> historicDataEntities = new ArrayList<>();
+            for (int i = 0; i < historicDataList.size(); i++){
+                HistoricData historicData = historicDataList.get(i);
+                HistoricDataEntity historicDataEntity = historicDataEntityMapper.toEntity(historicData);
+                historicDataEntities.add(historicDataEntity);
+            }
+            persist(historicDataEntities);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
     }
 }

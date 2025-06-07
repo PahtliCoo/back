@@ -27,16 +27,13 @@ public class HistoricDataDomainMapper {
         return historicData;
     }
 
-    public SearchHistoricDataReqDTO searchHistoricDataToDomain(Site site, Med med, HistoricDataCSVDTO historicDataCSVDTO){
-        return new SearchHistoricDataReqDTO(site.getSiteId(), med.getMedId(),historicDataCSVDTO.getMonth(), historicDataCSVDTO.getYear(), historicDataCSVDTO.getQuantity());
-    }
-    public HistoricData createHistoricDataDomainFromSearchHistoricData(SearchHistoricDataReqDTO searchHistoricDataReqDTO ){
+    public HistoricData createHistoricDataDomainFromSearchHistoricData(Site site, Med med, HistoricDataCSVDTO historicDataCSVDTO){
         HistoricData historicData = new HistoricData();
-        historicData.setSiteId(searchHistoricDataReqDTO.getSiteId());
-        historicData.setMedId(searchHistoricDataReqDTO.getMedId());
-        historicData.setDateYear(searchHistoricDataReqDTO.getDateYear());
-        historicData.setDateMonth(searchHistoricDataReqDTO.getDateMonth());
-        historicData.setQuantity(searchHistoricDataReqDTO.getQuantity());
+        historicData.setSiteId(site.getSiteId());
+        historicData.setMedId(med.getMedId());
+        historicData.setDateYear(historicDataCSVDTO.getYear());
+        historicData.setDateMonth(historicDataCSVDTO.getMonth());
+        historicData.setQuantity(historicDataCSVDTO.getQuantity());
         // Siempre será 0 al insertar
         historicData.setProjectedQuantity(0);
         return historicData;

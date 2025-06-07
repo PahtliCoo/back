@@ -8,6 +8,7 @@ import life.pahtlicoo.application.dto.historicdata.CreateHistoricDataReqDTO;
 import life.pahtlicoo.application.dto.historicdata.GetHistoricDataReqDTO;
 import life.pahtlicoo.application.usecase.historicdata.*;
 import life.pahtlicoo.domain.model.HistoricData;
+import life.pahtlicoo.shared.annotation.NoAuthRequired;
 import org.jboss.resteasy.reactive.RestForm;
 
 
