@@ -20,15 +20,15 @@ import java.time.OffsetDateTime;
 
 public class GetShipmentOrderReqDTO {
     @NotBlank
-    private String orderName;
-    private OffsetDateTime createdAt;
+    private String order_name;
+
+    private OffsetDateTime created_at;
     private int state;
     @NotBlank
-    private String siteName;
+    private String site_name;
     @NotBlank
-    private int requestId;
+    private int request_id;
     @NotBlank
-    private int shipmentId;
+    private int shipment_id;
     private String description;
-
 }

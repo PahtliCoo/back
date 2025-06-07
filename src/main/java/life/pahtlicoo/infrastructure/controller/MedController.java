@@ -68,7 +68,6 @@ public class MedController {
 
     @GET
     @Path("")
-    @NoAuthRequired
     public Response searchMeds(@QueryParam("name") String name) {
         try{
             List<MedResponseDTO> medResponseDTOList = getMedsBySearchNameUseCase.execute(name);

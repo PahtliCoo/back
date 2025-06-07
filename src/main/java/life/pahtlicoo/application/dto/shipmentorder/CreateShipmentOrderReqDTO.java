@@ -11,7 +11,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateShipmentOrderReqDTO {
-    @NotBlank
     private int request_id;
     private String description;
     private int state;
