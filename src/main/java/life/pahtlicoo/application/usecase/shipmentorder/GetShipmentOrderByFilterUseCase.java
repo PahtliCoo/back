@@ -36,11 +36,12 @@ public class GetShipmentOrderByFilterUseCase {
 
             // 1. Filter / validate data
             SysUser user = sysUserService.getSysUserByUserId(userId);
-            Credential warehouseCredential = credentialService.getRole(3); // warehouse_admin
-            Credential logisticsCredential = credentialService.getRole(2); // logistics_admin (supuesto)
-            boolean isWarehouseOrLogisticsAdmin = user.getCredentialId() == warehouseCredential.getCredentialId()
-                    || user.getCredentialId() == logisticsCredential.getCredentialId();
+            Credential logisticsCredential = credentialService.getRole(2); // logistics_admin
 
+            Credential warehouseCredential = credentialService.getRole(3); // warehouse_admin
+            boolean isWarehouseOrLogisticsAdmin = user.getCredentialId() == warehouseCredential.getCredentialId()
+
+                    || user.getCredentialId() == logisticsCredential.getCredentialId();
             List<ShipmentOrder> shipmentOrderList = new ArrayList<>();
 
             // Case for warehouse admin filter
