@@ -18,9 +18,11 @@ import lombok.Setter;
 public class MedSiteResDTO {
     @NotBlank
     private String med_name;
-    @NotBlank //TODO si truena algo lo quitamos de una gg
+    @NotBlank
     private String site_name;
     private int total_consumed;
     private int initial_quantity;
     private int current_quantity;
+    private int med_id;
+    private int site_id;
 }
