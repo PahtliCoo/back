@@ -8,6 +8,7 @@ import life.pahtlicoo.application.dto.historicdata.CreateHistoricDataReqDTO;
 import life.pahtlicoo.application.dto.historicdata.GetHistoricDataReqDTO;
 import life.pahtlicoo.application.usecase.historicdata.*;
 import life.pahtlicoo.domain.model.HistoricData;
+import life.pahtlicoo.shared.annotation.NoAuthRequired;
 import org.jboss.resteasy.reactive.RestForm;
 
 
@@ -84,6 +85,7 @@ public class HistoricDataController {
     @POST
     @Path("/add-data")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @NoAuthRequired
     public Response importHistoricData(@RestForm("file") InputStream file){
         try{
             if(readHistoricDataCSVUseCase.execute(file)){

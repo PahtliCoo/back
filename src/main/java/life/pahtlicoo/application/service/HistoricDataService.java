@@ -29,10 +29,13 @@ public class HistoricDataService {
     public void deleteHistoricData(int historicDataId) {
         historicDataRepository.deleteHistoricData(historicDataId);
     }
-    public HistoricData getHistoricDataBySiteIdAndMedIdAndDate(SearchHistoricDataReqDTO searchHistoricDataReqDTO){
-        return historicDataRepository.getHistoricDataBySiteIdAndMedIdAndDate(searchHistoricDataReqDTO);
+    public HistoricData getHistoricDataBySiteIdAndMedIdAndDate( HistoricData historicData){
+        return historicDataRepository.getHistoricDataBySiteIdAndMedIdAndDate( historicData);
     }
-    public void updateHistoricData(HistoricData historicData){
-        historicDataRepository.updateHistoricData(historicData);
+    public void updateHistoricDataByDateMedSite(List<HistoricData> historicData){
+        historicDataRepository.updateHistoricDataByDateMedSite(historicData);
+    }
+    public boolean createListOfHistoricData(List<HistoricData> historicData){
+        return historicDataRepository.createListOfHistoricData(historicData);
     }
 }

@@ -9,9 +9,9 @@ public interface HistoricDataRepository {
     public void createHistoricData(HistoricData historicData);
     public List<HistoricData> getAllHistoricDataBySiteId(int siteId);
     public List<HistoricData> getAllByYearAndMonthRange(int year, int startMonth, int endMonth, String Type);
-    //public void updateHistoricData(HistoricData historicData);
-    public void updateHistoricData(HistoricData historicData);
+    public void updateHistoricDataByDateMedSite(List<HistoricData> historicData);
     public void deleteHistoricData(int historicDataId);
-    public HistoricData getHistoricDataBySiteIdAndMedIdAndDate(SearchHistoricDataReqDTO searchHistoricDataReqDTO);
+    public HistoricData getHistoricDataBySiteIdAndMedIdAndDate(HistoricData historicData);
+    public boolean createListOfHistoricData(List<HistoricData> historicData);
 }
 //TODO aqui debe haber un endpoint para cargar un friego de data
