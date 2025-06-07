@@ -85,7 +85,6 @@ public class HistoricDataController {
     @POST
     @Path("/add-data")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @NoAuthRequired
     public Response importHistoricData(@RestForm("file") InputStream file){
         try{
             if(readHistoricDataCSVUseCase.execute(file)){
