@@ -143,21 +143,20 @@ public class MedSiteController {
 
     @GET
     @Path("/sys-user/{sys_user_id}")
-    @NoAuthRequired
     public Response getInventoryBySysUserId(@PathParam("sys_user_id") int sysUserId,
                                             @QueryParam("page") @DefaultValue("0") int page,
                                             @QueryParam("med_name") String med_name) {
 
         if (page < 0) {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("Invalid page number. Must be >= 0.") //TODO should i keep this?
+                    .entity("Invalid page number. Must be >= 0.")
                     .build();
         }
 
         GetUserMedSiteReqDTO getUserMedSiteReqDTO = new GetUserMedSiteReqDTO(sysUserId, med_name, page);
 
         try {
-            List<MedSiteResDTO> medSiteResList = getMedSiteByUserIdUseCase.execute(getUserMedSiteReqDTO); //TODO debe ser el usecase
+            List<MedSiteResDTO> medSiteResList = getMedSiteByUserIdUseCase.execute(getUserMedSiteReqDTO);
             return Response.ok(medSiteResList).build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
@@ -166,7 +165,6 @@ public class MedSiteController {
 
     @PATCH
     @Path("/register-consumption/{site_id}/{med_id}")
-    @NoAuthRequired
     public Response registerNewMedSiteConsumption(@PathParam("site_id") int siteId, @PathParam("med_id") int medId,
                                                   RegisterNewMedSiteConsumptionReqDTO registerNewMedSiteConsumptionReqDTO) {
         RegisterMedSiteConsumptionDTO registerMedSiteConsumptionDTO = new RegisterMedSiteConsumptionDTO(medId, siteId,
