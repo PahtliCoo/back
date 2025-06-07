@@ -30,11 +30,11 @@ public class UpdateUserEmailUseCase {
                 return null;
             }
 
-            if(!sysUser.getEmail().equals(updateEmailRequestDTO.getOldEmail())){
+            if(!sysUser.getEmail().equals(updateEmailRequestDTO.getOldEmail().toLowerCase())){
                 return null;
             }
 
-             if(!sysUserService.updateSysUserEmailFirebase(sysUser,updateEmailRequestDTO.getNewEmail())){
+             if(!sysUserService.updateSysUserEmailFirebase(sysUser,updateEmailRequestDTO.getNewEmail().toLowerCase())){
                  return null;
              }
 

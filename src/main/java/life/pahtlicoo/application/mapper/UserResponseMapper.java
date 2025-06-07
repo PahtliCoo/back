@@ -13,7 +13,7 @@ public class UserResponseMapper {
         userResponseDTO.setSysUserId(sysUser.getSysUserId());
         userResponseDTO.setName(sysUser.getName());
         userResponseDTO.setLastName(sysUser.getLastName());
-        userResponseDTO.setEmail(sysUser.getEmail());
+        userResponseDTO.setEmail(sysUser.getEmail().toLowerCase());
         userResponseDTO.setFirebaseId(sysUser.getFirebaseId());
         return userResponseDTO;
     }
