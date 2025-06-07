@@ -46,7 +46,7 @@ public class SearchUserRequestsByNameUseCase {
         List<RequestResponseDTO> requestResponseDTOList = new ArrayList<>();
         for (Request request : requestList) {
             //Get the correct site name
-            SysUser sysUser = sysUserService.getSysUserByUid(request.getSysUserId());
+            SysUser sysUser = sysUserService.getSysUserByUserId(request.getSysUserId());
             Site siteTemp = siteService.findSite(sysUser.getSiteId());
             RequestResponseDTO requestResponseDTO = requestResponseDomainMapper.toRequestResponse(request, siteTemp);
             requestResponseDTOList.add(requestResponseDTO);
