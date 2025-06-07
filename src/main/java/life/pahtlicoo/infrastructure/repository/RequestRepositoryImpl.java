@@ -242,4 +242,13 @@ public class RequestRepositoryImpl implements RequestRepository, PanacheReposito
                 .toList();
     }
 
+    @Override
+    @Transactional
+    public void updateRequestDescription(int requestId, String description){
+        RequestEntity requestEntity = findById(requestId);
+        if(requestEntity != null){
+            requestEntity.setDescription(description);
+        }
+    }
+
 }
