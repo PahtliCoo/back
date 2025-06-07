@@ -17,7 +17,7 @@ import life.pahtlicoo.shared.annotation.NoAuthRequired;
 
 import java.util.List;
 
-@Path("/med-site") //TODO capaz refactor a inventory no?
+@Path("/med-site")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class MedSiteController {
@@ -37,12 +37,13 @@ public class MedSiteController {
     UpdateMedSiteInventoryUseCase updateMedSiteInventoryUseCase;
     @Inject
     GetMedSiteByUserIdUseCase getMedSiteByUserIdUseCase;
+    @Inject
+    RegisterNewMedSiteConsumptionUseCase registerNewMedSiteConsumptionUseCase;
 
     @POST
     @Path("/create")
-    @NoAuthRequired//TODO remove
     public Response createMedSite(CreateMedSiteReqDTO createMedSiteReqDTO) {
-        try{
+        try {
             createMedSiteUseCase.execute(createMedSiteReqDTO);
             //TODO capaz se puede añadir solo algo para que valide que los datos estan bien y tal
             return Response.status(Response.Status.CREATED).build();
@@ -55,7 +56,7 @@ public class MedSiteController {
     @Path("/delete")
     public Response deleteMedSite(DeleteMedSiteReqDTO deleteMedSiteReqDTO) {
         try {
-            if(deleteMedSiteUseCase.execute(deleteMedSiteReqDTO)){
+            if (deleteMedSiteUseCase.execute(deleteMedSiteReqDTO)) {
                 return Response.status(Response.Status.NO_CONTENT).build();
             }
             return Response.status(Response.Status.BAD_REQUEST).build();
@@ -67,25 +68,25 @@ public class MedSiteController {
 
     @POST
     @Path("/get/medandsitebyid")
-    public Response getMedSiteByMedIdAndSiteId(GetMedSiteByMedIdAndSiteIdReqDTO getMedSiteByMedIdAndSiteIdReqDTO) {
+    public Response getMedSiteByMedIdAndSiteId(GetMedSiteByMedIdAndSiteIdReqDTO getMedSiteByMedIdAndSiteIdReqDTO) { //TODO DEPRECATED
         try {
             MedSite medSite = getMedSiteByMedIdAndSiteIdUseCase.execute(getMedSiteByMedIdAndSiteIdReqDTO);
-            if(medSite == null){
+            if (medSite == null) {
                 return Response.status(Response.Status.NOT_FOUND).build();
             }
             return Response.ok(medSite).build();
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
 
     @GET
     @Path("/med/{medId}")
-    public Response getMedSiteByMedIdUseCase(@PathParam("medId") int medId) {
+    public Response getMedSiteByMedIdUseCase(@PathParam("medId") int medId) { //TODO DEPRECATED
         try {
             List<MedSite> medSites = getMedSiteByMedIdUseCase.execute(medId);
-            if(medSites == null){
+            if (medSites == null) {
                 return Response.status(Response.Status.NOT_FOUND).build();
             }
             return Response.ok(medSites).build();
@@ -97,14 +98,14 @@ public class MedSiteController {
 
     @GET
     @Path("/{siteId}")
-    public Response getMedSiteBySiteIdUseCase(@PathParam("siteId") int siteId) {
+    public Response getMedSiteBySiteIdUseCase(@PathParam("siteId") int siteId) { //TODO DEPRECATED
         try {
             List<MedSite> medSites = getMedSiteBySiteIdUseCase.execute(siteId);
-            if(medSites == null){
+            if (medSites == null) {
                 return Response.status(Response.Status.NOT_FOUND).build();
             }
             return Response.ok(medSites).build();
-        }catch (Exception e) {
+        } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -113,14 +114,14 @@ public class MedSiteController {
 
     @PATCH
     @Path("/update/quantity")
-    public Response updateMedSiteCurrentQuantity(UpdateMedSiteQuantityReqDTO updateMedSiteQuantityReqDTO) {
-        try{
-            if(updateMedSiteCurrentQuantityUseCase.execute(updateMedSiteQuantityReqDTO)){
+    public Response updateMedSiteCurrentQuantity(UpdateMedSiteQuantityReqDTO updateMedSiteQuantityReqDTO) { //TODO DEPRECATED
+        try {
+            if (updateMedSiteCurrentQuantityUseCase.execute(updateMedSiteQuantityReqDTO)) {
                 return Response.status(Response.Status.NO_CONTENT).build();
             }
             return Response.status(Response.Status.BAD_REQUEST).build();
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -128,9 +129,9 @@ public class MedSiteController {
     //TODO básiocamente estas dos de arriba son lo mismo, pero, la de abajo le pone al initial y al current el mismo dato
     @PATCH
     @Path("/update/inventory")
-    public Response updateMedSiteInventory(UpdateMedSiteQuantityReqDTO updateMedSiteQuantityReqDTO ) {
+    public Response updateMedSiteInventory(UpdateMedSiteQuantityReqDTO updateMedSiteQuantityReqDTO) { //TODO DEPRECATED
         try {
-            if(updateMedSiteInventoryUseCase.execute(updateMedSiteQuantityReqDTO)){
+            if (updateMedSiteInventoryUseCase.execute(updateMedSiteQuantityReqDTO)) {
                 return Response.status(Response.Status.NO_CONTENT).build();
             }
             return Response.status(Response.Status.BAD_REQUEST).build();
@@ -147,7 +148,6 @@ public class MedSiteController {
                                             @QueryParam("page") @DefaultValue("0") int page,
                                             @QueryParam("med_name") String med_name) {
 
-        System.out.println("Inside getInventoryBySysUserId method");
         if (page < 0) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity("Invalid page number. Must be >= 0.") //TODO should i keep this?
@@ -156,15 +156,28 @@ public class MedSiteController {
 
         GetUserMedSiteReqDTO getUserMedSiteReqDTO = new GetUserMedSiteReqDTO(sysUserId, med_name, page);
 
-        try{
+        try {
             List<MedSiteResDTO> medSiteResList = getMedSiteByUserIdUseCase.execute(getUserMedSiteReqDTO); //TODO debe ser el usecase
             return Response.ok(medSiteResList).build();
-        }catch (Exception e){
-            System.out.println("Error");
-            System.out.println(e);
+        } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
+    }
 
+    @PATCH
+    @Path("/register-consumption/{site_id}/{med_id}")
+    @NoAuthRequired
+    public Response registerNewMedSiteConsumption(@PathParam("site_id") int siteId, @PathParam("med_id") int medId,
+                                                  RegisterNewMedSiteConsumptionReqDTO registerNewMedSiteConsumptionReqDTO) {
+        RegisterMedSiteConsumptionDTO registerMedSiteConsumptionDTO = new RegisterMedSiteConsumptionDTO(medId, siteId,
+                registerNewMedSiteConsumptionReqDTO.getConsumption());
+
+        try {
+            registerNewMedSiteConsumptionUseCase.execute(registerMedSiteConsumptionDTO);
+            return Response.status(Response.Status.OK).build();
+        }catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
 
     }
 

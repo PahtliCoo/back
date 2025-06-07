@@ -9,6 +9,7 @@ import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import life.pahtlicoo.domain.model.MedSite;
 import life.pahtlicoo.domain.repository.MedSiteRepository;
@@ -113,4 +114,22 @@ public class MedSiteRepositoryImpl implements MedSiteRepository, PanacheReposito
         return medSiteEntities.stream().map(medSiteEntityMapper::toDomain).toList();
     }
 
+    @Override
+    @Transactional
+    public void registerNewMedSiteConsumption(int medId, int siteId, int consumption){
+
+        MedSiteEntity medSiteEntity =  find("medSiteID.medId = ?1 and medSiteID.siteId = ?2", medId, siteId).firstResult();
+
+        if (medSiteEntity == null) {
+            throw new Error("No se encontró la relación med-site para los IDs proporcionados.");
+        }
+
+        int currentQuantity = medSiteEntity.getCurrentQuantity();
+
+        if (consumption > currentQuantity) {
+            throw new Error("El consumo excede la cantidad actual disponible.");
+        }
+
+        medSiteEntity.setCurrentQuantity(currentQuantity - consumption);
+    }
 }

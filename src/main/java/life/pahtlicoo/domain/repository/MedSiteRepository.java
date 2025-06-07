@@ -14,4 +14,5 @@ public interface MedSiteRepository {
     public MedSite getMedSiteByMedIdAndSiteId(int medId, int siteId);
 
     public List<MedSite> getMedSiteByUserId(int sysUserId, String medName, int page);
+    public void registerNewMedSiteConsumption(int medId, int siteId, int consumption);
 }
