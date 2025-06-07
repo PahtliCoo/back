@@ -10,17 +10,14 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import life.pahtlicoo.application.dto.medsite.CreateMedSiteReqDTO;
-import life.pahtlicoo.application.dto.medsite.DeleteMedSiteReqDTO;
-import life.pahtlicoo.application.dto.medsite.GetMedSiteByMedIdAndSiteIdReqDTO;
-import life.pahtlicoo.application.dto.medsite.UpdateMedSiteQuantityReqDTO;
+import life.pahtlicoo.application.dto.medsite.*;
 import life.pahtlicoo.application.usecase.medsite.*;
 import life.pahtlicoo.domain.model.MedSite;
 import life.pahtlicoo.shared.annotation.NoAuthRequired;
 
 import java.util.List;
 
-@Path("/med-site")
+@Path("/med-site") //TODO capaz refactor a inventory no?
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class MedSiteController {
@@ -38,10 +35,12 @@ public class MedSiteController {
     UpdateMedSiteCurrentQuantityUseCase updateMedSiteCurrentQuantityUseCase;
     @Inject
     UpdateMedSiteInventoryUseCase updateMedSiteInventoryUseCase;
+    @Inject
+    GetMedSiteByUserIdUseCase getMedSiteByUserIdUseCase;
 
     @POST
     @Path("/create")
-    @NoAuthRequired
+    @NoAuthRequired//TODO remove
     public Response createMedSite(CreateMedSiteReqDTO createMedSiteReqDTO) {
         try{
             createMedSiteUseCase.execute(createMedSiteReqDTO);
@@ -109,6 +108,8 @@ public class MedSiteController {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
+    //TODO esta ruta esta medio insegura ajjaja porq literal ocupas el site id para que te diga, no necesita saber que
+    //el usuario de menos pertenece o tiene ese site, maybe un fix
 
     @PATCH
     @Path("/update/quantity")
@@ -137,6 +138,34 @@ public class MedSiteController {
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    @GET
+    @Path("/sys-user/{sys_user_id}")
+    @NoAuthRequired
+    public Response getInventoryBySysUserId(@PathParam("sys_user_id") int sysUserId,
+                                            @QueryParam("page") @DefaultValue("0") int page,
+                                            @QueryParam("med_name") String med_name) {
+
+        System.out.println("Inside getInventoryBySysUserId method");
+        if (page < 0) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("Invalid page number. Must be >= 0.") //TODO should i keep this?
+                    .build();
+        }
+
+        GetUserMedSiteReqDTO getUserMedSiteReqDTO = new GetUserMedSiteReqDTO(sysUserId, med_name, page);
+
+        try{
+            List<MedSiteResDTO> medSiteResList = getMedSiteByUserIdUseCase.execute(getUserMedSiteReqDTO); //TODO debe ser el usecase
+            return Response.ok(medSiteResList).build();
+        }catch (Exception e){
+            System.out.println("Error");
+            System.out.println(e);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+
+
     }
 
 }

@@ -6,6 +6,7 @@
 package life.pahtlicoo.infrastructure.repository;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
+import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -17,6 +18,7 @@ import life.pahtlicoo.infrastructure.entity.RequestDetailEntity;
 import life.pahtlicoo.infrastructure.mapper.MedSiteEntityMapper;
 import life.pahtlicoo.infrastructure.mapper.RequestDetailEntityMapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @ApplicationScoped
@@ -84,6 +86,31 @@ public class MedSiteRepositoryImpl implements MedSiteRepository, PanacheReposito
             return null;
         }
         return medSiteEntityMapper.toDomain(medSiteEntity);
+    }
+
+    @Override
+    public List<MedSite> getMedSiteByUserId(int sysUserId, String medName, int page){
+        StringBuilder query = new StringBuilder("""
+        SELECT ms FROM MedSiteEntity ms
+        JOIN SysUserEntity su ON ms.medSiteID.siteId = su.siteId
+        WHERE su.sysUserId = ?1
+    """);
+
+        List<Object> params = new ArrayList<>();
+        params.add(sysUserId);
+
+        int paramIndex = 2;
+
+        if (medName != null && !medName.isBlank()) {
+            query.append(" AND LOWER(ms.medSiteID.medName) LIKE ?" + paramIndex);
+            params.add("%" + medName.toLowerCase() + "%");
+            paramIndex++;
+        }
+
+        List<MedSiteEntity> medSiteEntities = find(query.toString(), Sort.descending("ms.createdAt"),
+                params.toArray()).page(page, 5).list();
+
+        return medSiteEntities.stream().map(medSiteEntityMapper::toDomain).toList();
     }
 
 }
