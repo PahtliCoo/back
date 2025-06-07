@@ -113,20 +113,17 @@ public class ReadHistoricDataCSVUseCase {
                 if ((i + 1) % BATCH_SIZE == 0 || i == historicDataCSVDTOList.size() - 1) {
                     // Procesar batch de nuevos registros
                     if (!newHistoricDataSet.isEmpty()) {
-                        System.out.println("Procesando batch de nuevos registros: " + newHistoricDataSet.size());
                         historicDataService.createListOfHistoricData(newHistoricDataSet);
                         newHistoricDataSet.clear();
                     }
 
                     // Procesar batch de actualizaciones
                     if (!updateHistoricDataSet.isEmpty()) {
-                        System.out.println("Procesando batch de actualizaciones: " + updateHistoricDataSet.size());
                         historicDataService.updateHistoricDataByDateMedSite(updateHistoricDataSet);
                         updateHistoricDataSet.clear();
                     }
                 }
             }
-
             return true;
         } catch (Exception e) {
             return false;
