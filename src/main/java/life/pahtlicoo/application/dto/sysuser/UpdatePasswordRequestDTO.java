@@ -11,7 +11,7 @@ import lombok.AllArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdatePasswordRequestDTO {
-    private int sysUserId;
+    private int sys_user_id;
     @NotBlank
-    private String newPassword;
+    private String new_password;
 }
