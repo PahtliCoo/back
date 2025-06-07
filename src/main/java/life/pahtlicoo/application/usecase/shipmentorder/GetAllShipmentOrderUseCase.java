@@ -40,7 +40,7 @@ public class GetAllShipmentOrderUseCase {
         List<GetShipmentOrderReqDTO> shipmentOrderResponeseDTOList = new ArrayList<>();
         for (ShipmentOrder shipmentOrder : shipmentOrderList) {
             Request request = requestService.getRequest(shipmentOrder.getRequestId());
-            SysUser sysUser = sysUserService.getSysUserByUid(request.getSysUserId());
+            SysUser sysUser = sysUserService.getSysUserByUserId(request.getSysUserId());
             Site site = siteService.findSite(sysUser.getSiteId());
             GetShipmentOrderReqDTO getShipmentOrderReqDTO = shipmentOrderResponseDomainMapper.toShipmentOrderResponse(shipmentOrder, request, site);
             shipmentOrderResponeseDTOList.add(getShipmentOrderReqDTO);

@@ -51,7 +51,7 @@ public class SearchShipmentOrdersUseCase {
         for (ShipmentOrder shipmentOrder : shipmentOrderList) {
             //Get the correct site name
             Request request = requestService.getRequest(shipmentOrder.getRequestId());
-            SysUser sysUser = sysUserService.getSysUserByUid(request.getSysUserId());
+            SysUser sysUser = sysUserService.getSysUserByUserId(request.getSysUserId());
             Site site = siteService.findSite(sysUser.getSiteId());
             GetShipmentOrderReqDTO getShipmentOrderReqDTO = shipmentOrderResponseDomainMapper.toShipmentOrderResponse(shipmentOrder, request, site);
             shipmentOrderResponeseDTOList.add(getShipmentOrderReqDTO);

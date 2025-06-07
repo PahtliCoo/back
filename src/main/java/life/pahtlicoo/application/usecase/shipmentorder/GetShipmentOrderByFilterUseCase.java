@@ -35,7 +35,7 @@ public class GetShipmentOrderByFilterUseCase {
             Integer day = getShipmentOrderFilterReqDTO.getDay();
 
             // 1. Filter / validate data
-            SysUser user = sysUserService.getSysUserByUid(userId);
+            SysUser user = sysUserService.getSysUserByUserId(userId);
             Credential credential = credentialService.getRole(3); // ROLE warehouse_admin
             boolean isWarehouseAdmin = (user.getCredentialId() == credential.getCredentialId());
 
@@ -69,7 +69,7 @@ public class GetShipmentOrderByFilterUseCase {
             for (ShipmentOrder shipmentOrder : shipmentOrderList) {
                 //Get the correct site name
                 Request request = requestService.getRequest(shipmentOrder.getRequestId());
-                SysUser sysUser = sysUserService.getSysUserByUid(request.getSysUserId());
+                SysUser sysUser = sysUserService.getSysUserByUserId(request.getSysUserId());
                 Site site = siteService.findSite(sysUser.getSiteId());
                 GetShipmentOrderReqDTO getShipmentOrderReqDTO = shipmentOrderResponseDomainMapper.toShipmentOrderResponse(shipmentOrder, request, site);
                 shipmentOrderResponseDTOList.add(getShipmentOrderReqDTO);
