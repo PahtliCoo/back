@@ -14,12 +14,9 @@ import life.pahtlicoo.domain.model.Med;
 import life.pahtlicoo.domain.model.Site;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @ApplicationScoped
-@Transactional
 public class ReadHistoricDataCSVUseCase {
     @Inject
     HistoricDataService historicDataService;
@@ -38,6 +35,9 @@ public class ReadHistoricDataCSVUseCase {
         headersEsperados.put("nombre_hospital", 2);
         headersEsperados.put("número_mes", 3);
         headersEsperados.put("año", 4);
+
+        // Tamaño del batch
+        final int BATCH_SIZE = 50;
 
         try {
             // Obtain all the values
@@ -71,39 +71,57 @@ public class ReadHistoricDataCSVUseCase {
             if (historicDataCSVDTOList.isEmpty()) {
                 return false;
             }
-
+            List<HistoricData> newHistoricDataSet = new ArrayList<>();
+            List<HistoricData> updateHistoricDataSet = new ArrayList<>();
             // Procesar todos los objetos de la lista
-            for (HistoricDataCSVDTO row : historicDataCSVDTOList) {
-                try {
-                    // 1. Verificar si el medicamento existe
-                    Med med = medService.getMedByName(row.getMedName().toLowerCase());
-                    if (med == null) {
-                        med = new Med();
-                        med.setName(row.getMedName().toLowerCase());
-                        medService.createMed(med);
-                        med = medService.getMedByName(row.getMedName().toLowerCase());
-                    }
+            for (int i = 0; i < historicDataCSVDTOList.size(); i++) {
+                HistoricDataCSVDTO row = historicDataCSVDTOList.get(i);
+                // 1. Obtener sitio
+                String siteName = row.getSiteName();
+                Site site = siteService.findSiteByName(siteName);
+                if (site == null) {
+                    return false;
+                }
 
-                    // 2. Obtener sitio
-                    Site site = siteService.findSiteByName(row.getSiteName().toLowerCase());
-                    if (site == null) {
+                // 2. Verificar si el medicamento existe
+                String medName = row.getMedName();
+                Med med = medService.getMedByName(medName);
+                if (med == null) {
+                    med = new Med();
+                    med.setName(medName);
+                    medService.createMed(med);
+                    med = medService.getMedByName(medName);
+                    if (med == null) {
                         return false;
                     }
+                }
 
-                    // 3. Revisar datos históricos
-                    SearchHistoricDataReqDTO searchHistoricDataReqDTO = historicDataDomainMapper.searchHistoricDataToDomain(site, med, row);
-                    HistoricData historicData = historicDataService.getHistoricDataBySiteIdAndMedIdAndDate(searchHistoricDataReqDTO);
+                HistoricData historicData = historicDataDomainMapper.createHistoricDataDomainFromSearchHistoricData(site,med,row);
 
-                    // 4. Crear o actualizar datos históricos
-                    if (historicData == null) {
-                        historicData = historicDataDomainMapper.createHistoricDataDomainFromSearchHistoricData(searchHistoricDataReqDTO);
-                        historicDataService.createHistoricData(historicData);
-                    } else {
-                        historicData.setQuantity(row.getQuantity());
-                        historicDataService.updateHistoricData(historicData);
+                historicData = historicDataService.getHistoricDataBySiteIdAndMedIdAndDate(historicData);
+                // 4. Crear o actualizar datos históricos
+                if (historicData != null) {
+                    historicData.setQuantity(row.getQuantity());
+                    updateHistoricDataSet.add(historicData);
+
+                }else{
+                    historicData = historicDataDomainMapper.createHistoricDataDomainFromSearchHistoricData(site,med,row);
+                    newHistoricDataSet.add(historicData);
+                }
+
+                // Procesar batches cuando alcancen el tamaño definido
+                if ((i + 1) % BATCH_SIZE == 0 || i == historicDataCSVDTOList.size() - 1) {
+                    // Procesar batch de nuevos registros
+                    if (!newHistoricDataSet.isEmpty()) {
+                        historicDataService.createListOfHistoricData(newHistoricDataSet);
+                        newHistoricDataSet.clear();
                     }
-                } catch (Exception e) {
-                    return false;
+
+                    // Procesar batch de actualizaciones
+                    if (!updateHistoricDataSet.isEmpty()) {
+                        historicDataService.updateHistoricDataByDateMedSite(updateHistoricDataSet);
+                        updateHistoricDataSet.clear();
+                    }
                 }
             }
             return true;
@@ -111,6 +129,4 @@ public class ReadHistoricDataCSVUseCase {
             return false;
         }
     }
-
-
 }

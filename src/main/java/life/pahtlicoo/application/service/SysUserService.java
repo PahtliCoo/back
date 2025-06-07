@@ -17,39 +17,33 @@ public class SysUserService {
 
     public SysUser createUser(SysUser sysUser) {
         return sysUserRepository.createSysUser(sysUser);
-    };
+    }
 
     public SysUser createUserFirebase(SysUser user, String password) {
         return sysUserRepository.createSysUserFirebase(user, password);
     }
+
     public Boolean deleteUserFirebase(String userUid){
         return sysUserRepository.deleteSysUserFirebase(userUid);
     }
 
-    public SysUser getSysUserByUid(int userId) {
+    public SysUser getSysUserByUserId(int userId) {
         return sysUserRepository.getSysUser(userId);
     }
 
     public SysUser getSysUserByFirebaseId(String firebaseId){
         return sysUserRepository.getSysUserByFirebaseId(firebaseId);
     }
-    public SysUser updateSysUserEmail(int sysUserId, String newEmail) {
-        SysUser updatedUser = sysUserRepository.updateSysUserEmail(sysUserId, newEmail);
-        return updatedUser;
+
+    public SysUser updateSysUserEmail(SysUser sysUser) {
+        return sysUserRepository.updateSysUserEmail(sysUser);
     }
 
-    public SysUser updateSysUserPassword(int sysUserId, String newPassword) {
-        SysUser updatedUser = sysUserRepository.updateSysUserPassword(sysUserId, newPassword);
-        return updatedUser;
-    }
-
-    public Boolean updateSysUserEmailFirebase(String firebaseId, String newEmail) {
-        Boolean success = sysUserRepository.updateSysUserEmailFirebase(firebaseId, newEmail);
-        return success;
+    public Boolean updateSysUserEmailFirebase(SysUser sysUser, String newEmail) {
+        return sysUserRepository.updateSysUserEmailFirebase(sysUser, newEmail);
     }
 
     public Boolean updateSysUserPasswordFirebase(String firebaseId, String newPassword) {
-        Boolean success = sysUserRepository.updateSysUserPasswordFirebase(firebaseId, newPassword);
-        return success;
+        return sysUserRepository.updateSysUserPasswordFirebase(firebaseId, newPassword);
     }
 }
