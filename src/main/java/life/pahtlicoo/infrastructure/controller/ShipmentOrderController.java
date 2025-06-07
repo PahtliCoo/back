@@ -48,7 +48,6 @@ public class ShipmentOrderController {
 
     @GET
     @Path("/list_all")
-    @NoAuthRequired
     public Response getAllShipmentOrders(@QueryParam("page") int page){
         List<GetShipmentOrderReqDTO> shipmentOrders = getAllShipmentOrderUseCase.execute(page);
         if(shipmentOrders == null){
@@ -60,7 +59,6 @@ public class ShipmentOrderController {
 
     @GET
     @Path("/list-shipments")
-    @NoAuthRequired
     public Response searchShipmentOrders(@QueryParam("name") String name, @QueryParam("page") @DefaultValue("0") int page,
                                        @QueryParam("date") String date, @QueryParam("state") Integer state) {
 
@@ -96,7 +94,6 @@ public class ShipmentOrderController {
 
     @PATCH
     @Path("/{shipment_order_id}")
-    @NoAuthRequired
     public Response updateShipmentOrderStatus(@PathParam("shipment_order_id") int shipmentOrderId,
                                               UpdateShipmentOrderStateReqDTO updateShipmentOrderStateReqDTO){
         updateShipmentOrderStatusUseCase.execute(shipmentOrderId, updateShipmentOrderStateReqDTO);
