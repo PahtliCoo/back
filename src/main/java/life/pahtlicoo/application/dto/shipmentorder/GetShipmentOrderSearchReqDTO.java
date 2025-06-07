@@ -1,6 +1,5 @@
 package life.pahtlicoo.application.dto.shipmentorder;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,8 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateShipmentOrderReqDTO {
-    private int request_id;
-    private String description;
-    private int state;
+
+public class GetShipmentOrderSearchReqDTO {
+    private String search;
 }

@@ -149,6 +149,7 @@ public class RequestController {
             List<RequestResponseDTO> requestResponseList = searchUserRequestsUseCase.execute(searchUserRequestsReqDTO);
             return Response.ok(requestResponseList).build();
         }catch (Exception e){
+            System.out.println(e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
