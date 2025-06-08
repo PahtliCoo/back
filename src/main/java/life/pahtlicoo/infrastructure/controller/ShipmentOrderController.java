@@ -41,8 +41,10 @@ public class ShipmentOrderController {
     @Path("/create")
     public Response createShipmentOrder(CreateShipmentOrderReqDTO createShipmentOrderReqDTO){
         try{
-            createShipmentOrderUseCase.execute(createShipmentOrderReqDTO);
-            return Response.status(Response.Status.CREATED).build();
+            if(createShipmentOrderUseCase.execute(createShipmentOrderReqDTO)){
+                return Response.status(Response.Status.CREATED).build();
+            }
+            return Response.status(Response.Status.BAD_REQUEST).build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }

@@ -183,4 +183,14 @@ public class ShipmentOrderRepositoryImpl implements ShipmentOrderRepository, Pan
         }
     }
 
+    @Override
+    public ShipmentOrder getShipmentOrderByRequestId(int requestId){
+        ShipmentOrderEntity shipmentOrderEntity = find("requestId = ?1",requestId).firstResult();
+        if(shipmentOrderEntity == null){
+            return null;
+        }
+        return shipmentOrderEntityMapper.toDomain(shipmentOrderEntity);
+
+    }
+
 }

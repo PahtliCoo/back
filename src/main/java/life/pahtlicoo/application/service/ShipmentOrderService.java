@@ -11,6 +11,7 @@ import life.pahtlicoo.application.dto.shipmentorder.SearchShipmentOrdersReqDTO;
 import life.pahtlicoo.domain.model.Request;
 import life.pahtlicoo.domain.model.ShipmentOrder;
 import life.pahtlicoo.domain.repository.ShipmentOrderRepository;
+import life.pahtlicoo.infrastructure.entity.ShipmentOrderEntity;
 
 import java.util.List;
 
@@ -57,6 +58,9 @@ public class ShipmentOrderService {
     }
     public void updateShipmentOrderDetails(int shipmentOrderId, String shipmentOrderDetails){
         shipmentOrderRepository.updateShipmentOrderDetails(shipmentOrderId, shipmentOrderDetails);
+    }
+    public ShipmentOrder getShipmentOrderByRequestId(int requestId){
+        return shipmentOrderRepository.getShipmentOrderByRequestId(requestId);
     }
 }
 
