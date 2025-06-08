@@ -15,6 +15,7 @@ import life.pahtlicoo.application.dto.request.SearchUserRequestsReqDTO;
 import life.pahtlicoo.domain.model.Request;
 import life.pahtlicoo.domain.repository.RequestRepository;
 import life.pahtlicoo.infrastructure.entity.RequestEntity;
+import life.pahtlicoo.infrastructure.entity.SysUserEntity;
 import life.pahtlicoo.infrastructure.mapper.RequestEntityMapper;
 
 import java.time.LocalDate;
@@ -196,51 +197,72 @@ public class RequestRepositoryImpl implements RequestRepository, PanacheReposito
     }
 
     @Override
-    public List<Request> searchUserRequests(SearchUserRequestsReqDTO searchUserRequestsReqDTO){
+    public List<Request> searchUserRequests(SearchUserRequestsReqDTO searchUserRequestsReqDTO) {
+        SysUserEntity sysUser = SysUserEntity.findById(searchUserRequestsReqDTO.getSysUserId());
 
-        StringBuilder query = new StringBuilder("sysUserId = ?1");
+        if (sysUser == null) {
+            throw new IllegalArgumentException("SysUser not found");
+        }
+
+        boolean isLogisticsAdmin = sysUser.getCredentialId() == 2;
+
+        StringBuilder query = new StringBuilder("""
+        SELECT r FROM RequestEntity r
+        """);
+
         List<Object> params = new ArrayList<>();
-        params.add(searchUserRequestsReqDTO.getSysUserId()); // Posición 1
+        int paramIndex = 1;
 
-        int paramIndex = 2;
+        // WHERE clause
+        query.append("WHERE ");
 
+        if (!isLogisticsAdmin) {
+            query.append("r.sysUserId = ?").append(paramIndex++);
+            params.add(sysUser.getSysUserId());
+        } else {
+            query.append("1=1");
+        }
+
+        // Optional name filter
         if (searchUserRequestsReqDTO.getName() != null && !searchUserRequestsReqDTO.getName().isBlank()) {
-            query.append(" AND LOWER(name) LIKE ?" + paramIndex);
+            query.append(" AND LOWER(r.name) LIKE ?").append(paramIndex);
             params.add("%" + searchUserRequestsReqDTO.getName().toLowerCase() + "%");
             paramIndex++;
         }
 
+        // Optional state filter
         if (searchUserRequestsReqDTO.getState() != null) {
-            query.append(" AND state = ?" + paramIndex);
+            query.append(" AND r.state = ?").append(paramIndex);
             params.add(searchUserRequestsReqDTO.getState());
             paramIndex++;
         }
 
+        // Optional date filter
         if (searchUserRequestsReqDTO.getDate() != null && !searchUserRequestsReqDTO.getDate().isBlank()) {
             LocalDate date = LocalDate.parse(searchUserRequestsReqDTO.getDate());
             OffsetDateTime start = date.atStartOfDay().atOffset(ZoneOffset.UTC);
             OffsetDateTime end = date.plusDays(1).atStartOfDay().atOffset(ZoneOffset.UTC);
 
-            query.append(" AND createdAt >= ?" + paramIndex);
+            query.append(" AND r.createdAt >= ?").append(paramIndex);
             params.add(start);
             paramIndex++;
 
-            query.append(" AND createdAt < ?" + paramIndex);
+            query.append(" AND r.createdAt < ?").append(paramIndex);
             params.add(end);
-            paramIndex++; //Solo se va a usar si añadimos un if nuevo
+            paramIndex++;
         }
 
-        // Ejecutar la consulta construida
-        List<RequestEntity> requestEntities = find(query.toString(),
-                Sort.descending("createdAt"),
-                params.toArray())
-                .page(searchUserRequestsReqDTO.getPage(), 10)
-                .list();
+        List<RequestEntity> requestEntities = find(
+                query.toString(),
+                Sort.descending("r.updatedAt"),
+                params.toArray()
+        ).page(searchUserRequestsReqDTO.getPage(), 10).list();
 
         return requestEntities.stream()
                 .map(requestEntityMapper::toDomain)
                 .toList();
     }
+
 
     @Override
     @Transactional
