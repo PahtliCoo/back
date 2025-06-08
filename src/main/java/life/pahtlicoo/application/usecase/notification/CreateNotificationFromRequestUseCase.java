@@ -27,7 +27,7 @@ public class CreateNotificationFromRequestUseCase {
 
     public boolean execute(Request request) {
         try {
-            SysUser sysUser = sysUserService.getSysUserByUid(request.getSysUserId());
+            SysUser sysUser = sysUserService.getSysUserByUserId(request.getSysUserId());
 
             Site site = siteService.findSite(sysUser.getSiteId());
 
