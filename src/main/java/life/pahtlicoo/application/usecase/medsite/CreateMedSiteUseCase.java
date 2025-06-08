@@ -1,3 +1,9 @@
+/**
+ * MedSite Creation Use Case
+ * @Author Santiago Moreno Lacalle Quintero (A01663197@tec.mx)
+ * @co-author Adolfo Hernandez Fernández (a01664412@tec.mx)
+ * @since 2025-06-06
+ */
 package life.pahtlicoo.application.usecase.medsite;
 
 import jakarta.enterprise.context.ApplicationScoped;
@@ -14,15 +20,9 @@ public class CreateMedSiteUseCase {
     @Inject
     MedSiteDomainMapper medSiteDomainMapper;
 
-    public boolean execute(CreateMedSiteReqDTO createMedSiteReqDTO) {
-        try{
-            MedSite medSite = medSiteDomainMapper.createMedSiteReqToDomainMedSite(createMedSiteReqDTO);
-            if(medSite == null){
-                return false;
-            }
-            return medSiteService.createMedSite(medSite);
-        } catch (Exception e) {
-            return false;
-        }
+    public void execute(CreateMedSiteReqDTO createMedSiteReqDTO) {
+        MedSite medSite = medSiteDomainMapper.createMedSiteReqToDomainMedSite(createMedSiteReqDTO);
+        if(medSite == null){return ;}
+        medSiteService.createMedSite(medSite);
     }
 }
