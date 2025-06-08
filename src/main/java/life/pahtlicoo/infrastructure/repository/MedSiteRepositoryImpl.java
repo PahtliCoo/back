@@ -94,8 +94,9 @@ public class MedSiteRepositoryImpl implements MedSiteRepository, PanacheReposito
         StringBuilder query = new StringBuilder("""
         SELECT ms FROM MedSiteEntity ms
         JOIN SysUserEntity su ON ms.medSiteID.siteId = su.siteId
+        JOIN MedEntity m ON ms.medSiteID.medId = m.medId
         WHERE su.sysUserId = ?1
-    """);
+    """); //cambio añadiendo un nuevo join para buscar por el name (REMUEVE ESTE COMMENT PLS)
 
         List<Object> params = new ArrayList<>();
         params.add(sysUserId);
@@ -103,7 +104,7 @@ public class MedSiteRepositoryImpl implements MedSiteRepository, PanacheReposito
         int paramIndex = 2;
 
         if (medName != null && !medName.isBlank()) {
-            query.append(" AND LOWER(ms.medSiteID.medName) LIKE ?" + paramIndex);
+            query.append(" AND LOWER(m.name) LIKE ?" + paramIndex);
             params.add("%" + medName.toLowerCase() + "%");
             paramIndex++;
         }
@@ -112,7 +113,7 @@ public class MedSiteRepositoryImpl implements MedSiteRepository, PanacheReposito
                 params.toArray()).page(page, 5).list();
 
         return medSiteEntities.stream().map(medSiteEntityMapper::toDomain).toList();
-    }
+    } //ESTE CAMBIO EN EL BACK PUEDES PONERLO COMO UN FIX: JOIN MED TABLE TO ALLOW SEARCH BY NAME
 
     @Override
     @Transactional
