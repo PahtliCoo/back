@@ -165,7 +165,7 @@ public class ShipmentOrderRepositoryImpl implements ShipmentOrderRepository, Pan
         List<ShipmentOrderEntity> shipmentOrderEntities = find(query.toString(),
                 Sort.descending("createdAt"),
                 params.toArray())
-                .page(searchShipmentOrdersReqDTO.getPage(), 5)
+                .page(searchShipmentOrdersReqDTO.getPage(), 10)
                 .list();
 
 

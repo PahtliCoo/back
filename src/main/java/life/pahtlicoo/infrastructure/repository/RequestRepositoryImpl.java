@@ -234,7 +234,7 @@ public class RequestRepositoryImpl implements RequestRepository, PanacheReposito
         List<RequestEntity> requestEntities = find(query.toString(),
                 Sort.descending("createdAt"),
                 params.toArray())
-                .page(searchUserRequestsReqDTO.getPage(), 5)
+                .page(searchUserRequestsReqDTO.getPage(), 10)
                 .list();
 
         return requestEntities.stream()
