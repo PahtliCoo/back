@@ -5,6 +5,8 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import life.pahtlicoo.application.dto.historicdata.CreateHistoricDataReqDTO;
+import life.pahtlicoo.application.dto.historicdata.GenerateForecastReqDTO;
+import life.pahtlicoo.application.dto.historicdata.GenerateForecastResDTO;
 import life.pahtlicoo.application.dto.historicdata.GetHistoricDataReqDTO;
 import life.pahtlicoo.application.usecase.historicdata.*;
 import life.pahtlicoo.domain.model.HistoricData;
@@ -31,6 +33,8 @@ public class HistoricDataController {
     CreateReportWithHistoricDataUseCase createReportWithHistoricDataUseCase;
     @Inject
     ReadHistoricDataCSVUseCase readHistoricDataCSVUseCase;
+    @Inject
+    GenerateForecastUseCase generateForecastUseCase;
 
     @POST
     @Path("/create")
@@ -41,7 +45,7 @@ public class HistoricDataController {
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
-    }
+    } //TODO dev purposes only
 
     @GET
     @Path("/site/{site_id}")
@@ -55,8 +59,6 @@ public class HistoricDataController {
 
     @POST
     @Path("/range")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Response getHistoricDataByRange(GetHistoricDataReqDTO dto) {
         List<HistoricData> data = getHistoricData.execute(dto);
         return Response.ok(data).build();
@@ -73,14 +75,12 @@ public class HistoricDataController {
                 .build();
     }
 
-
-
     @DELETE
     @Path("/{site_id}")
     public Response deleteHistoricData(@PathParam("site_id") int site_id) {
         deleteHistoricDataUseCase.execute(site_id);
         return Response.ok().build();
-    }
+    }//TODO DEPRECATED
 
     @POST
     @Path("/add-data")
@@ -91,12 +91,22 @@ public class HistoricDataController {
                 return Response.ok().build();
             }
             return Response.status(Response.Status.BAD_REQUEST).build();
-
-
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
-
     }
 
+    @POST
+    @Path("/forecast")
+    @NoAuthRequired
+    public Response generateForecast(GenerateForecastReqDTO generateForecastReqDTO){
+        try {
+            List<GenerateForecastResDTO> generateForecastResDTOList = generateForecastUseCase.execute(generateForecastReqDTO);
+            return Response.ok(generateForecastResDTOList).build();
+
+        } catch (Exception e) {
+            System.out.println(e);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }

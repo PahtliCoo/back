@@ -1,9 +1,11 @@
 package life.pahtlicoo.infrastructure.repository;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
+import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import life.pahtlicoo.application.dto.historicdata.GenerateForecastResDTO;
 import life.pahtlicoo.application.dto.historicdata.SearchHistoricDataReqDTO;
 import life.pahtlicoo.domain.model.HistoricData;
 import life.pahtlicoo.domain.repository.HistoricDataRepository;
@@ -12,6 +14,7 @@ import life.pahtlicoo.infrastructure.mapper.HistoricDataEntityMapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class HistoricDataRepositoryImpl implements HistoricDataRepository, PanacheRepositoryBase<HistoricDataEntity, Integer> {
@@ -28,10 +31,18 @@ public class HistoricDataRepositoryImpl implements HistoricDataRepository, Panac
 
     @Override
     public List<HistoricData> getAllHistoricDataBySiteId(int siteId) {
-        List<HistoricDataEntity> historicDataEntities =find("siteId", siteId).list(); //TODO es mejor con el question mark o sin el?
+        List<HistoricDataEntity> historicDataEntities =find("siteId", siteId).list();
         return historicDataEntities.stream()
                 .map(historicDataEntityMapper::toDomain)
                 .toList();
+    }
+
+    @Override
+    public List<HistoricData> getAllHistoricDataBySiteIdAndMedId(int siteId, int medId) {
+        List<HistoricDataEntity> historicDataEntities = find("siteId = ?1 AND medId =?2", siteId, medId).list();
+        return historicDataEntities.stream()
+                .map(historicDataEntityMapper::toDomain)
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     @Override
@@ -45,7 +56,6 @@ public class HistoricDataRepositoryImpl implements HistoricDataRepository, Panac
                 .map(historicDataEntityMapper::toDomain)
                 .toList();
     }
-
 
     @Override
     @Transactional
@@ -82,19 +92,33 @@ public class HistoricDataRepositoryImpl implements HistoricDataRepository, Panac
 
     @Override
     @Transactional
-    public boolean createListOfHistoricData(List<HistoricData> historicDataList) {
-
+    public void createListOfHistoricData(List<HistoricData> historicDataList) {
+        List<HistoricDataEntity> historicDataEntities = new ArrayList<>();
         try{
-            List<HistoricDataEntity> historicDataEntities = new ArrayList<>();
             for (int i = 0; i < historicDataList.size(); i++){
                 HistoricData historicData = historicDataList.get(i);
                 HistoricDataEntity historicDataEntity = historicDataEntityMapper.toEntity(historicData);
                 historicDataEntities.add(historicDataEntity);
             }
             persist(historicDataEntities);
-            return true;
         }catch (Exception e){
-            return false;
+            throw new Error(e);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void createOrUpdateForecastData(List<HistoricData> historicDataList) {
+        for (HistoricData data : historicDataList) {
+            HistoricDataEntity existing = find("siteId = ?1 AND medId = ?2 AND dateMonth = ?3 AND dateYear = ?4",
+                    data.getSiteId(), data.getMedId(), data.getDateMonth(), data.getDateYear()).firstResult();
+
+            if (existing != null) {
+                existing.setProjectedQuantity(data.getProjectedQuantity());
+            } else {
+                HistoricDataEntity newEntity = historicDataEntityMapper.toEntity(data);
+                persist(newEntity);
+            }
         }
     }
 }

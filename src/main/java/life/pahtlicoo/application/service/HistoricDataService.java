@@ -2,7 +2,8 @@ package life.pahtlicoo.application.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import life.pahtlicoo.application.dto.historicdata.SearchHistoricDataReqDTO;
+import life.pahtlicoo.application.dto.historicdata.GenerateForecastReqDTO;
+import life.pahtlicoo.application.dto.historicdata.GenerateForecastResDTO;
 import life.pahtlicoo.domain.model.HistoricData;
 import life.pahtlicoo.domain.repository.HistoricDataRepository;
 
@@ -12,6 +13,8 @@ import java.util.List;
 public class HistoricDataService {
     @Inject
     HistoricDataRepository historicDataRepository;
+    @Inject
+    ForecastService forecastService;
 
     public void createHistoricData(HistoricData historicData) {
         historicDataRepository.createHistoricData(historicData);
@@ -25,17 +28,23 @@ public class HistoricDataService {
         return historicDataRepository.getAllByYearAndMonthRange(year, startMonth, endMonth, type);
     }
 
-
     public void deleteHistoricData(int historicDataId) {
         historicDataRepository.deleteHistoricData(historicDataId);
     }
+
     public HistoricData getHistoricDataBySiteIdAndMedIdAndDate( HistoricData historicData){
         return historicDataRepository.getHistoricDataBySiteIdAndMedIdAndDate( historicData);
     }
+
     public void updateHistoricDataByDateMedSite(List<HistoricData> historicData){
         historicDataRepository.updateHistoricDataByDateMedSite(historicData);
     }
-    public boolean createListOfHistoricData(List<HistoricData> historicData){
-        return historicDataRepository.createListOfHistoricData(historicData);
+
+    public void createListOfHistoricData(List<HistoricData> historicData){
+        historicDataRepository.createListOfHistoricData(historicData);
+    }
+
+    public List<GenerateForecastResDTO> generateForecast(GenerateForecastReqDTO generateForecastReqDTO) {
+        return forecastService.generateForecasts(generateForecastReqDTO); //delega al service de forecast
     }
 }
