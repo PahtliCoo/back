@@ -70,7 +70,6 @@ public class ForecastService {
 
                 //Obtener a partir de los datos recibidos
                 int[] date = {generateForecastReqDTO.getCurrent_month(), generateForecastReqDTO.getCurrent_year()};
-                System.out.println("[Forecast] Using reference date for prediction start: " + date[1] + "-" + date[0]);
 
                 List<PredictionDTO> predictionList = new ArrayList<>();
                 List<HistoricData> toSave = new ArrayList<>();
@@ -80,7 +79,10 @@ public class ForecastService {
                     int month = date[0];
                     int year = date[1];
 
-                    predictionList.add(new PredictionDTO(year, month, value));
+                    // Asegurar que el valor no sea negativo
+                    int safeValue = Math.max(0, value);
+
+                    predictionList.add(new PredictionDTO(year, month, safeValue));
 
                     if (generateForecastReqDTO.isSave()) {
                         HistoricData newData = new HistoricData();
@@ -95,12 +97,19 @@ public class ForecastService {
                 }
 
                 if (generateForecastReqDTO.isSave() && !toSave.isEmpty()) {
-                    System.out.println("[Forecast] Saving " + toSave.size() + " predictions for site " + siteId + ", med " + medId);
                     historicDataRepository.createOrUpdateForecastData(toSave);
                 }
 
-                results.add(new GenerateForecastResDTO(siteId, medId, generateForecastReqDTO.isSave(),
-                        "OK (" + chosenModel + " model)", predictionList));
+                String resMessage;
+                if ("additive".equals(chosenModel)) {
+                    resMessage = "Proyección exitosa, comportamiento poco estacional";
+                } else if ("multiplicative".equals(chosenModel)) {
+                    resMessage = "Proyección exitosa, comportamiento estacional";
+                } else {
+                    resMessage = "Proyeccion exitosa";
+                }
+
+                results.add(new GenerateForecastResDTO(siteId, medId, generateForecastReqDTO.isSave(), resMessage, predictionList));
             }
         }
         return results;
