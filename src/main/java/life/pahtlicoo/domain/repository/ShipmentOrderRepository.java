@@ -19,4 +19,5 @@ public interface ShipmentOrderRepository {
     List<ShipmentOrder> getAllShipmentOrdersBySearch(String search, int page);
     public List<ShipmentOrder> searchShipmentOrders(SearchShipmentOrdersReqDTO searchShipmentOrdersReqDTO);
     public void updateShipmentOrderDetails(int shipmentOrderId, String shipmentOrderDetails);
+    public ShipmentOrder getShipmentOrderByRequestId(int requestId);
 }
