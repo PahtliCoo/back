@@ -16,6 +16,7 @@ import life.pahtlicoo.domain.repository.MedSiteRepository;
 import life.pahtlicoo.infrastructure.entity.MedEntity;
 import life.pahtlicoo.infrastructure.entity.MedSiteEntity;
 import life.pahtlicoo.infrastructure.entity.RequestDetailEntity;
+import life.pahtlicoo.infrastructure.entity.SysUserEntity;
 import life.pahtlicoo.infrastructure.mapper.MedSiteEntityMapper;
 import life.pahtlicoo.infrastructure.mapper.RequestDetailEntityMapper;
 
@@ -91,28 +92,43 @@ public class MedSiteRepositoryImpl implements MedSiteRepository, PanacheReposito
 
     @Override
     public List<MedSite> getMedSiteByUserId(int sysUserId, String medName, int page){
-        StringBuilder query = new StringBuilder("""
-        SELECT ms FROM MedSiteEntity ms
-        JOIN SysUserEntity su ON ms.medSiteID.siteId = su.siteId
-        JOIN MedEntity m ON ms.medSiteID.medId = m.medId
-        WHERE su.sysUserId = ?1
-    """);
+        SysUserEntity sysUser = SysUserEntity.findById(sysUserId);
 
-        List<Object> params = new ArrayList<>();
-        params.add(sysUserId);
-
-        int paramIndex = 2;
-
-        if (medName != null && !medName.isBlank()) {
-            query.append(" AND LOWER(m.name) LIKE ?" + paramIndex);
-            params.add("%" + medName.toLowerCase() + "%");
-            paramIndex++;
+        if (sysUser == null) {
+            throw new IllegalArgumentException("SysUser not found");
         }
 
-        List<MedSiteEntity> medSiteEntities = find(query.toString(), Sort.descending("ms.createdAt"),
-                params.toArray()).page(page, 5).list();
+        boolean isLogisticsAdmin = sysUser.getCredentialId() == 2;
 
-        return medSiteEntities.stream().map(medSiteEntityMapper::toDomain).toList();
+        StringBuilder query = new StringBuilder("""
+            SELECT ms FROM MedSiteEntity ms
+            JOIN MedEntity m ON ms.medSiteID.medId = m.medId
+        """);
+
+        List<Object> params = new ArrayList<>();
+        int paramIndex = 1;
+
+        if (!isLogisticsAdmin) {
+            query.append("WHERE ms.medSiteID.siteId = ?").append(paramIndex++);
+            params.add(sysUser.getSiteId());
+        } else {
+            query.append("WHERE 1=1 ");
+        }
+
+        if (medName != null && !medName.isBlank()) {
+            query.append(" AND LOWER(m.name) LIKE ?").append(paramIndex);
+            params.add("%" + medName.toLowerCase() + "%");
+        }
+
+        List<MedSiteEntity> medSiteEntities = find(
+                query.toString(),
+                Sort.descending("ms.updatedAt"),
+                params.toArray()
+        ).page(page, 5).list();
+
+        return medSiteEntities.stream()
+                .map(medSiteEntityMapper::toDomain)
+                .toList();
     }
 
     @Override
@@ -132,5 +148,25 @@ public class MedSiteRepositoryImpl implements MedSiteRepository, PanacheReposito
         }
 
         medSiteEntity.setCurrentQuantity(currentQuantity - consumption);
+    }
+
+    @Override
+    @Transactional
+    public void registerNewMedSiteAddition(int medId, int siteId, int addition){
+        MedSiteEntity medSiteEntity =  find("medSiteID.medId = ?1 and medSiteID.siteId = ?2", medId, siteId).firstResult();
+
+        if (medSiteEntity == null) {
+            throw new Error("No se encontró la relación med-site para los IDs proporcionados.");
+        }
+
+        int currentQuantity = medSiteEntity.getCurrentQuantity();
+
+        if (addition <= 0) {
+            throw new Error("La adición debe ser mayor que 0");
+        }
+
+        medSiteEntity.setCurrentQuantity(currentQuantity + addition);
+        medSiteEntity.setInitialQuantity(medSiteEntity.getInitialQuantity() + addition);
+        //TODO hacemos la suma directa al initial, si no, ocupariamos tener una columna u otra tabla de logs
     }
 }

@@ -10,6 +10,6 @@ public class RegisterNewMedSiteConsumptionUseCase {
     @Inject
     MedSiteService medSiteService;
     public void execute(RegisterMedSiteConsumptionDTO registerMedSiteConsumptionDTO){
-        medSiteService.RegisterNewMedSiteConsumption(registerMedSiteConsumptionDTO);
+        medSiteService.registerNewMedSiteConsumption(registerMedSiteConsumptionDTO);
     }
 }
