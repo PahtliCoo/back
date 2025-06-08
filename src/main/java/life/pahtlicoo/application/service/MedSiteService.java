@@ -9,6 +9,7 @@ package life.pahtlicoo.application.service;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import life.pahtlicoo.application.dto.medsite.GetUserMedSiteReqDTO;
+import life.pahtlicoo.application.dto.medsite.RegisterMedSiteAdditionDTO;
 import life.pahtlicoo.application.dto.medsite.RegisterMedSiteConsumptionDTO;
 import life.pahtlicoo.domain.model.MedSite;
 import life.pahtlicoo.domain.repository.MedSiteRepository;
@@ -47,7 +48,11 @@ public class MedSiteService {
         return medSiteRepository.getMedSiteByUserId(getUserMedSiteReqDTO.getSysUserId(), getUserMedSiteReqDTO.getMedName(), getUserMedSiteReqDTO.getPage());
     }
 
-    public void RegisterNewMedSiteConsumption(RegisterMedSiteConsumptionDTO registerMedSiteConsumptionDTO){
+    public void registerNewMedSiteConsumption(RegisterMedSiteConsumptionDTO registerMedSiteConsumptionDTO){
         medSiteRepository.registerNewMedSiteConsumption(registerMedSiteConsumptionDTO.getMedId(), registerMedSiteConsumptionDTO.getSiteId(), registerMedSiteConsumptionDTO.getConsumption());
+    }
+
+    public void registerNewMedSiteAddition(RegisterMedSiteAdditionDTO registerMedSiteAdditionDTO){
+        medSiteRepository.registerNewMedSiteAddition(registerMedSiteAdditionDTO.getMedId(), registerMedSiteAdditionDTO.getSiteId(), registerMedSiteAdditionDTO.getAddition());
     }
 }

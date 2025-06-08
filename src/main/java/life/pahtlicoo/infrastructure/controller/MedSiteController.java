@@ -2,6 +2,7 @@
  * Med site (current inventory) Controller
  * @author Santiago Moreno Lacalle Quintero (a01663197@tec.mx)
  * @co-author Adolfo Hernández Fernández (a01664412@tec.mx)
+ * @co-author Nicole Kapellmann Lepine (a01664563@tec.mx)
  * @since 2025-06-06
  */
 package life.pahtlicoo.infrastructure.controller;
@@ -39,6 +40,8 @@ public class MedSiteController {
     GetMedSiteByUserIdUseCase getMedSiteByUserIdUseCase;
     @Inject
     RegisterNewMedSiteConsumptionUseCase registerNewMedSiteConsumptionUseCase;
+    @Inject
+    RegisterNewMedSiteAdditionUseCase registerNewMedSiteAdditionUseCase;
 
     @POST
     @Path("/create")
@@ -176,7 +179,18 @@ public class MedSiteController {
         }catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
+    }
 
+    @PATCH
+    @Path("/register-addition/{site_id}/{med_id}")
+    public Response registerNewMedSiteAddition(@PathParam("site_id") int siteId, @PathParam("med_id") int medId, RegisterNewMedSiteAdditionReqDTO registerNewMedSiteAdditionReqDTO) {
+        RegisterMedSiteAdditionDTO registerMedSiteAdditionDTO = new RegisterMedSiteAdditionDTO(medId, siteId, registerNewMedSiteAdditionReqDTO.getAddition());
+        try{
+            registerNewMedSiteAdditionUseCase.execute(registerMedSiteAdditionDTO);
+            return Response.status(Response.Status.OK).build();
+        }catch(Exception e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
 }
