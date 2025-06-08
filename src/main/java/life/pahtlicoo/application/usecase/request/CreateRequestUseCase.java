@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 import life.pahtlicoo.application.dto.request.CreateRequestReqDTO;
 import life.pahtlicoo.application.dto.requestdetail.CreateRequestDetailReqDTO;
 import life.pahtlicoo.application.mapper.RequestDetailDomainMapper;
+import life.pahtlicoo.application.usecase.notification.CreateNotificationFromRequestUseCase;
 import life.pahtlicoo.application.usecase.requestdetail.CreateRequestDetailUseCase;
 import life.pahtlicoo.domain.model.Request;
 import life.pahtlicoo.application.mapper.RequestDomainMapper;
@@ -25,11 +26,14 @@ public class CreateRequestUseCase {
     @Inject
     RequestDetailDomainMapper requestDetailDomainMapper;
 
+    @Inject
+    CreateNotificationFromRequestUseCase createNotificationFromRequestUseCase;
+
     @Transactional
     public boolean execute(CreateRequestReqDTO createRequestReqDTO) {
        try{
            // Chek that list is not empty
-           if(createRequestReqDTO.getRequestDetailList().isEmpty()){
+           if(createRequestReqDTO.getRequest_detail_list().isEmpty()){
                return false;
            }
            // Check state is not largar than 5 or lower than 0
@@ -40,10 +44,13 @@ public class CreateRequestUseCase {
            // 1. Create the main request file
            Request request = requestDomainMapper.createRequestToDomain(createRequestReqDTO);
            if(requestService.createRequest(request)){
-               //2. Create the request detail DTO
-               CreateRequestDetailReqDTO createRequestDetailReqDTO = requestDetailDomainMapper.createRequestToRequestDetailReqDTO(request,createRequestReqDTO);
-               // 3. Create the request detail
-               return createRequestDetailUseCase.execute(createRequestDetailReqDTO);
+               if(createNotificationFromRequestUseCase.execute(request)) {
+                   //2. Create the request detail DTO
+                   CreateRequestDetailReqDTO createRequestDetailReqDTO = requestDetailDomainMapper.createRequestToRequestDetailReqDTO(request,createRequestReqDTO);
+                   // 3. Create the request detail
+                   return createRequestDetailUseCase.execute(createRequestDetailReqDTO);
+               }
+               return false;
            }
            return false;
        }catch (Exception e){

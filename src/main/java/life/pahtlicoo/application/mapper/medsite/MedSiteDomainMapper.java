@@ -8,8 +8,10 @@ import life.pahtlicoo.domain.model.MedSite;
 public class MedSiteDomainMapper {
     public MedSite createMedSiteReqToDomainMedSite(CreateMedSiteReqDTO createMedSiteReqDTO){
         MedSite medSite = new MedSite();
-        medSite.setMedId(createMedSiteReqDTO.getMedId());
-        medSite.setSiteId(createMedSiteReqDTO.getSiteId());
+        medSite.setMedId(createMedSiteReqDTO.getMed_id());
+        medSite.setSiteId(createMedSiteReqDTO.getSite_id());
+        medSite.setCurrentQuantity(createMedSiteReqDTO.getCurrent_quantity());
+        medSite.setInitialQuantity(createMedSiteReqDTO.getInitial_quantity());
         return medSite;
-    }
+    } //TODO iff possible refactor
 }

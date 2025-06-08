@@ -5,11 +5,14 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import life.pahtlicoo.application.dto.historicdata.CreateHistoricDataReqDTO;
-import life.pahtlicoo.application.usecase.historicdata.CreateHistoricDataUseCase;
-import life.pahtlicoo.application.usecase.historicdata.DeleteHistoricDataUseCase;
-import life.pahtlicoo.application.usecase.historicdata.GetHistoricDataBySiteIdUseCase;
+import life.pahtlicoo.application.dto.historicdata.GetHistoricDataReqDTO;
+import life.pahtlicoo.application.usecase.historicdata.*;
 import life.pahtlicoo.domain.model.HistoricData;
+import life.pahtlicoo.shared.annotation.NoAuthRequired;
+import org.jboss.resteasy.reactive.RestForm;
 
+
+import java.io.InputStream;
 import java.util.List;
 
 @Path("/historic-data")
@@ -22,6 +25,12 @@ public class HistoricDataController {
     GetHistoricDataBySiteIdUseCase getHistoricDataBySiteIdUseCase;
     @Inject
     DeleteHistoricDataUseCase deleteHistoricDataUseCase;
+    @Inject
+    GetHistoricDataByDatesUseCase getHistoricData;
+    @Inject
+    CreateReportWithHistoricDataUseCase createReportWithHistoricDataUseCase;
+    @Inject
+    ReadHistoricDataCSVUseCase readHistoricDataCSVUseCase;
 
     @POST
     @Path("/create")
@@ -44,10 +53,50 @@ public class HistoricDataController {
         return Response.ok(historicData).build();
     }
 
+    @POST
+    @Path("/range")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getHistoricDataByRange(GetHistoricDataReqDTO dto) {
+        List<HistoricData> data = getHistoricData.execute(dto);
+        return Response.ok(data).build();
+    }
+
+    @POST
+    @Path("/report")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces("application/pdf")
+    public Response generatePdfReport(GetHistoricDataReqDTO dto) {
+        byte[] pdf = createReportWithHistoricDataUseCase.execute(dto);
+        return Response.ok(pdf)
+                .header("Content-Disposition", "attachment; filename=report-" + dto.getYear() + ".pdf")
+                .build();
+    }
+
+
+
     @DELETE
     @Path("/{site_id}")
     public Response deleteHistoricData(@PathParam("site_id") int site_id) {
         deleteHistoricDataUseCase.execute(site_id);
         return Response.ok().build();
     }
+
+    @POST
+    @Path("/add-data")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response importHistoricData(@RestForm("file") InputStream file){
+        try{
+            if(readHistoricDataCSVUseCase.execute(file)){
+                return Response.ok().build();
+            }
+            return Response.status(Response.Status.BAD_REQUEST).build();
+
+
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+
+    }
+
 }

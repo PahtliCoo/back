@@ -18,7 +18,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class MedicineQuantityReqDTO {
     @NotBlank
-    private int medId;
+    private int med_id;
     @NotBlank
     @Min(1)
     private int quantity;

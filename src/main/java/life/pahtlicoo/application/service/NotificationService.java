@@ -12,12 +12,8 @@ public class NotificationService {
     @Inject
     NotificationRepository notificationRepository;
 
-    public void createNotification(Notification notification) {
-        notificationRepository.createNotification(notification);
-    }
-
-    public Notification getNotification(int notificationId) {
-        return notificationRepository.getNotification(notificationId);
+    public boolean createNotification(Notification notification) {
+        return notificationRepository.createNotification(notification);
     }
 
     public List<Notification> getAllNotificationsByReceiverId(int receiverId) {
@@ -26,9 +22,5 @@ public class NotificationService {
 
     public void updateNotificationStatus(int notificationId, boolean seen) {
         notificationRepository.updateNotificationStatus(notificationId, seen);
-    }
-
-    public void deleteNotification(int notificationId) {
-        notificationRepository.deleteNotification(notificationId);
     }
 }

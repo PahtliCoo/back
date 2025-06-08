@@ -14,6 +14,8 @@ import life.pahtlicoo.domain.repository.SiteRepository;
 import life.pahtlicoo.infrastructure.entity.SiteEntity;
 import life.pahtlicoo.infrastructure.mapper.SiteEntityMapper;
 
+import java.util.List;
+
 
 @ApplicationScoped
 public class SiteRepositoryImpl implements SiteRepository, PanacheRepositoryBase<SiteEntity, Integer> {
@@ -52,6 +54,24 @@ public class SiteRepositoryImpl implements SiteRepository, PanacheRepositoryBase
     @Transactional
     public void deleteSite(int siteId){
         deleteById(siteId);
+    }
+
+    @Override
+    public Site findByName(String name){
+        SiteEntity siteEntity = find("name", name.toLowerCase()).firstResult();
+        if(siteEntity == null){
+            return null;
+        }
+        return siteEntityMapper.toDomain(siteEntity);
+    }
+
+    @Override
+    public List<Site> getAllSites(){
+        List<SiteEntity> siteEntityList = SiteEntity.findAll().list();
+        if(siteEntityList.isEmpty()){
+            return null;
+        }
+        return siteEntityList.stream().map(siteEntityMapper::toDomain).toList();
     }
 
 }

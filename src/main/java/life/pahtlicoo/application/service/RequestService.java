@@ -1,13 +1,16 @@
 /**
  * Request Service
  * @Author Santiago Moreno Lacalle Quintero (A01663197@tec.mx)
- * @since 2025-05-30
+ * @co-author Adolfo Hernández Fernández (a01664412@tec.mx)
+ * @since 2025-06-05
  */
 package life.pahtlicoo.application.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import life.pahtlicoo.application.dto.request.SearchUserRequestsReqDTO;
 import life.pahtlicoo.domain.model.Request;
+import life.pahtlicoo.domain.model.ShipmentOrder;
 import life.pahtlicoo.domain.repository.RequestRepository;
 
 import java.util.List;
@@ -52,17 +55,33 @@ public class RequestService {
     public List<Request> getAllRequest(int page){
         return requestRepository.getAllRequest(page);
     }
+
     public List<Request> getAllRequestsByDate(int year, int month, int day,int page){
         return requestRepository.getAllRequestsByDate(year,month,day,page);
     }
+
     public List<Request> getAllRequestsByDateByState(int state,int year, int month, int day,int page){
         return requestRepository.getAllRequestsByDateByState(state,year,month,day,page);
     }
+
     public List<Request> getAllRequestsByState(int state,int page){
         return requestRepository.getAllRequestsByState(state,page);
     }
+
     public List<Request> getAllRequestsBySearch(String search, int page){
         return requestRepository.getAllRequestsBySearch(search,page);
+    }
+
+    public List<Request> searchUserRequestsByName(int sysUserId, String search, int page){
+        return requestRepository.searchUserRequestsByName(sysUserId,search,page);
+    }
+
+    public List<Request> searchUserRequests(SearchUserRequestsReqDTO searchUserRequestsReqDTO){
+        return requestRepository.searchUserRequests(searchUserRequestsReqDTO);
+    }
+
+    public void updateRequestDescription(int requestId, String description){
+        requestRepository.updateRequestDescription(requestId, description);
     }
 
 }

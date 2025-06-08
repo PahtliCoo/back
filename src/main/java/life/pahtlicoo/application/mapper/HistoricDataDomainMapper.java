@@ -8,7 +8,11 @@ package life.pahtlicoo.application.mapper;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import life.pahtlicoo.application.dto.historicdata.CreateHistoricDataReqDTO;
+import life.pahtlicoo.application.dto.historicdata.HistoricDataCSVDTO;
+import life.pahtlicoo.application.dto.historicdata.SearchHistoricDataReqDTO;
 import life.pahtlicoo.domain.model.HistoricData;
+import life.pahtlicoo.domain.model.Med;
+import life.pahtlicoo.domain.model.Site;
 
 @ApplicationScoped
 public class HistoricDataDomainMapper {
@@ -19,6 +23,19 @@ public class HistoricDataDomainMapper {
         historicData.setDateYear(createHistoricDataReqDTO.getDate_year());
         historicData.setDateMonth(createHistoricDataReqDTO.getDate_month());
         historicData.setQuantity(createHistoricDataReqDTO.getQuantity());
+        //TODO Historic data aqui nos pone 0
+        return historicData;
+    }
+
+    public HistoricData createHistoricDataDomainFromSearchHistoricData(Site site, Med med, HistoricDataCSVDTO historicDataCSVDTO){
+        HistoricData historicData = new HistoricData();
+        historicData.setSiteId(site.getSiteId());
+        historicData.setMedId(med.getMedId());
+        historicData.setDateYear(historicDataCSVDTO.getYear());
+        historicData.setDateMonth(historicDataCSVDTO.getMonth());
+        historicData.setQuantity(historicDataCSVDTO.getQuantity());
+        // Siempre será 0 al insertar
+        historicData.setProjectedQuantity(0);
         return historicData;
     }
 }

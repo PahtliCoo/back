@@ -1,7 +1,8 @@
 /**
  * Med Controller
  * @Author Santiago Moreno Lacalle Quintero (A01663197@tec.mx)
- * @since 2025-06-1
+ * @co-author Adolfo Hernandez Fernandez (a01664412@tec.mx)
+ * @since 2025-06-05
  */
 package life.pahtlicoo.infrastructure.controller;
 
@@ -14,6 +15,7 @@ import life.pahtlicoo.application.dto.med.MedResponseDTO;
 import life.pahtlicoo.application.dto.med.MedUpdateNameReqDTO;
 import life.pahtlicoo.application.usecase.med.*;
 import life.pahtlicoo.domain.model.Med;
+import life.pahtlicoo.shared.annotation.NoAuthRequired;
 
 import java.util.List;
 
@@ -50,7 +52,7 @@ public class MedController {
 
 
     @GET
-    @Path("/allmeds")
+    @Path("/all")
     public Response getAllMeds() {
         try{
             List<MedResponseDTO> medResponseDTOList = getAllMedsUseCase.execute();
@@ -64,10 +66,9 @@ public class MedController {
         }
     }
 
-    // TODO: ESTO PUEDE SER UN GET CON UN PATHPARAM pero para probar lo dejare con get
     @GET
-    @Path("/searchmeds/{name}")
-    public Response searchMeds(@PathParam("name") String name) {
+    @Path("")
+    public Response searchMeds(@QueryParam("name") String name) {
         try{
             List<MedResponseDTO> medResponseDTOList = getMedsBySearchNameUseCase.execute(name);
             if(medResponseDTOList == null || medResponseDTOList.isEmpty()) {
@@ -80,10 +81,10 @@ public class MedController {
     }
 
     @DELETE
-    @Path("{medId}")
-    public Response deleteMed(@PathParam("medId") int medId) {
+    @Path("/{med_id}")
+    public Response deleteMed(@PathParam("med_id") int med_id) {
         try {
-            if(deleteMedUseCase.execute(medId)) {
+            if(deleteMedUseCase.execute(med_id)) {
                 return Response.status(Response.Status.NO_CONTENT).build();
             }
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -94,10 +95,10 @@ public class MedController {
     }
 
     @GET
-    @Path("/{medId}")
-    public Response getMed(@PathParam("medId") int medId) {
+    @Path("/{med_id}")
+    public Response getMed(@PathParam("med_id") int med_id) {
         try{
-            Med med = getMedUseCase.execute(medId);
+            Med med = getMedUseCase.execute(med_id);
             if(med == null) {
                 return Response.status(Response.Status.NOT_FOUND).build();
             }

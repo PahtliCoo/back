@@ -1,4 +1,5 @@
-package life.pahtlicoo.application.dto.notification;
+package life.pahtlicoo.application.dto.historicdata;
+
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -10,7 +11,10 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateNotificationStatusReqDTO {
+public class GetHistoricDataReqDTO {
     @NotBlank
-    private boolean seen;
+    private int year;
+    private int startMonth;
+    private int endMonth;
+    private String type;
 }

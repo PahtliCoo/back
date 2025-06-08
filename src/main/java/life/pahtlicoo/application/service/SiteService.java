@@ -10,6 +10,8 @@ import jakarta.inject.Inject;
 import life.pahtlicoo.domain.model.Site;
 import life.pahtlicoo.domain.repository.SiteRepository;
 
+import java.util.List;
+
 @ApplicationScoped
 public class SiteService {
     @Inject
@@ -26,6 +28,12 @@ public class SiteService {
     }
     public void deleteSite(int siteId){
         siteRepository.deleteSite(siteId);
+    }
+    public Site findSiteByName(String siteName){
+        return siteRepository.findByName(siteName);
+    }
+    public List<Site> findAllSites(){
+        return siteRepository.getAllSites();
     }
 
 }

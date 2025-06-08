@@ -18,19 +18,14 @@ public class NotificationRepositoryImpl implements NotificationRepository, Panac
 
     @Override
     @Transactional
-    public void createNotification(Notification notification) {
+    public boolean createNotification(Notification notification) {
         NotificationEntity notificationEntity = notificationEntityMapper.toEntity(notification);
         persist(notificationEntity);
-        notification.setNotificationId(notification.getNotificationId());
-    }
-
-    @Override
-    public Notification getNotification(int notificationId){
-        NotificationEntity notificationEntity = findById(notificationId);
-        if(notificationEntity == null){
-            return null;
+        if (!notificationEntity.isPersistent()) {
+            return false;
         }
-        return notificationEntityMapper.toDomain(notificationEntity);
+        notification.setNotificationId(notification.getNotificationId());
+        return true;
     }
 
     @Override
@@ -49,11 +44,5 @@ public class NotificationRepositoryImpl implements NotificationRepository, Panac
             return;
         }
         notificationEntity.setSeen(seen);
-    }
-
-    @Override
-    @Transactional
-    public void deleteNotification(int notificationId){
-        deleteById(notificationId);
     }
 }
