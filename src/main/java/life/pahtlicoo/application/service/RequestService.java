@@ -10,6 +10,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import life.pahtlicoo.application.dto.request.SearchUserRequestsReqDTO;
 import life.pahtlicoo.domain.model.Request;
+import life.pahtlicoo.domain.model.ShipmentOrder;
 import life.pahtlicoo.domain.repository.RequestRepository;
 
 import java.util.List;
@@ -78,4 +79,9 @@ public class RequestService {
     public List<Request> searchUserRequests(SearchUserRequestsReqDTO searchUserRequestsReqDTO){
         return requestRepository.searchUserRequests(searchUserRequestsReqDTO);
     }
+
+    public void updateRequestDescription(int requestId, String description){
+        requestRepository.updateRequestDescription(requestId, description);
+    }
+
 }
