@@ -12,5 +12,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UpdateNotificationSeenReqDTO {
     @NotBlank
-    private int seen;
+    private boolean seen;
 }
