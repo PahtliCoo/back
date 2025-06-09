@@ -23,7 +23,6 @@ public class MedSiteRepositoryImpl implements MedSiteRepository, PanacheReposito
     @Inject
     MedSiteEntityMapper medSiteEntityMapper;
 
-    //TODO: Dependiendo del tiempo, lo corregimos a void
     @Override
     @Transactional
     public void createMedSite(MedSite medSite){
@@ -162,6 +161,5 @@ public class MedSiteRepositoryImpl implements MedSiteRepository, PanacheReposito
 
         medSiteEntity.setCurrentQuantity(currentQuantity + addition);
         medSiteEntity.setInitialQuantity(medSiteEntity.getInitialQuantity() + addition);
-        //TODO hacemos la suma directa al initial, si no, ocupariamos tener una columna u otra tabla de logs
     }
 }

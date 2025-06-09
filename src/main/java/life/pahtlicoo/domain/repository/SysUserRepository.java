@@ -14,7 +14,6 @@ public interface SysUserRepository {
     public SysUser updateSysUserEmail(SysUser sysUser);
     public Boolean updateSysUserEmailFirebase(SysUser sysUser, String newEmail);
     public Boolean updateSysUserPasswordFirebase(String firebaseId, String newPassword);
-    public void deleteSysUser(int userId);
     public SysUser createSysUserFirebase(SysUser sysUser, String password);
     public Boolean deleteSysUserFirebase(String userUid);
     public SysUser getSysUserByFirebaseId(String firebaseId);

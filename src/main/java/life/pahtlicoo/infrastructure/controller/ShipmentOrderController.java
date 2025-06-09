@@ -13,7 +13,6 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import life.pahtlicoo.application.dto.shipmentorder.*;
 import life.pahtlicoo.application.usecase.shipmentorder.*;
-import life.pahtlicoo.domain.model.ShipmentOrder;
 
 import java.util.List;
 import java.util.Set;
@@ -24,18 +23,6 @@ import java.util.Set;
 public class ShipmentOrderController {
     @Inject
     CreateShipmentOrderUseCase createShipmentOrderUseCase;
-    @Inject
-    GetAllShipmentOrderUseCase getAllShipmentOrderUseCase;
-    @Inject
-    UpdateShipmentOrderStatusUseCase updateShipmentOrderStatusUseCase;
-    @Inject
-    DeleteShipmentOrderUseCase deleteShipmentOrderUseCase;
-    @Inject
-    GetShipmentOrderUseCase getShipmentOrderUseCase;
-    @Inject
-    GetShipmentOrderByFilterUseCase getShipmentOrderByFilterUseCase;
-    @Inject
-    GetShipmentOrderBySearchUseCase getShipmentOrderBySearchUseCase;
     @Inject
     SearchShipmentOrdersUseCase searchShipmentOrdersUseCase;
     @Inject
@@ -54,17 +41,6 @@ public class ShipmentOrderController {
         }
     }
 
-    //DEV ENVIRONMENT ONLY
-    @GET
-    @Path("/list_all")
-    public Response getAllShipmentOrders(@QueryParam("page") int page){
-        List<GetShipmentOrderReqDTO> shipmentOrders = getAllShipmentOrderUseCase.execute(page);
-        if(shipmentOrders == null){
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-        return Response.ok(shipmentOrders).build();
-    }
-
     @GET
     @Path("/list-shipments")
     public Response searchShipmentOrders(@QueryParam("name") String name, @QueryParam("page") @DefaultValue("0") int page,
@@ -72,7 +48,7 @@ public class ShipmentOrderController {
 
         if (page < 0) {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("Invalid page number. Must be >= 0.") //TODO should i keep this?
+                    .entity("Invalid page number. Must be >= 0.")
                     .build();
         }
 
@@ -86,66 +62,6 @@ public class ShipmentOrderController {
         }
     }
 
-    //DEV ENVIRONMENT ONLY
-    @GET
-    @Path("/{shipment_order_id}")
-    public Response getShipmentOrder(@PathParam("shipment_order_id") int shipmentOrderId){
-        ShipmentOrder shipmentOrder = getShipmentOrderUseCase.execute(shipmentOrderId);
-        if (shipmentOrder == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-        return Response.ok(shipmentOrder).build();
-    }
-
-    //DEV ENVIRONMENT ONLY
-    @PATCH
-    @Path("/{shipment_order_id}")
-    public Response updateShipmentOrderStatus(@PathParam("shipment_order_id") int shipmentOrderId,
-                                              UpdateShipmentOrderStateReqDTO updateShipmentOrderStateReqDTO){
-        updateShipmentOrderStatusUseCase.execute(shipmentOrderId, updateShipmentOrderStateReqDTO);
-        return Response.ok().build();
-    }
-
-    //DEV ENVIRONMENT ONLY
-    @DELETE
-    @Path("/{shipment_order_id}")
-    public Response deleteShipmentOrder(@PathParam("shipment_order_id") int shipmentOrderId){
-        deleteShipmentOrderUseCase.execute(shipmentOrderId);
-        return Response.ok().build();
-    }
-
-    //DEV ENVIRONMENT ONLY
-    @POST
-    @Path("/filter/{page}")
-    public Response filterRequest(@PathParam("page") int page, GetShipmentOrderFilterReqDTO getShipmentOrderFilterReqDTO){
-        try{
-            List<GetShipmentOrderReqDTO> shipmentOrders = getShipmentOrderByFilterUseCase.execute(page,getShipmentOrderFilterReqDTO);
-            if(shipmentOrders == null){
-                return Response.status(Response.Status.NOT_FOUND).build();
-            }
-            return Response.ok(shipmentOrders).build();
-
-        }catch (Exception e){
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    //DEV ENVIRONMENT ONLY
-    @POST
-    @Path("/search/{page}")
-    public Response searchRequest(@PathParam("page") int page, GetShipmentOrderSearchReqDTO getShipmentOrderSearchReqDTO){
-        try{
-            List<GetShipmentOrderReqDTO> shipmentOrders = getShipmentOrderBySearchUseCase.execute(page,getShipmentOrderSearchReqDTO.getSearch());
-            if(shipmentOrders == null){
-                return Response.status(Response.Status.NOT_FOUND).build();
-            }
-            return Response.ok(shipmentOrders).build();
-        }catch (Exception e){
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    //DEV ENVIRONMENT ONLY
     @PATCH
     @Path("/update-format/{shipment_order_id}")
     public Response updateShipmentOrderFormat(@PathParam("shipment_order_id") int shipment_order_id, UpdateShipmentOrderFormatReqDTO updateShipmentOrderFormatReqDTO) {

@@ -11,6 +11,6 @@ public class GetShipmentOrderUseCase {
     ShipmentOrderService shipmentOrderService;
 
     public ShipmentOrder execute(int shipmentOrderId) {
-        return  shipmentOrderService.getShipmentOrderById(shipmentOrderId); //TODO refactor remove ById
+        return  shipmentOrderService.getShipmentOrderById(shipmentOrderId);
     }
 }
