@@ -1,0 +1,30 @@
+package life.pahtlicoo;
+
+import io.quarkus.test.junit.QuarkusTest;
+import jakarta.inject.Inject;
+import life.pahtlicoo.application.service.DiseaseService;
+import life.pahtlicoo.domain.model.Disease;
+import org.junit.jupiter.api.Test;
+
+import java.time.OffsetDateTime;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@QuarkusTest
+public class DiseaseTest {
+
+    @Inject
+    DiseaseService diseaseService;
+
+    @Test
+    public void testInsertDisease() {
+        Disease disease = new Disease();
+        disease.setName("Gripe");
+
+        diseaseService.createDisease(disease);
+
+        Disease saved = diseaseService.getDisease(disease.getDiseaseId());
+        assertNotNull(saved);
+        assertEquals("Gripe", saved.getName());
+    }
+}
