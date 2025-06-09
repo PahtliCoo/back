@@ -1,0 +1,27 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [
+      'build',
+      '-f', 'src/main/docker/Dockerfile.jvm',
+      '-t', 'gcr.io/$PROJECT_ID/quarkus-app',
+      '.'
+    ]
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [
+      'push',
+      'gcr.io/$PROJECT_ID/quarkus-app'
+    ]
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: [
+      'run', 'deploy', 'quarkus-app',
+      '--image', 'gcr.io/$PROJECT_ID/quarkus-app',
+      '--region', 'us-central1',
+      '--platform', 'managed',
+      '--quiet',
+      '--allow-unauthenticated',
+      '--set-env-vars', 'SECRET_ID=pahtlicoo-firebase-config',
+      '--set-secrets', 'DB_USERNAME=pahtlicoo-dev-database-username:latest,DB_URL=pahtlicoo-dev-database-url:latest,DB_PASSWORD=pahtlicoo-dev-database-password:latest'
+    ]
+
+images:
+  - 'gcr.io/$PROJECT_ID/quarkus-app'
