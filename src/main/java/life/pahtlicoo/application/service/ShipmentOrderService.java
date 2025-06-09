@@ -39,9 +39,22 @@ public class ShipmentOrderService {
     }
 
     public void updateShipmentOrderStatus(int shipmentOrderId, int state) {
-        shipmentOrderRepository.updateShipmentOrderStatus(shipmentOrderId, state);
-
         ShipmentOrder shipmentOrder = shipmentOrderRepository.getShipmentOrder(shipmentOrderId);
+
+        // Validar si ya tiene el estado deseado
+        if (shipmentOrder == null) {
+            throw new IllegalArgumentException("Shipment order no encontrada con ID: " + shipmentOrderId);
+        }
+
+        if (shipmentOrder.getState() == state) {
+            return;
+        }
+
+        if (shipmentOrder.getState() == 3 || shipmentOrder.getState() == 4) {
+            throw new IllegalArgumentException("La shipment order ya no es modificable");
+        }
+
+        shipmentOrderRepository.updateShipmentOrderStatus(shipmentOrderId, state);
 
         if (state == 3){
             Request request = requestRepository.getRequest(shipmentOrder.getRequestId());

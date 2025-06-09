@@ -16,6 +16,7 @@ import life.pahtlicoo.application.usecase.shipmentorder.*;
 import life.pahtlicoo.domain.model.ShipmentOrder;
 
 import java.util.List;
+import java.util.Set;
 
 @Path("/shipment-order")
 @Produces(MediaType.APPLICATION_JSON)
@@ -148,6 +149,11 @@ public class ShipmentOrderController {
     @Path("/update-format/{shipment_order_id}") //SI
     public Response updateShipmentOrderFormat(@PathParam("shipment_order_id") int shipment_order_id, UpdateShipmentOrderFormatReqDTO updateShipmentOrderFormatReqDTO) {
         try {
+            Set<Integer> validStates = Set.of(1, 2, 3, 4);
+            if (!validStates.contains(updateShipmentOrderFormatReqDTO.getState())) {
+                return Response.status(Response.Status.BAD_REQUEST).build();
+            }
+
             if (updateShipmentOrderFormat.execute(shipment_order_id, updateShipmentOrderFormatReqDTO)) {
                 return Response.status(Response.Status.NO_CONTENT).build();
             }
