@@ -97,7 +97,6 @@ public class RequestRepositoryImpl implements RequestRepository, PanacheReposito
                 .map(requestEntityMapper::toDomain)
                 .toList();
     }
-    //TODO if possible make a single method that based on what it receives changes the query
 
     @Override
     public List<Request> getAllRequestsByUserIdByState(int sysUserId, int state,int page){
@@ -170,7 +169,6 @@ public class RequestRepositoryImpl implements RequestRepository, PanacheReposito
 
     @Override
     public List<Request> getAllRequestsBySearch(String search, int page){
-        //TODO, dependiendo del tiempo impleemntar busqueda por estado
         search = search.toLowerCase();
         List<RequestEntity> requestEntities = find(
                 "CAST(requestId AS string) LIKE ?1 OR LOWER(name) LIKE ?1",

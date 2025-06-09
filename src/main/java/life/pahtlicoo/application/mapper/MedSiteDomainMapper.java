@@ -13,5 +13,5 @@ public class MedSiteDomainMapper {
         medSite.setCurrentQuantity(createMedSiteReqDTO.getCurrent_quantity());
         medSite.setInitialQuantity(createMedSiteReqDTO.getInitial_quantity());
         return medSite;
-    } //TODO iff possible refactor
+    }
 }

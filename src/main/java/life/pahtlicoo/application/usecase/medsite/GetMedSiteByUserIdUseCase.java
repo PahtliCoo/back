@@ -36,7 +36,7 @@ public class GetMedSiteByUserIdUseCase {
         for (MedSite medSite : medSiteList) {
             Med med = medService.getMed(medSite.getMedId());
             Site site = siteService.findSite(medSite.getSiteId());
-            int total_used = medSite.getInitialQuantity() - medSite.getCurrentQuantity(); //TODO que pasa cuando la resta es negativa? o se añaden al current
+            int total_used = medSite.getInitialQuantity() - medSite.getCurrentQuantity();
             MedSiteResDTO medSiteResDTO = new MedSiteResDTO(med.getName(), site.getName(), total_used,
                     medSite.getInitialQuantity(), medSite.getCurrentQuantity(), medSite.getMedId(),medSite.getSiteId());
             medSiteResDTOList.add(medSiteResDTO);

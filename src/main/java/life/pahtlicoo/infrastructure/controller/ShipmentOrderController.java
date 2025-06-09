@@ -48,7 +48,7 @@ public class ShipmentOrderController {
 
         if (page < 0) {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("Invalid page number. Must be >= 0.") //TODO should i keep this?
+                    .entity("Invalid page number. Must be >= 0.")
                     .build();
         }
 
