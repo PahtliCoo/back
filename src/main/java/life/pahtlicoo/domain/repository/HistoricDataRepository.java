@@ -1,5 +1,7 @@
 package life.pahtlicoo.domain.repository;
 
+import life.pahtlicoo.application.dto.historicdata.GenerateForecastReqDTO;
+import life.pahtlicoo.application.dto.historicdata.GetRecentHistoricDataResDTO;
 import life.pahtlicoo.domain.model.HistoricData;
 
 import java.util.List;
@@ -14,4 +16,7 @@ public interface HistoricDataRepository {
     public HistoricData getHistoricDataBySiteIdAndMedIdAndDate(HistoricData historicData);
     public void createListOfHistoricData(List<HistoricData> historicData);
     public void createOrUpdateForecastData(List<HistoricData> historicDataList);
+    public List<GetRecentHistoricDataResDTO> getMostRecentHistoricData(int medId);
+    public List<GetRecentHistoricDataResDTO> getHistoricDataByMedId(int medId);
+    public List<GetRecentHistoricDataResDTO> getPredictiveDataByMedId(int medId);
 }

@@ -34,6 +34,8 @@ public class MedController {
     GetMedUseCase getMedUseCase;
     @Inject
     UpdateMedNameUseCase updateMedNameUseCase;
+    @Inject
+    GetMedByNameUseCase getMedByNameUseCase;
 
     //DEV ENVIRONMENT ONLY
     @POST
@@ -49,7 +51,6 @@ public class MedController {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
-
 
     @GET
     @Path("/all")
@@ -75,6 +76,20 @@ public class MedController {
                 return Response.status(Response.Status.NOT_FOUND).build();
             }
             return Response.ok(medResponseDTOList).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GET
+    @Path("/get-med/{med_name}")
+    public Response getMedByName(@PathParam("med_name") String medName) {
+        try{
+            MedResponseDTO medResponse = getMedByNameUseCase.execute(medName);
+            if(medResponse == null) {
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
+            return Response.ok(medResponse).build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }

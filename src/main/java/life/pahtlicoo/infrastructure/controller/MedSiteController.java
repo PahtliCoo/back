@@ -12,6 +12,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import life.pahtlicoo.application.dto.medsite.*;
+import life.pahtlicoo.application.dto.notification.GetNotificationsSeenStatusResDTO;
 import life.pahtlicoo.application.usecase.medsite.*;
 import life.pahtlicoo.domain.model.MedSite;
 
@@ -41,6 +42,8 @@ public class MedSiteController {
     RegisterNewMedSiteConsumptionUseCase registerNewMedSiteConsumptionUseCase;
     @Inject
     RegisterNewMedSiteAdditionUseCase registerNewMedSiteAdditionUseCase;
+    @Inject
+    GetMedSiteQuantityRequiredPerStateUseCase getMedSiteQuantityRequiredPerStateUseCase;
 
     //DEV ENVIRONMENT ONLY
     @POST
@@ -193,6 +196,21 @@ public class MedSiteController {
         }catch(Exception e){
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    @GET
+    @Path("/quantity-required/state/{med_id}")
+    public Response getMedSiteQuantityRequiredPerState(@PathParam("med_id") int medId) {
+        List<GetMedSiteQuantityRequiredPerStateResDTO> quantityRequired =
+                getMedSiteQuantityRequiredPerStateUseCase.execute(medId);
+
+        if (quantityRequired == null || quantityRequired.isEmpty()) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("No se encontraron sitios con cantidades para el medicamento indicado.")
+                    .build();
+        }
+
+        return Response.ok(quantityRequired).build();
     }
 
 }
