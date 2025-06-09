@@ -1,3 +1,9 @@
+/**
+ * Site Entity.
+ * @author Santiago Moreno Lacalle Quintero (A01663197@tec.mx)
+ * @co-author Adolfo Hernandez Fernandez (a01664412@tec.mx)
+ * @since 2025-05-26
+ */
 package life.pahtlicoo.infrastructure.entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
@@ -10,7 +16,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.OffsetDateTime;
-import java.util.List;
 
 @Entity
 @Table(name="site")
@@ -20,8 +25,9 @@ import java.util.List;
 @AllArgsConstructor
 public class SiteEntity extends PanacheEntityBase {
     @Id
+    @Column(name="site_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int site_id;
+    private int siteId;
 
     @Column(name="name")
     private String name;
@@ -31,12 +37,9 @@ public class SiteEntity extends PanacheEntityBase {
 
     @Column(name = "created_at")
     @CreationTimestamp
-    private OffsetDateTime created_at;
+    private OffsetDateTime createdAt;
 
     @Column(name="updated_at")
     @UpdateTimestamp
-    private OffsetDateTime updated_at;
-
-    @ManyToMany(mappedBy = "sites", fetch = FetchType.LAZY)
-    private List<MedEntity> meds;
+    private OffsetDateTime updatedAt;
 }

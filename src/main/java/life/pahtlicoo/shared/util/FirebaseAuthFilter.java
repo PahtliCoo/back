@@ -12,12 +12,11 @@ import jakarta.ws.rs.ext.Provider;
 import jakarta.ws.rs.container.ResourceInfo;
 import life.pahtlicoo.shared.annotation.NoAuthRequired;
 
-import javax.annotation.Priority;
+import jakarta.annotation.Priority;
 import java.io.IOException;
 
 @Provider
 @Priority(Priorities.AUTHENTICATION)
-@NoAuthRequired
 public class FirebaseAuthFilter implements ContainerRequestFilter {
 
     @Context
@@ -52,7 +51,5 @@ public class FirebaseAuthFilter implements ContainerRequestFilter {
                     .entity("Invalid firebase token")
                     .build());
         }
-
-
     }
 }

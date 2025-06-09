@@ -1,18 +1,39 @@
+/**
+ * Mapper notification from request and shipment orders
+ * @author Luis Enrique Salazar Perez
+ * @since 2025-06-08
+ */
 package life.pahtlicoo.application.mapper;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import life.pahtlicoo.application.dto.notification.CreateNotificationReqDTO;
 import life.pahtlicoo.domain.model.Notification;
+import life.pahtlicoo.domain.model.Request;
+import life.pahtlicoo.domain.model.ShipmentOrder;
 
 @ApplicationScoped
 public class NotificationDomainMapper {
-    public Notification createNotificationToDomain(CreateNotificationReqDTO createNotificationReqDTO){
+    public Notification requestToNotification(Request request, String siteName) {
         Notification notification = new Notification();
-        notification.setStatus(createNotificationReqDTO.getStatus());
-        notification.setDescription(createNotificationReqDTO.getDescription());
-        notification.setSenderId(createNotificationReqDTO.getSender_id());
-        notification.setReceiverId(createNotificationReqDTO.getReceiver_id());
-        notification.setRequestId(createNotificationReqDTO.getRequest_id());
+
+        String capitalizedSiteName = siteName == null || siteName.isBlank()
+                ? ""
+                : siteName.substring(0, 1).toUpperCase() + siteName.substring(1);
+
+        notification.setDescription(capitalizedSiteName + " creó un pedido");
+        notification.setSenderId(request.getSysUserId());
+        notification.setReceiverId(7);
+        notification.setRequestPhase(1);
+        notification.setRequestId(request.getRequestId());
+        return notification;
+    }
+
+    public Notification shipmentOrderToNotification(ShipmentOrder shipmentOrder) {
+        Notification notification = new Notification();
+        notification.setDescription("administrador creó una orden de envío");
+        notification.setSenderId(2);
+        notification.setReceiverId(3);
+        notification.setRequestPhase(2);
+        notification.setRequestId(shipmentOrder.getRequestId());
         return notification;
     }
 }

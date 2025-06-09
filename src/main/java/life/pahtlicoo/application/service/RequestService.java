@@ -1,8 +1,16 @@
+/**
+ * Request Service
+ * @Author Santiago Moreno Lacalle Quintero (A01663197@tec.mx)
+ * @co-author Adolfo Hernández Fernández (a01664412@tec.mx)
+ * @since 2025-06-05
+ */
 package life.pahtlicoo.application.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import life.pahtlicoo.application.dto.request.SearchUserRequestsReqDTO;
 import life.pahtlicoo.domain.model.Request;
+import life.pahtlicoo.domain.model.ShipmentOrder;
 import life.pahtlicoo.domain.repository.RequestRepository;
 
 import java.util.List;
@@ -12,8 +20,8 @@ public class RequestService {
     @Inject
     RequestRepository requestRepository;
 
-    public void createRequest(Request request){
-        requestRepository.createRequest(request);
+    public boolean createRequest(Request request) {
+        return requestRepository.createRequest(request);
     }
 
     public Request getRequest(int requestId){
@@ -24,11 +32,56 @@ public class RequestService {
         return requestRepository.getAllRequestsByUserId(userId);
     }
 
-    public void updateRequestStatus(int requestId, String status){
-        requestRepository.updateRequestStatus(requestId, status);
+    public void updateRequestStatus(int requestId, int state){
+        requestRepository.updateRequestStatus(requestId, state);
     }
 
-    public void deleteRequest(int requestId){
-       requestRepository.deleteRequest(requestId);
+    public Boolean deleteRequest(int requestId){
+       return requestRepository.deleteRequest(requestId);
     }
+
+    public List<Request> getAllRequestsByUserIdByState(int userId, int state,int page){
+        return requestRepository.getAllRequestsByUserIdByState(userId, state,page);
+    }
+
+    public List<Request> getAllRequestsByUserIdByStateAndDate(int sysUserId, int state, int year, int month, int day,int page){
+        return requestRepository.getAllRequestsByUserIdByStateAndDate(sysUserId, state, year, month, day,page);
+    }
+
+    public List<Request> getAllRequestsByUserIdByDate(int userId, int year, int month, int day,int page){
+        return requestRepository.getAllRequestsByUserIdByDate(userId,year,month,day, page);
+    }
+
+    public List<Request> getAllRequest(int page){
+        return requestRepository.getAllRequest(page);
+    }
+
+    public List<Request> getAllRequestsByDate(int year, int month, int day,int page){
+        return requestRepository.getAllRequestsByDate(year,month,day,page);
+    }
+
+    public List<Request> getAllRequestsByDateByState(int state,int year, int month, int day,int page){
+        return requestRepository.getAllRequestsByDateByState(state,year,month,day,page);
+    }
+
+    public List<Request> getAllRequestsByState(int state,int page){
+        return requestRepository.getAllRequestsByState(state,page);
+    }
+
+    public List<Request> getAllRequestsBySearch(String search, int page){
+        return requestRepository.getAllRequestsBySearch(search,page);
+    }
+
+    public List<Request> searchUserRequestsByName(int sysUserId, String search, int page){
+        return requestRepository.searchUserRequestsByName(sysUserId,search,page);
+    }
+
+    public List<Request> searchUserRequests(SearchUserRequestsReqDTO searchUserRequestsReqDTO){
+        return requestRepository.searchUserRequests(searchUserRequestsReqDTO);
+    }
+
+    public void updateRequestDescription(int requestId, String description){
+        requestRepository.updateRequestDescription(requestId, description);
+    }
+
 }

@@ -7,7 +7,11 @@ import java.util.List;
 public interface HistoricDataRepository {
     public void createHistoricData(HistoricData historicData);
     public List<HistoricData> getAllHistoricDataBySiteId(int siteId);
-    //public void updateHistoricData(HistoricData historicData);
+    public List<HistoricData> getAllHistoricDataBySiteIdAndMedId(int siteId, int medId);
+    public List<HistoricData> getAllByYearAndMonthRange(int year, int startMonth, int endMonth, String Type);
+    public void updateHistoricDataByDateMedSite(List<HistoricData> historicData);
     public void deleteHistoricData(int historicDataId);
+    public HistoricData getHistoricDataBySiteIdAndMedIdAndDate(HistoricData historicData);
+    public void createListOfHistoricData(List<HistoricData> historicData);
+    public void createOrUpdateForecastData(List<HistoricData> historicDataList);
 }
-//TODO aqui debe haber un endpoint para cargar un friego de data

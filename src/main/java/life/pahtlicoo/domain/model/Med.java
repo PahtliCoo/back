@@ -1,7 +1,8 @@
 /**
  * Med class.
  * @author Adolfo Hernández Fernández (a01664412@tec.mx)
- * @since 2025-05-11
+ * @co-author Nicole Kapellmann Lepine (a01664563@tec.mx)
+ * @since 2025-05-26
  */
 package life.pahtlicoo.domain.model;
 
@@ -10,7 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.time.OffsetDateTime;
 
 @Getter
 @Setter
@@ -19,7 +20,6 @@ import java.time.LocalDate;
 public class Med {
     private int medId;
     private String name;
-    private int siteId;
-    private LocalDate createdAt;
-    private LocalDate updatedAt;
+    private OffsetDateTime createdAt;
+    private OffsetDateTime updatedAt;
 }

@@ -1,8 +1,12 @@
+/**
+ * Med entity.
+ * @author Santiago Moreno Lacalle Quintero (a01663197@tec.mx)
+ * @co-author Adolfo Hernandez Fernandez (a01664412@tec.mx)
+ * @since 2025-05-26
+ */
 package life.pahtlicoo.infrastructure.entity;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +16,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.OffsetDateTime;
-import java.util.List;
 
 @Entity
 @Table(name="med")
@@ -24,24 +27,17 @@ import java.util.List;
 public class MedEntity extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int med_id;
+    @Column(name="med_id")
+    private int medId;
 
     @Column(name="name")
     private String name;
 
     @Column(name = "created_at")
     @CreationTimestamp
-    private OffsetDateTime created_at;
+    private OffsetDateTime createdAt;
 
     @Column(name="updated_at")
     @UpdateTimestamp
-    private OffsetDateTime updated_at;
-
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(
-            name="med_site",
-            joinColumns = @JoinColumn(name="med_id"),
-            inverseJoinColumns = @JoinColumn(name="site_id")
-    )
-    private List<SiteEntity> sites;
+    private OffsetDateTime updatedAt;
 }

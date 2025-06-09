@@ -1,3 +1,9 @@
+/**
+ * Request entity.
+ * @author Nicole Kapellmann Lepine (a01664563@tec.mx)
+ * @co-author Adolfo Hernandez Fernandez (a01664412@tec.mx)
+ * @since 2025-05-26
+ */
 package life.pahtlicoo.infrastructure.entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
@@ -23,14 +29,14 @@ public class RequestEntity extends PanacheEntityBase {
     @Column(name = "request_id")
     private int requestId;
 
-    @Column(name="user_id")
-    private int userId;
+    @Column(name="sys_user_id")
+    private int sysUserId;
 
-    @Column(name = "site_id")
-    private int siteId;
+    @Column(name = "state")
+    private int state;
 
-    @Column(name = "status")
-    private String status;
+    @Column(name="name")
+    private String name;
 
     @Column(name= "description")
     private String description;

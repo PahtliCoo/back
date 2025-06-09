@@ -1,9 +1,18 @@
+/**
+ * Notification service
+ * @author Luis Enrique Salazar Perez
+ * @co-author Adolfo Hernández Fernández (a01664412@tec.mx)
+ * @since 2025-06-08
+ */
 package life.pahtlicoo.application.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import life.pahtlicoo.application.dto.notification.GetReceiverNotificationsResDTO;
+import life.pahtlicoo.application.dto.notification.GetNotificationsSeenStatusResDTO;
 import life.pahtlicoo.domain.model.Notification;
 import life.pahtlicoo.domain.repository.NotificationRepository;
+import life.pahtlicoo.infrastructure.websocket.UpdatesSocket;
 
 import java.util.List;
 
@@ -12,23 +21,24 @@ public class NotificationService {
     @Inject
     NotificationRepository notificationRepository;
 
-    public void createNotification(Notification notification) {
-        notificationRepository.createNotification(notification);
+    @Inject
+    UpdatesSocket updatesSocket;
+
+    public boolean createNotification(Notification notification) {
+        updatesSocket.sendMessage(notification.getReceiverId(), notification.getRequestPhase(), notification.getDescription());
+
+        return notificationRepository.createNotification(notification);
     }
 
-    public Notification getNotification(int notificationId) {
-        return notificationRepository.getNotification(notificationId);
+    public List<GetReceiverNotificationsResDTO> getAllNotificationsByReceiverId(int receiverId, String orderBy) {
+        return notificationRepository.getAllNotificationsByReceiverId(receiverId, orderBy);
     }
 
-    public List<Notification> getAllNotificationsByReceiverId(int receiverId) {
-        return notificationRepository.getAllNotificationsByReceiverId(receiverId);
+    public GetNotificationsSeenStatusResDTO getNotificationsSeenStatus(int receiverId) {
+        return notificationRepository.getNotificationsSeenStatus(receiverId);
     }
 
-    public void updateNotificationStatus(int notificationId, String status) {
-        notificationRepository.updateNotificationStatus(notificationId, status);
-    }
-
-    public void deleteNotification(int notificationId) {
-        notificationRepository.deleteNotification(notificationId);
+    public void updateNotificationStatus(int notificationId, boolean seen) {
+        notificationRepository.updateNotificationStatus(notificationId, seen);
     }
 }

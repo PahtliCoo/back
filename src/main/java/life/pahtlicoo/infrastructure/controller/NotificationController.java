@@ -1,13 +1,20 @@
+/**
+ * Notification Controller
+ * @co-author Luis Enrique Salazar Perez
+ * @author Adolfo Hernández Fernández (a01664412@tec.mx)
+ * @since 2025-06-08
+ */
+
 package life.pahtlicoo.infrastructure.controller;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import life.pahtlicoo.application.dto.notification.CreateNotificationReqDTO;
-import life.pahtlicoo.application.dto.notification.UpdateNotificationStatusReqDTO;
+import life.pahtlicoo.application.dto.notification.GetReceiverNotificationsResDTO;
+import life.pahtlicoo.application.dto.notification.GetNotificationsSeenStatusResDTO;
+import life.pahtlicoo.application.dto.notification.UpdateNotificationSeenReqDTO;
 import life.pahtlicoo.application.usecase.notification.*;
-import life.pahtlicoo.domain.model.Notification;
 
 import java.util.List;
 
@@ -16,58 +23,47 @@ import java.util.List;
 @Consumes(MediaType.APPLICATION_JSON)
 public class NotificationController {
     @Inject
-    CreateNotificationUseCase createNotificationUseCase;
-    @Inject
-    GetNotificationUseCase getNotificationUseCase;
-    @Inject
     GetAllNotificationsByReceiverIdUseCase getAllNotificationsByReceiverIdUseCase;
     @Inject
     UpdateNotificationStatusUseCase updateNotificationStatusUseCase;
     @Inject
-    DeleteNotificationUseCase deleteNotificationUseCase;
-
-    @POST
-    @Path("/create")
-    public Response createNotification(CreateNotificationReqDTO createNotificationReqDTO){
-        try{
-            createNotificationUseCase.execute(createNotificationReqDTO);
-            return Response.status(Response.Status.CREATED).build();
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-        }
-    }
+    GetSeenNotificationsStatusUseCase getSeenNotificationsStatusUseCase;
 
     @GET
-    @Path("/{notification_id}")
-    public Response getNotification(@PathParam("notification_id") int notificationId){
-        Notification notification = getNotificationUseCase.execute(notificationId);
-        if (notification == null){
-            return Response.status(Response.Status.NOT_FOUND).build();
+    @Path("/receiver/all/{receiver_id}")
+    public Response getAllNotificationsByReceiverId(
+            @PathParam("receiver_id") int receiverId,
+            @QueryParam("order_by") @DefaultValue("desc") String orderBy) {
+
+        if (!orderBy.equalsIgnoreCase("asc") && !orderBy.equalsIgnoreCase("desc")) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("Invalid order_by parameter. Use 'asc' or 'desc'.")
+                    .build();
         }
-        return Response.ok(notification).build();
+
+        List<GetReceiverNotificationsResDTO> notifications = getAllNotificationsByReceiverIdUseCase
+                .execute(receiverId, orderBy.toLowerCase());
+
+        if (notifications == null || notifications.isEmpty()) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("No notifications found for receiver ID " + receiverId)
+                    .build();
+        }
+
+        return Response.ok(notifications).build();
     }
 
     @GET
     @Path("/receiver/{receiver_id}")
-    public Response getAllNotificationsByReceiverId(@PathParam("receiver_id") int receiverId){
-        List<Notification> notifications = getAllNotificationsByReceiverIdUseCase.execute(receiverId);
-        if(notifications == null){
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-        return Response.ok(notifications).build();
+    public Response getSeenNotificationsStatus(@PathParam("receiver_id") int receiverId) {
+        GetNotificationsSeenStatusResDTO seenStatus = getSeenNotificationsStatusUseCase.execute(receiverId);
+        return Response.ok(seenStatus).build();
     }
 
     @PATCH
     @Path("/{notification_id}")
-    public Response updateNotificationStatus(@PathParam("notification_id") int notificationId, UpdateNotificationStatusReqDTO updateNotificationStatusReqDTO){
-        updateNotificationStatusUseCase.execute(notificationId, updateNotificationStatusReqDTO);
-        return Response.ok().build();
-    }
-
-    @DELETE
-    @Path("/{notification_id}")
-    public Response deleteNotification(@PathParam("notification_id") int notificationId){
-        deleteNotificationUseCase.execute(notificationId);
+    public Response updateNotificationSeen(@PathParam("notification_id") int notificationId, UpdateNotificationSeenReqDTO updateNotificationSeenReqDTO){
+        updateNotificationStatusUseCase.execute(notificationId, updateNotificationSeenReqDTO);
         return Response.ok().build();
     }
 }
