@@ -1,17 +1,19 @@
 /**
- Use case para crear usuario
- @author Adolfo Hernández Fernández (a01664412@tec.mx)
- @Since: 2025-05-13
+ * Shipment Order service
+ * @author Nicole Kapellman Lepíne
+ * @co-author Adolfo Hernandez Fernandez
+ * @co-author Santiago Moreno Lacalle Quintero
+ * @Since: 2025-06-08
  */
 package life.pahtlicoo.application.service;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import life.pahtlicoo.application.dto.request.SearchUserRequestsReqDTO;
 import life.pahtlicoo.application.dto.shipmentorder.SearchShipmentOrdersReqDTO;
 import life.pahtlicoo.domain.model.Request;
+import life.pahtlicoo.domain.model.RequestDetail;
 import life.pahtlicoo.domain.model.ShipmentOrder;
-import life.pahtlicoo.domain.repository.ShipmentOrderRepository;
-import life.pahtlicoo.infrastructure.entity.ShipmentOrderEntity;
+import life.pahtlicoo.domain.model.SysUser;
+import life.pahtlicoo.domain.repository.*;
 
 import java.util.List;
 
@@ -19,6 +21,14 @@ import java.util.List;
 public class ShipmentOrderService {
     @Inject
     ShipmentOrderRepository shipmentOrderRepository;
+    @Inject
+    RequestRepository requestRepository;
+    @Inject
+    RequestDetailRepository requestDetailRepository;
+    @Inject
+    SysUserRepository sysUserRepository;
+    @Inject
+    MedSiteRepository medSiteRepository;
 
     public void createShipmentOrder(ShipmentOrder shipmentOrder) {
         shipmentOrderRepository.createShipmentOrder(shipmentOrder);
@@ -30,6 +40,23 @@ public class ShipmentOrderService {
 
     public void updateShipmentOrderStatus(int shipmentOrderId, int state) {
         shipmentOrderRepository.updateShipmentOrderStatus(shipmentOrderId, state);
+
+        ShipmentOrder shipmentOrder = shipmentOrderRepository.getShipmentOrder(shipmentOrderId);
+
+        if (state == 3){
+            Request request = requestRepository.getRequest(shipmentOrder.getRequestId());
+            List<RequestDetail> requestDetails = requestDetailRepository.getRequestDetailsByRequestId(
+                    shipmentOrder.getRequestId());
+            SysUser sysUser = sysUserRepository.getSysUser(request.getSysUserId());
+            int siteId = sysUser.getSiteId();
+
+            // Por cada detalle de la request, añadir al inventario
+            for (RequestDetail detail : requestDetails) {
+                int medId = detail.getMedId();
+                int quantity = detail.getQuantity();
+                medSiteRepository.registerNewMedSiteAddition(medId, siteId, quantity);
+            }
+        }
     }
 
     public void deleteShipmentOrder(int shipmentOrderId) {
