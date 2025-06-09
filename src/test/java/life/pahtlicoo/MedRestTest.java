@@ -2,36 +2,38 @@ package life.pahtlicoo;
 
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import life.pahtlicoo.application.service.MedService;
 import life.pahtlicoo.domain.model.Med;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.hasItem;
 
 @QuarkusTest
-public class MedTest {
+public class MedRestTest {
 
     @Inject
     MedService medService;
 
     @Test
-    public void testInsertMed() {
+    public void testMedAppearsInAll() {
+        insertTestMed();
+
+        given()
+                .header("Authorization", "Bearer testtoken")
+                .when()
+                .get("/med/all")
+                .then()
+                .statusCode(200)
+                .body("med_name", hasItem("Paracetamol"))
+                .log().body();
+    }
+
+    @Transactional
+    void insertTestMed() {
         Med med = new Med();
-        med.setName("Ibuprofeno");
-
+        med.setName("Paracetamol");
         medService.createMed(med);
-
-        List<Med> meds = medService.getAllMeds();
-        assertNotNull(meds);
-
-        Med saved = meds.stream()
-                .filter(m -> m.getName().equals("Ibuprofeno"))
-                .findFirst()
-                .orElse(null);
-
-        assertNotNull(saved);
-        assertEquals("Ibuprofeno", saved.getName());
     }
 }

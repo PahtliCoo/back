@@ -1,56 +1,37 @@
 package life.pahtlicoo;
 
 import io.quarkus.test.junit.QuarkusTest;
-import jakarta.transaction.Transactional;
-import life.pahtlicoo.application.dto.credential.CreateCredentialReqDTO;
+import jakarta.inject.Inject;
+import life.pahtlicoo.application.service.MedService;
+import life.pahtlicoo.domain.model.Med;
 import org.junit.jupiter.api.Test;
 
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.hasItem;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusTest
-public class CredentialRestTest {
+public class MedTest {
 
-   @Test
-   @Transactional
-   public void testCreateCredentialEndpoint()
-   {
-       CreateCredentialReqDTO dto = new CreateCredentialReqDTO();
-       dto.setName("hospital_admin");
-
-       given()
-               .header("Authorization", "Bearer " + "testtoken")
-               .contentType("application/json")
-               .body(dto)
-               .when()
-               .post("/credential/create")
-               .then()
-               .statusCode(201);
-   }
+    @Inject
+    MedService medService;
 
     @Test
-    @Transactional
-    public void testCredentialExistsAfterCreation() {
-        CreateCredentialReqDTO dto = new CreateCredentialReqDTO();
-        dto.setName("logistics_admin");
+    public void testInsertMed() {
+        Med med = new Med();
+        med.setName("Ibuprofeno");
 
-        // Creamos credencial
-        given()
-                .header("Authorization", "Bearer " + "testtoken")
-                .contentType("application/json")
-                .body(dto)
-                .when()
-                .post("/credential/create")
-                .then()
-                .statusCode(201);
+        medService.createMed(med);
 
-        // Obtenemos todas las credenciales
-        given()
-                .header("Authorization", "Bearer " + "testtoken")
-                .when()
-                .get("/credential/all")
-                .then()
-                .statusCode(200)
-                .body("name", hasItem("logistics_admin"));
+        List<Med> meds = medService.getAllMeds();
+        assertNotNull(meds);
+
+        Med saved = meds.stream()
+                .filter(m -> m.getName().equals("Ibuprofeno"))
+                .findFirst()
+                .orElse(null);
+
+        assertNotNull(saved);
+        assertEquals("Ibuprofeno", saved.getName());
     }
 }
