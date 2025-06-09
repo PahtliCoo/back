@@ -1,0 +1,28 @@
+package life.pahtlicoo;
+
+import io.quarkus.test.junit.QuarkusTest;
+import jakarta.transaction.Transactional;
+import life.pahtlicoo.application.dto.disease.CreateDiseaseReqDTO;
+import org.junit.jupiter.api.Test;
+
+import static io.restassured.RestAssured.given;
+
+@QuarkusTest
+public class DiseaseRestTest {
+
+    @Test
+    @Transactional
+    public void testCreateDisease() {
+        CreateDiseaseReqDTO dto = new CreateDiseaseReqDTO();
+        dto.setName("Neumonía");
+
+        given()
+                .header("Authorization", "Bearer testtoken")
+                .contentType("application/json")
+                .body(dto)
+                .when()
+                .post("/disease/create")
+                .then()
+                .statusCode(201);
+    }
+}
