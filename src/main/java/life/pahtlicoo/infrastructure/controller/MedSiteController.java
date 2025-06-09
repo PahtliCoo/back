@@ -13,7 +13,6 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import life.pahtlicoo.application.dto.medsite.*;
 import life.pahtlicoo.application.usecase.medsite.*;
-import life.pahtlicoo.domain.model.MedSite;
 
 import java.util.List;
 
@@ -22,129 +21,11 @@ import java.util.List;
 @Produces(MediaType.APPLICATION_JSON)
 public class MedSiteController {
     @Inject
-    CreateMedSiteUseCase createMedSiteUseCase;
-    @Inject
-    DeleteMedSiteUseCase deleteMedSiteUseCase;
-    @Inject
-    GetMedSiteByMedIdAndSiteIdUseCase getMedSiteByMedIdAndSiteIdUseCase;
-    @Inject
-    GetMedSiteByMedIdUseCase getMedSiteByMedIdUseCase;
-    @Inject
-    GetMedSiteBySiteIdUseCase getMedSiteBySiteIdUseCase;
-    @Inject
-    UpdateMedSiteCurrentQuantityUseCase updateMedSiteCurrentQuantityUseCase;
-    @Inject
-    UpdateMedSiteInventoryUseCase updateMedSiteInventoryUseCase;
-    @Inject
     GetMedSiteByUserIdUseCase getMedSiteByUserIdUseCase;
     @Inject
     RegisterNewMedSiteConsumptionUseCase registerNewMedSiteConsumptionUseCase;
     @Inject
     RegisterNewMedSiteAdditionUseCase registerNewMedSiteAdditionUseCase;
-
-    //DEV ENVIRONMENT ONLY
-    @POST
-    @Path("/create")
-    public Response createMedSite(CreateMedSiteReqDTO createMedSiteReqDTO) {
-        try {
-            createMedSiteUseCase.execute(createMedSiteReqDTO);
-            return Response.status(Response.Status.CREATED).build();
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    //DEV ENVIRONMENT ONLY
-    @DELETE
-    @Path("/delete")
-    public Response deleteMedSite(DeleteMedSiteReqDTO deleteMedSiteReqDTO) {
-        try {
-            if (deleteMedSiteUseCase.execute(deleteMedSiteReqDTO)) {
-                return Response.status(Response.Status.NO_CONTENT).build();
-            }
-            return Response.status(Response.Status.BAD_REQUEST).build();
-
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    //DEV ENVIRONMENT ONLY
-    @POST
-    @Path("/get/med-site-by-id")
-    public Response getMedSiteByMedIdAndSiteId(GetMedSiteByMedIdAndSiteIdReqDTO getMedSiteByMedIdAndSiteIdReqDTO) {
-        try {
-            MedSite medSite = getMedSiteByMedIdAndSiteIdUseCase.execute(getMedSiteByMedIdAndSiteIdReqDTO);
-            if (medSite == null) {
-                return Response.status(Response.Status.NOT_FOUND).build();
-            }
-            return Response.ok(medSite).build();
-
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    //DEV ENVIRONMENT ONLY
-    @GET
-    @Path("/med/{med_id}")
-    public Response getMedSiteByMedIdUseCase(@PathParam("med_id") int medId) {
-        try {
-            List<MedSite> medSites = getMedSiteByMedIdUseCase.execute(medId);
-            if (medSites == null) {
-                return Response.status(Response.Status.NOT_FOUND).build();
-            }
-            return Response.ok(medSites).build();
-
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    //DEV ENVIRONMENT ONLY
-    @GET
-    @Path("/{site_id}")
-    public Response getMedSiteBySiteIdUseCase(@PathParam("site_id") int siteId) {
-        try {
-            List<MedSite> medSites = getMedSiteBySiteIdUseCase.execute(siteId);
-            if (medSites == null) {
-                return Response.status(Response.Status.NOT_FOUND).build();
-            }
-            return Response.ok(medSites).build();
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    //DEV ENVIRONMENT ONLY
-    @PATCH
-    @Path("/update/quantity")
-    public Response updateMedSiteCurrentQuantity(UpdateMedSiteQuantityReqDTO updateMedSiteQuantityReqDTO) {
-        try {
-            if (updateMedSiteCurrentQuantityUseCase.execute(updateMedSiteQuantityReqDTO)) {
-                return Response.status(Response.Status.NO_CONTENT).build();
-            }
-            return Response.status(Response.Status.BAD_REQUEST).build();
-
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    //DEV ENVIRONMENT ONLY
-    @PATCH
-    @Path("/update/inventory")
-    public Response updateMedSiteInventory(UpdateMedSiteQuantityReqDTO updateMedSiteQuantityReqDTO) {
-        try {
-            if (updateMedSiteInventoryUseCase.execute(updateMedSiteQuantityReqDTO)) {
-                return Response.status(Response.Status.NO_CONTENT).build();
-            }
-            return Response.status(Response.Status.BAD_REQUEST).build();
-
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-        }
-    }
 
     @GET
     @Path("/sys-user/{sys_user_id}")
