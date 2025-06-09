@@ -8,7 +8,6 @@ package life.pahtlicoo.application.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import life.pahtlicoo.application.dto.medsite.GetMedSiteQuantityRequiredPerStateResDTO;
 import life.pahtlicoo.application.dto.medsite.GetUserMedSiteReqDTO;
 import life.pahtlicoo.application.dto.medsite.RegisterMedSiteAdditionDTO;
 import life.pahtlicoo.application.dto.medsite.RegisterMedSiteConsumptionDTO;

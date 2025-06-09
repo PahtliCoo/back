@@ -26,6 +26,8 @@ public class MedController {
     GetAllMedsUseCase getAllMedsUseCase;
     @Inject
     GetMedsBySearchNameUseCase getMedsBySearchNameUseCase;
+    @Inject
+    GetMedByNameUseCase getMedByNameUseCase;
 
     @GET
     @Path("/all")

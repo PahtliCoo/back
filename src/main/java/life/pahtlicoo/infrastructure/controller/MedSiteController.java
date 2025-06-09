@@ -12,7 +12,6 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import life.pahtlicoo.application.dto.medsite.*;
-import life.pahtlicoo.application.dto.notification.GetNotificationsSeenStatusResDTO;
 import life.pahtlicoo.application.usecase.medsite.*;
 
 import java.util.List;

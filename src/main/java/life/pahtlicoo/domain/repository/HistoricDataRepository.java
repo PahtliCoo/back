@@ -1,6 +1,5 @@
 package life.pahtlicoo.domain.repository;
 
-import life.pahtlicoo.application.dto.historicdata.GenerateForecastReqDTO;
 import life.pahtlicoo.application.dto.historicdata.GetRecentHistoricDataResDTO;
 import life.pahtlicoo.domain.model.HistoricData;
 
