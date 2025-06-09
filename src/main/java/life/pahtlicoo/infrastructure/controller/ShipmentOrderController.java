@@ -1,18 +1,22 @@
+/**
+ * Shipment Order Controller
+ * @author Nicole Kapellmann Lepine (a01664563@tec.mx)
+ * @co-author Santiago Moreno Lacalle Quintero (a01663197@tec.mx)
+ * @co-author Adolfo Hernández Fernández (a01664412@tec.mx)
+ * @since 2025-06-08
+ */
 package life.pahtlicoo.infrastructure.controller;
 
 import jakarta.inject.Inject;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import life.pahtlicoo.application.dto.request.SearchUserRequestsReqDTO;
 import life.pahtlicoo.application.dto.shipmentorder.*;
-import life.pahtlicoo.application.dto.request.GetRequestSearchDTO;
 import life.pahtlicoo.application.usecase.shipmentorder.*;
 import life.pahtlicoo.domain.model.ShipmentOrder;
-import life.pahtlicoo.shared.annotation.NoAuthRequired;
 
 import java.util.List;
+import java.util.Set;
 
 @Path("/shipment-order")
 @Produces(MediaType.APPLICATION_JSON)
@@ -50,6 +54,7 @@ public class ShipmentOrderController {
         }
     }
 
+    //TODO DELETE
     @GET
     @Path("/list_all")
     public Response getAllShipmentOrders(@QueryParam("page") int page){
@@ -58,11 +63,10 @@ public class ShipmentOrderController {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         return Response.ok(shipmentOrders).build();
-
     }
 
     @GET
-    @Path("/list-shipments")
+    @Path("/list-shipments") //SI
     public Response searchShipmentOrders(@QueryParam("name") String name, @QueryParam("page") @DefaultValue("0") int page,
                                        @QueryParam("date") String date, @QueryParam("state") Integer state){
 
@@ -82,8 +86,7 @@ public class ShipmentOrderController {
         }
     }
 
-
-
+    //TODO DELETE
     @GET
     @Path("/{shipment_order_id}")
     public Response getShipmentOrder(@PathParam("shipment_order_id") int shipmentOrderId){
@@ -94,8 +97,7 @@ public class ShipmentOrderController {
         return Response.ok(shipmentOrder).build();
     }
 
-
-
+    //TODO DELETE
     @PATCH
     @Path("/{shipment_order_id}")
     public Response updateShipmentOrderStatus(@PathParam("shipment_order_id") int shipmentOrderId,
@@ -104,6 +106,7 @@ public class ShipmentOrderController {
         return Response.ok().build();
     }
 
+    //TODO DELETE
     @DELETE
     @Path("/{shipment_order_id}")
     public Response deleteShipmentOrder(@PathParam("shipment_order_id") int shipmentOrderId){
@@ -111,6 +114,7 @@ public class ShipmentOrderController {
         return Response.ok().build();
     }
 
+    //TODO DELETE
     @POST
     @Path("/filter/{page}")
     public Response filterRequest(@PathParam("page") int page, GetShipmentOrderFilterReqDTO getShipmentOrderFilterReqDTO){
@@ -126,6 +130,7 @@ public class ShipmentOrderController {
         }
     }
 
+    //TODO DELETE
     @POST
     @Path("/search/{page}")
     public Response searchRequest(@PathParam("page") int page, GetShipmentOrderSearchReqDTO getShipmentOrderSearchReqDTO){
@@ -141,9 +146,14 @@ public class ShipmentOrderController {
     }
 
     @PATCH
-    @Path("/update-format/{shipment_order_id}")
+    @Path("/update-format/{shipment_order_id}") //SI
     public Response updateShipmentOrderFormat(@PathParam("shipment_order_id") int shipment_order_id, UpdateShipmentOrderFormatReqDTO updateShipmentOrderFormatReqDTO) {
         try {
+            Set<Integer> validStates = Set.of(1, 2, 3, 4);
+            if (!validStates.contains(updateShipmentOrderFormatReqDTO.getState())) {
+                return Response.status(Response.Status.BAD_REQUEST).build();
+            }
+
             if (updateShipmentOrderFormat.execute(shipment_order_id, updateShipmentOrderFormatReqDTO)) {
                 return Response.status(Response.Status.NO_CONTENT).build();
             }
