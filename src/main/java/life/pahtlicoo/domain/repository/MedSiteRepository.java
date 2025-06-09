@@ -1,5 +1,6 @@
 package life.pahtlicoo.domain.repository;
 
+
 import life.pahtlicoo.domain.model.MedSite;
 
 import java.util.List;

@@ -42,16 +42,12 @@ public class MedSiteService {
     public MedSite getMedSiteByMedIdAndSiteId(int medId, int siteId){
         return medSiteRepository.getMedSiteByMedIdAndSiteId(medId,siteId);
     }
-
-    //El get que jala chido
     public List<MedSite> getMedSiteByUserId(GetUserMedSiteReqDTO getUserMedSiteReqDTO){
         return medSiteRepository.getMedSiteByUserId(getUserMedSiteReqDTO.getSysUserId(), getUserMedSiteReqDTO.getMedName(), getUserMedSiteReqDTO.getPage());
     }
-
     public void registerNewMedSiteConsumption(RegisterMedSiteConsumptionDTO registerMedSiteConsumptionDTO){
         medSiteRepository.registerNewMedSiteConsumption(registerMedSiteConsumptionDTO.getMedId(), registerMedSiteConsumptionDTO.getSiteId(), registerMedSiteConsumptionDTO.getConsumption());
     }
-
     public void registerNewMedSiteAddition(RegisterMedSiteAdditionDTO registerMedSiteAdditionDTO){
         medSiteRepository.registerNewMedSiteAddition(registerMedSiteAdditionDTO.getMedId(), registerMedSiteAdditionDTO.getSiteId(), registerMedSiteAdditionDTO.getAddition());
     }
