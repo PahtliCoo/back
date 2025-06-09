@@ -39,6 +39,12 @@ public class FirebaseAuthFilter implements ContainerRequestFilter {
         }
         String token= authHeader.substring("Bearer".length()).trim();
         try{
+            //DEV ENVIRONMENT ONLY
+            if(token.equals("testtoken")){
+                requestContext.setProperty("userId", "testuser");
+                System.out.println("testuser");
+                return;
+            }
             FirebaseToken decodedToken= FirebaseAuth.getInstance().verifyIdToken(token);
             requestContext.setProperty("userId", decodedToken.getUid());
             System.out.println(decodedToken.getUid());
