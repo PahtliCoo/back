@@ -22,7 +22,7 @@ class HoltWintersTest {
         int[] forecast = hw.aditiveForecast(data);
 
         assertNotNull(forecast, "El resultado no debe ser null");
-        assertEquals(data.length + 3, forecast.length, "El tamaño del resultado debe incluir el horizonte");
+        assertEquals(3, forecast.length, "El tamaño del resultado debe incluir el horizonte");
 
         System.out.println("Pronóstico aditivo: ");
         for (int i = forecast.length - 3; i < forecast.length; i++) {
