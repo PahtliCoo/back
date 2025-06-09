@@ -13,7 +13,6 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import life.pahtlicoo.application.dto.request.*;
 import life.pahtlicoo.application.usecase.request.*;
-import life.pahtlicoo.domain.model.Request;
 
 import java.util.List;
 
@@ -24,17 +23,9 @@ public class RequestController {
     @Inject
     CreateRequestUseCase createRequestUseCase;
     @Inject
-    GetRequestUseCase getRequestUseCase;
-    @Inject
-    GetAllRequestsByUserIdUseCase getAllRequestsByUserIdUseCase;
-    @Inject
     UpdateRequestStatusUseCase updateRequestStatusUseCase;
     @Inject
     DeleteRequestUseCase deleteRequestUseCase;
-    @Inject
-    GetRequestByFilterUseCase getRequestByFilterUseCase;
-    @Inject
-    GetRequestBySearchUseCase getRequestBySearchUseCase;
     @Inject
     SearchUserRequestsUseCase searchUserRequestsUseCase;
     @Inject
@@ -52,28 +43,6 @@ public class RequestController {
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
-    }
-
-    //DEV ENVIRONMENT ONLY
-    @GET
-    @Path("/{request_id}")
-    public Response getRequest(@PathParam("request_id") int requestId){
-        Request request = getRequestUseCase.execute(requestId);
-        if(request == null){
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-        return Response.ok(request).build();
-    }
-
-    //DEV ENVIRONMENT ONLY
-    @GET
-    @Path("/all/sys-user/{sys_user_id}")
-    public Response getRequestsByUserId(@PathParam("sys_user_id") int sys_user_id){
-        List<Request> requests = getAllRequestsByUserIdUseCase.execute(sys_user_id);
-        if(requests == null){
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-        return Response.ok(requests).build();
     }
 
     @PATCH
@@ -95,38 +64,6 @@ public class RequestController {
        }catch (Exception e) {
            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
        }
-    }
-
-    //DEV ENVIRONMENT ONLY
-    @POST
-    @Path("/filter/{page}")
-    public Response filterRequest(@PathParam("page") int page,GetRequestFilterReqDTO getRequestFilterReqDTO){
-        try{
-            List<RequestResponseDTO> requestList = getRequestByFilterUseCase.execute(page,getRequestFilterReqDTO);
-            if(requestList == null){
-                return Response.status(Response.Status.NOT_FOUND).build();
-            }
-            return Response.ok(requestList).build();
-
-        }catch (Exception e){
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    //DEV ENVIRONMENT ONLY
-    @POST
-    @Path("/search/{page}")
-    public Response searchRequest(@PathParam("page") int page,GetRequestSearchDTO getRequestSearchDTO){
-        try{
-            List<RequestResponseDTO> requestResponseList = getRequestBySearchUseCase.execute(page,
-                    getRequestSearchDTO.getSearch());
-            if(requestResponseList == null){
-                return Response.status(Response.Status.NOT_FOUND).build();
-            }
-            return Response.ok(requestResponseList).build();
-        }catch (Exception e){
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-        }
     }
 
     @GET

@@ -15,52 +15,25 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.validation.Valid;
 
-import life.pahtlicoo.application.dto.sysuser.CreateSysUserReqDTO;
 import life.pahtlicoo.application.dto.sysuser.UserFirebaseContentDTO;
 import life.pahtlicoo.application.dto.sysuser.UserRequestResponseDTO;
 import life.pahtlicoo.application.dto.sysuser.UpdateEmailRequestDTO;
 import life.pahtlicoo.application.dto.sysuser.UpdatePasswordRequestDTO;
 
-import life.pahtlicoo.application.usecase.sysuser.CreateSysUserUseCase;
 import life.pahtlicoo.application.usecase.sysuser.GetUserByFirebaseId;
 import life.pahtlicoo.application.usecase.sysuser.UpdateUserEmailUseCase;
 import life.pahtlicoo.application.usecase.sysuser.UpdateUserFirebasePasswordUseCase;
-
-import life.pahtlicoo.application.mapper.UserResponseMapper;
-
-import life.pahtlicoo.domain.model.SysUser;
 
 @Path("/sys-user")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class SysUserController {
-
-    @Inject
-    CreateSysUserUseCase createUserUseCase;
     @Inject
     GetUserByFirebaseId getUserByFirebaseId;
     @Inject
     UpdateUserEmailUseCase updateUserEmailUseCase;
     @Inject
     UpdateUserFirebasePasswordUseCase updateUserFirebasePasswordUseCase;
-    @Inject
-    UserResponseMapper userResponseMapper;
-
-    //DEV ENVIRONMENT ONLY
-    @POST
-    @Path("/create")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response createUser(@Valid CreateSysUserReqDTO createSysUserReqDTO) {
-        try {
-            SysUser sysUser = createUserUseCase.execute(createSysUserReqDTO);
-            if (sysUser == null) {
-                return Response.status(Response.Status.BAD_REQUEST).build();
-            }
-            return Response.status(Response.Status.CREATED).entity(userResponseMapper.toDTO(sysUser)).build();
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-        }
-    }
 
     @POST
     @Path("/get-user")
