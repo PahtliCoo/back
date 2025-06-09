@@ -1,4 +1,5 @@
 /**
+ * DEV ENVIRONMENT ONLY
  * MedDisease Controller
  * @Author Santiago Moreno Lacalle Quintero (A01663197@tec.mx)
  * @since 2025-06-1
@@ -15,7 +16,7 @@ import life.pahtlicoo.application.dto.meddisease.UpdateMedDiseaseByMedIdReqDTO;
 import life.pahtlicoo.application.usecase.meddisease.*;
 import life.pahtlicoo.domain.model.MedDisease;
 
-@Path("/med/disease")
+@Path("/med-disease")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class MedDiseaseController {
@@ -49,8 +50,8 @@ public class MedDiseaseController {
     }
 
     @DELETE
-    @Path("/bymed/{medId}")
-    public Response deleteMedDiseaseByMedId(@PathParam("medId") int medId){
+    @Path("/by-med/{med_id}")
+    public Response deleteMedDiseaseByMedId(@PathParam("med_id") int medId){
         try {
             if(deleteMedDiseaseByMedIdUseCase.execute(medId)){
                 return Response.status(Response.Status.NO_CONTENT).build();
@@ -63,8 +64,8 @@ public class MedDiseaseController {
     }
 
     @DELETE
-    @Path("/bydisease/{diseaseId}")
-    public Response deleteMedDiseaseByDiseaseId(@PathParam("diseaseId") int diseaseId){
+    @Path("/by-disease/{disease_id}")
+    public Response deleteMedDiseaseByDiseaseId(@PathParam("disease_id") int diseaseId){
         try {
             if(deleteMedDiseaseByDiseaseIdUseCase.execute(diseaseId)){
                 return Response.status(Response.Status.NO_CONTENT).build();
@@ -77,7 +78,7 @@ public class MedDiseaseController {
     }
 
     @PATCH
-    @Path("/bymed")
+    @Path("/by-med")
     public Response updateMedDiseaseByMedId(UpdateMedDiseaseByMedIdReqDTO medDiseaseByMedIdReqDTO){
         try {
             if(updateMedDiseaseByMedIdUseCase.execute(medDiseaseByMedIdReqDTO.getOldMedId(),medDiseaseByMedIdReqDTO.getNewMedId())){
@@ -91,7 +92,7 @@ public class MedDiseaseController {
     }
 
     @PATCH
-    @Path("/bydisease")
+    @Path("/by-disease")
     public Response updateMedDiseaseByMedId(UpdateMedDiseaseByDiseaseIdReqDTO updateMedDiseaseByDiseaseIdReqDTO){
         try {
             if(updateMedDiseaseByDiseaseIdUseCase.execute(updateMedDiseaseByDiseaseIdReqDTO.getOldDiseaseId(),updateMedDiseaseByDiseaseIdReqDTO.getNewDiseaseId())){
@@ -107,8 +108,8 @@ public class MedDiseaseController {
 
 
     @GET
-    @Path("/bymed/{medId}")
-    public Response getByMedId(@PathParam("medId") int medId) {
+    @Path("/by-med/{med_id}")
+    public Response getByMedId(@PathParam("med_id") int medId) {
         try {
             MedDisease medDisease = getMedDiseaseByMedIdUseCase.execute(medId);
             if(medDisease == null) {
@@ -122,8 +123,8 @@ public class MedDiseaseController {
     }
 
     @GET
-    @Path("/bydis/{diseaseId}")
-    public Response getByDiseaseId(@PathParam("diseaseId") int diseaseId) {
+    @Path("/by-disease/{disease_id}")
+    public Response getByDiseaseId(@PathParam("disease_id") int diseaseId) {
         try {
             MedDisease medDisease = getMedDiseaseByDiseaseIdUseCase.execute(diseaseId);
             if(medDisease == null) {

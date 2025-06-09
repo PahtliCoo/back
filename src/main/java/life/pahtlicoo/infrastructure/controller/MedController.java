@@ -15,7 +15,6 @@ import life.pahtlicoo.application.dto.med.MedResponseDTO;
 import life.pahtlicoo.application.dto.med.MedUpdateNameReqDTO;
 import life.pahtlicoo.application.usecase.med.*;
 import life.pahtlicoo.domain.model.Med;
-import life.pahtlicoo.shared.annotation.NoAuthRequired;
 
 import java.util.List;
 
@@ -36,6 +35,7 @@ public class MedController {
     @Inject
     UpdateMedNameUseCase updateMedNameUseCase;
 
+    //DEV ENVIRONMENT ONLY
     @POST
     @Path("/create")
     public Response createMed(CreateMedReqDTO createMedReqDTO) {
@@ -80,6 +80,7 @@ public class MedController {
         }
     }
 
+    //DEV ENVIRONMENT ONLY
     @DELETE
     @Path("/{med_id}")
     public Response deleteMed(@PathParam("med_id") int med_id) {
@@ -94,6 +95,7 @@ public class MedController {
         }
     }
 
+    //DEV ENVIRONMENT ONLY
     @GET
     @Path("/{med_id}")
     public Response getMed(@PathParam("med_id") int med_id) {
@@ -109,6 +111,7 @@ public class MedController {
         }
     }
 
+    //DEV ENVIRONMENT ONLY
     @PATCH
     @Path("/update")
     public Response updateMedName(MedUpdateNameReqDTO medUpdateNameReqDTO) {

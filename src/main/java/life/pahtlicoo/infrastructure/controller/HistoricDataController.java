@@ -1,3 +1,10 @@
+/**
+ * Historic Data Controller
+ * @author Adolfo Hernández Fernández (a01664412@tec.mx)
+ * @co-author Santiago Moreno Lacalle Quintero (A01663197@tec.mx)
+ * @co-author Rodrigo Rocha Rosales
+ * @since 2025-06-08
+ */
 package life.pahtlicoo.infrastructure.controller;
 
 import jakarta.inject.Inject;
@@ -12,7 +19,6 @@ import life.pahtlicoo.application.usecase.historicdata.*;
 import life.pahtlicoo.domain.model.HistoricData;
 import life.pahtlicoo.shared.annotation.NoAuthRequired;
 import org.jboss.resteasy.reactive.RestForm;
-
 
 import java.io.InputStream;
 import java.util.List;
@@ -36,6 +42,7 @@ public class HistoricDataController {
     @Inject
     GenerateForecastUseCase generateForecastUseCase;
 
+    //DEV ENVIRONMENT ONLY
     @POST
     @Path("/create")
     public Response createHistoricData(CreateHistoricDataReqDTO createHistoricDataReqDTO) {
@@ -45,8 +52,9 @@ public class HistoricDataController {
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
-    } //TODO dev purposes only
+    }
 
+    //DEV ENVIRONMENT ONLY
     @GET
     @Path("/site/{site_id}")
     public Response getHistoricDataBySiteId(@PathParam("site_id") int site_id) {
@@ -75,12 +83,13 @@ public class HistoricDataController {
                 .build();
     }
 
+    //DEV ENVIRONMENT ONLY
     @DELETE
     @Path("/{site_id}")
     public Response deleteHistoricData(@PathParam("site_id") int site_id) {
         deleteHistoricDataUseCase.execute(site_id);
         return Response.ok().build();
-    }//TODO DEPRECATED
+    }
 
     @POST
     @Path("/add-data")

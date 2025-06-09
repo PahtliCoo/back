@@ -3,7 +3,7 @@ package life.pahtlicoo.application.usecase.med;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import life.pahtlicoo.application.dto.med.MedResponseDTO;
-import life.pahtlicoo.application.mapper.med.MedResponseDomainMapper;
+import life.pahtlicoo.application.mapper.MedResponseDomainMapper;
 import life.pahtlicoo.application.service.MedService;
 import life.pahtlicoo.domain.model.Med;
 

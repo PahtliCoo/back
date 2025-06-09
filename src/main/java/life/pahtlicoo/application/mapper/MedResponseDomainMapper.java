@@ -1,4 +1,4 @@
-package life.pahtlicoo.application.mapper.med;
+package life.pahtlicoo.application.mapper;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import life.pahtlicoo.application.dto.med.MedResponseDTO;

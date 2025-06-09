@@ -1,3 +1,9 @@
+/**
+ * DEV ENVIRONMENT ONLY
+ * Disease Controller
+ * @author Adolfo Hernández Fernández (a01664412@tec.mx)
+ * @since 2025-06-08
+ */
 package life.pahtlicoo.infrastructure.controller;
 
 import jakarta.inject.Inject;
@@ -23,11 +29,11 @@ public class DiseaseController {
     @Inject
     UpdateDiseaseNameUseCase updateDiseaseNameUseCase;
     @Inject
-    DeleteDiseaseUseCase deleteDiseasUseCase;
+    DeleteDiseaseUseCase deleteDiseaseUseCase;
 
     @POST
     @Path("/create")
-    public Response createDisease(CreateDiseaseReqDTO createDiseaseRequest){ //TODO add @Valid annotation at param beginning
+    public Response createDisease(CreateDiseaseReqDTO createDiseaseRequest){
         try {
             createDiseaseUseCase.execute(createDiseaseRequest);
             return Response.status(Response.Status.CREATED).build();
@@ -48,7 +54,8 @@ public class DiseaseController {
 
     @PATCH
     @Path("/update-name/{disease_id}")
-    public Response updateDiseaseName(@PathParam("disease_id") int diseaseId, UpdateDiseaseNameReqDTO updateDiseaseNameReqDTO){
+    public Response updateDiseaseName(@PathParam("disease_id") int diseaseId, UpdateDiseaseNameReqDTO
+            updateDiseaseNameReqDTO){
         try{
             updateDiseaseNameUseCase.execute(diseaseId, updateDiseaseNameReqDTO);
             return Response.ok().build();
@@ -60,7 +67,7 @@ public class DiseaseController {
     @DELETE
     @Path("/{disease_id}")
     public Response deleteDisease(@PathParam("disease_id") int diseaseId){
-        deleteDiseasUseCase.execute(diseaseId);
+        deleteDiseaseUseCase.execute(diseaseId);
         return Response.ok().build();
     }
 }

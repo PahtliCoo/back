@@ -1,7 +1,7 @@
 /**
  * Request Detail Controller.
  * @author Santiago Moreno Lacalle Quintero (A01663197@tec.mx)
- * @since 2025-05-26
+ * @since 2025-06-08
  */
 package life.pahtlicoo.infrastructure.controller;
 
@@ -28,6 +28,7 @@ public class RequestDetailController {
     @Inject
     DeleteAllRequestDetailUseCase deleteAllRequestDetailUseCase;
 
+    //DEV ENVIRONMENT ONLY
     @POST
     @Path("/create")
     public Response createRequestDetail(CreateRequestDetailReqDTO createRequestDetailReqDTO) {
@@ -52,6 +53,7 @@ public class RequestDetailController {
         }
     }
 
+    //DEV ENVIRONMENT ONLY
     @DELETE
     @Path("delete/{request_id}")
     public Response deleteRequestDetail(@PathParam("request_id") int requestId) {
@@ -62,7 +64,4 @@ public class RequestDetailController {
             return Response.serverError().entity("Error").build();
         }
     }
-
-
-
 }

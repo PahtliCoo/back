@@ -1,5 +1,6 @@
 /**
- * Get all Credentials Use Case.
+ * DEV ENVIRONMENT ONLY
+ * Credential Controller
  * @author Adolfo Hernández Fernández (a01664412@tec.mx)
  * @co-author Nicole Kapellmann Lepine
  * @co-author Santiago Moreno Lacalle Quintero (A01663197@tec.mx)
@@ -15,6 +16,7 @@ import life.pahtlicoo.application.dto.credential.UpdateCredentialNameReqDTO;
 import life.pahtlicoo.application.usecase.credential.*;
 import life.pahtlicoo.domain.model.Credential;
 import life.pahtlicoo.application.dto.credential.CreateCredentialReqDTO;
+
 import java.util.List;
 
 @Path("/credential")

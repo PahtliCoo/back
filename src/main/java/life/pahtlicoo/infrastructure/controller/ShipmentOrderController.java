@@ -54,7 +54,7 @@ public class ShipmentOrderController {
         }
     }
 
-    //TODO DELETE
+    //DEV ENVIRONMENT ONLY
     @GET
     @Path("/list_all")
     public Response getAllShipmentOrders(@QueryParam("page") int page){
@@ -66,7 +66,7 @@ public class ShipmentOrderController {
     }
 
     @GET
-    @Path("/list-shipments") //SI
+    @Path("/list-shipments")
     public Response searchShipmentOrders(@QueryParam("name") String name, @QueryParam("page") @DefaultValue("0") int page,
                                        @QueryParam("date") String date, @QueryParam("state") Integer state){
 
@@ -86,7 +86,7 @@ public class ShipmentOrderController {
         }
     }
 
-    //TODO DELETE
+    //DEV ENVIRONMENT ONLY
     @GET
     @Path("/{shipment_order_id}")
     public Response getShipmentOrder(@PathParam("shipment_order_id") int shipmentOrderId){
@@ -97,7 +97,7 @@ public class ShipmentOrderController {
         return Response.ok(shipmentOrder).build();
     }
 
-    //TODO DELETE
+    //DEV ENVIRONMENT ONLY
     @PATCH
     @Path("/{shipment_order_id}")
     public Response updateShipmentOrderStatus(@PathParam("shipment_order_id") int shipmentOrderId,
@@ -106,7 +106,7 @@ public class ShipmentOrderController {
         return Response.ok().build();
     }
 
-    //TODO DELETE
+    //DEV ENVIRONMENT ONLY
     @DELETE
     @Path("/{shipment_order_id}")
     public Response deleteShipmentOrder(@PathParam("shipment_order_id") int shipmentOrderId){
@@ -114,7 +114,7 @@ public class ShipmentOrderController {
         return Response.ok().build();
     }
 
-    //TODO DELETE
+    //DEV ENVIRONMENT ONLY
     @POST
     @Path("/filter/{page}")
     public Response filterRequest(@PathParam("page") int page, GetShipmentOrderFilterReqDTO getShipmentOrderFilterReqDTO){
@@ -130,7 +130,7 @@ public class ShipmentOrderController {
         }
     }
 
-    //TODO DELETE
+    //DEV ENVIRONMENT ONLY
     @POST
     @Path("/search/{page}")
     public Response searchRequest(@PathParam("page") int page, GetShipmentOrderSearchReqDTO getShipmentOrderSearchReqDTO){
@@ -145,8 +145,9 @@ public class ShipmentOrderController {
         }
     }
 
+    //DEV ENVIRONMENT ONLY
     @PATCH
-    @Path("/update-format/{shipment_order_id}") //SI
+    @Path("/update-format/{shipment_order_id}")
     public Response updateShipmentOrderFormat(@PathParam("shipment_order_id") int shipment_order_id, UpdateShipmentOrderFormatReqDTO updateShipmentOrderFormatReqDTO) {
         try {
             Set<Integer> validStates = Set.of(1, 2, 3, 4);
@@ -162,6 +163,5 @@ public class ShipmentOrderController {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
-
 }
 
