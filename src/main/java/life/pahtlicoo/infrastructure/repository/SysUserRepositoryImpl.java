@@ -89,11 +89,6 @@ public class SysUserRepositoryImpl implements SysUserRepository, PanacheReposito
         }
     }
 
-    @Override
-    public void deleteSysUser(int sysUserId){
-        //TODO: REVIEW or move
-    }
-
     @Transactional
     @Override
     public SysUser createSysUserFirebase(SysUser user,  String password) {

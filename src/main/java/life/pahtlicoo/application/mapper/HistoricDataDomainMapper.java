@@ -23,7 +23,6 @@ public class HistoricDataDomainMapper {
         historicData.setDateYear(createHistoricDataReqDTO.getDate_year());
         historicData.setDateMonth(createHistoricDataReqDTO.getDate_month());
         historicData.setQuantity(createHistoricDataReqDTO.getQuantity());
-        //TODO Historic data aqui nos pone 0
         return historicData;
     }
 
@@ -34,7 +33,6 @@ public class HistoricDataDomainMapper {
         historicData.setDateYear(historicDataCSVDTO.getYear());
         historicData.setDateMonth(historicDataCSVDTO.getMonth());
         historicData.setQuantity(historicDataCSVDTO.getQuantity());
-        // Siempre será 0 al insertar
         historicData.setProjectedQuantity(0);
         return historicData;
     }

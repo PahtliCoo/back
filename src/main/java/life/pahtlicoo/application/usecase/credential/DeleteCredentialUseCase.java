@@ -13,5 +13,3 @@ public class DeleteCredentialUseCase {
         credentialService.deleteRole(roleId);
     }
 }
-
-//TODO este seguro tiene más logica, tipo si se borra, los usuarios deben tener otro rol
