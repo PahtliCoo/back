@@ -1,9 +1,12 @@
 package life.pahtlicoo.infrastructure.repository;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
+import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import life.pahtlicoo.application.dto.notification.GetReceiverNotificationsResDTO;
+import life.pahtlicoo.application.dto.notification.GetNotificationsSeenStatusResDTO;
 import life.pahtlicoo.domain.model.Notification;
 import life.pahtlicoo.domain.repository.NotificationRepository;
 import life.pahtlicoo.infrastructure.entity.NotificationEntity;
@@ -29,11 +32,24 @@ public class NotificationRepositoryImpl implements NotificationRepository, Panac
     }
 
     @Override
-    public List<Notification> getAllNotificationsByReceiverId(int receiverId){
-        List<NotificationEntity> notificationEntities = find("receiverId", receiverId).list();
+    @Transactional
+    public List<GetReceiverNotificationsResDTO> getAllNotificationsByReceiverId(int receiverId, String orderBy) {
+        Sort sort = "asc".equalsIgnoreCase(orderBy)
+                ? Sort.ascending("updatedAt")
+                : Sort.descending("updatedAt");
+
+        List<NotificationEntity> notificationEntities = find("receiverId = ?1", sort, receiverId).list();
+
         return notificationEntities.stream()
-                .map(notificationEntityMapper::toDomain)
+                .map(e -> new GetReceiverNotificationsResDTO(e.getNotificationId(), e.isSeen(), e.getDescription(), e.getUpdatedAt()))
                 .toList();
+    }
+
+    @Override
+    @Transactional
+    public GetNotificationsSeenStatusResDTO getNotificationsSeenStatus(int receiverId) {
+        boolean anySeen = find("receiverId = ?1 AND seen = true", receiverId).firstResultOptional().isPresent();
+        return new GetNotificationsSeenStatusResDTO(anySeen);
     }
 
     @Override

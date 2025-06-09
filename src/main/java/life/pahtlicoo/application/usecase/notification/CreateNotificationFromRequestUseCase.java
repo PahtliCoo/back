@@ -1,3 +1,8 @@
+/**
+ * Creates a notification from a created request
+ * @author Luis Enrique Salazar Perez
+ * @since 2025-06-08
+ */
 package life.pahtlicoo.application.usecase.notification;
 
 import jakarta.enterprise.context.ApplicationScoped;
