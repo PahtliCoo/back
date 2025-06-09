@@ -9,7 +9,7 @@ package life.pahtlicoo.application.usecase.medsite;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import life.pahtlicoo.application.dto.medsite.CreateMedSiteReqDTO;
-import life.pahtlicoo.application.mapper.medsite.MedSiteDomainMapper;
+import life.pahtlicoo.application.mapper.MedSiteDomainMapper;
 import life.pahtlicoo.application.service.MedSiteService;
 import life.pahtlicoo.domain.model.MedSite;
 

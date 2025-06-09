@@ -54,6 +54,7 @@ public class RequestController {
         }
     }
 
+    //DEV ENVIRONMENT ONLY
     @GET
     @Path("/{request_id}")
     public Response getRequest(@PathParam("request_id") int requestId){
@@ -64,6 +65,7 @@ public class RequestController {
         return Response.ok(request).build();
     }
 
+    //DEV ENVIRONMENT ONLY
     @GET
     @Path("/all/sys-user/{sys_user_id}")
     public Response getRequestsByUserId(@PathParam("sys_user_id") int sys_user_id){
@@ -95,8 +97,7 @@ public class RequestController {
        }
     }
 
-    //Todas las de arriba creo que si van
-
+    //DEV ENVIRONMENT ONLY
     @POST
     @Path("/filter/{page}")
     public Response filterRequest(@PathParam("page") int page,GetRequestFilterReqDTO getRequestFilterReqDTO){
@@ -112,6 +113,7 @@ public class RequestController {
         }
     }
 
+    //DEV ENVIRONMENT ONLY
     @POST
     @Path("/search/{page}")
     public Response searchRequest(@PathParam("page") int page,GetRequestSearchDTO getRequestSearchDTO){
@@ -127,8 +129,6 @@ public class RequestController {
         }
     }
 
-    //Estas dos de arriba me parece que no se ocupan realmente
-
     @GET
     @Path("/sys-user/{sys_user_id}")
     public Response searchUserRequests(@QueryParam("name") String name, @QueryParam("page") @DefaultValue("0") int page,
@@ -137,12 +137,9 @@ public class RequestController {
 
         if (page < 0) {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("Invalid page number. Must be >= 0.") //TODO should i keep this?
+                    .entity("Invalid page number. Must be >= 0.")
                     .build();
         }
-
-        //TODO regex validation for date
-        //TODO validation of state? que sea uno válido
 
         SearchUserRequestsReqDTO searchUserRequestsReqDTO = new SearchUserRequestsReqDTO(sysUserId, name, date, state,
                 page);
@@ -170,7 +167,3 @@ public class RequestController {
         }
     }
 }
-
-//TODO El filtro de fecha debería correr basado en el updated at o created at? De momento lo vamos a dejar con created at pero siento que debería ser updated at, si si, cambiamos el DTO
-//TODO debería hacerse que la fecha recibida sea en UTC, porque ahora mismo lo hacemos en UTC o guardarlo ya mejor todo en time zone de mexico
-//Si no, nos va a pasar que se guarde con fecha 2025-04-03 y en realidad todavía era 2025-04-02

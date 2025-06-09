@@ -14,7 +14,6 @@ import jakarta.ws.rs.core.Response;
 import life.pahtlicoo.application.dto.medsite.*;
 import life.pahtlicoo.application.usecase.medsite.*;
 import life.pahtlicoo.domain.model.MedSite;
-import life.pahtlicoo.shared.annotation.NoAuthRequired;
 
 import java.util.List;
 
@@ -43,18 +42,19 @@ public class MedSiteController {
     @Inject
     RegisterNewMedSiteAdditionUseCase registerNewMedSiteAdditionUseCase;
 
+    //DEV ENVIRONMENT ONLY
     @POST
     @Path("/create")
     public Response createMedSite(CreateMedSiteReqDTO createMedSiteReqDTO) {
         try {
             createMedSiteUseCase.execute(createMedSiteReqDTO);
-            //TODO capaz se puede añadir solo algo para que valide que los datos estan bien y tal
             return Response.status(Response.Status.CREATED).build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
 
+    //DEV ENVIRONMENT ONLY
     @DELETE
     @Path("/delete")
     public Response deleteMedSite(DeleteMedSiteReqDTO deleteMedSiteReqDTO) {
@@ -69,9 +69,10 @@ public class MedSiteController {
         }
     }
 
+    //DEV ENVIRONMENT ONLY
     @POST
-    @Path("/get/medandsitebyid")
-    public Response getMedSiteByMedIdAndSiteId(GetMedSiteByMedIdAndSiteIdReqDTO getMedSiteByMedIdAndSiteIdReqDTO) { //TODO DEPRECATED
+    @Path("/get/med-site-by-id")
+    public Response getMedSiteByMedIdAndSiteId(GetMedSiteByMedIdAndSiteIdReqDTO getMedSiteByMedIdAndSiteIdReqDTO) {
         try {
             MedSite medSite = getMedSiteByMedIdAndSiteIdUseCase.execute(getMedSiteByMedIdAndSiteIdReqDTO);
             if (medSite == null) {
@@ -84,9 +85,10 @@ public class MedSiteController {
         }
     }
 
+    //DEV ENVIRONMENT ONLY
     @GET
-    @Path("/med/{medId}")
-    public Response getMedSiteByMedIdUseCase(@PathParam("medId") int medId) { //TODO DEPRECATED
+    @Path("/med/{med_id}")
+    public Response getMedSiteByMedIdUseCase(@PathParam("med_id") int medId) {
         try {
             List<MedSite> medSites = getMedSiteByMedIdUseCase.execute(medId);
             if (medSites == null) {
@@ -99,9 +101,10 @@ public class MedSiteController {
         }
     }
 
+    //DEV ENVIRONMENT ONLY
     @GET
-    @Path("/{siteId}")
-    public Response getMedSiteBySiteIdUseCase(@PathParam("siteId") int siteId) { //TODO DEPRECATED
+    @Path("/{site_id}")
+    public Response getMedSiteBySiteIdUseCase(@PathParam("site_id") int siteId) {
         try {
             List<MedSite> medSites = getMedSiteBySiteIdUseCase.execute(siteId);
             if (medSites == null) {
@@ -112,12 +115,11 @@ public class MedSiteController {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
-    //TODO esta ruta esta medio insegura ajjaja porq literal ocupas el site id para que te diga, no necesita saber que
-    //el usuario de menos pertenece o tiene ese site, maybe un fix
 
+    //DEV ENVIRONMENT ONLY
     @PATCH
     @Path("/update/quantity")
-    public Response updateMedSiteCurrentQuantity(UpdateMedSiteQuantityReqDTO updateMedSiteQuantityReqDTO) { //TODO DEPRECATED
+    public Response updateMedSiteCurrentQuantity(UpdateMedSiteQuantityReqDTO updateMedSiteQuantityReqDTO) {
         try {
             if (updateMedSiteCurrentQuantityUseCase.execute(updateMedSiteQuantityReqDTO)) {
                 return Response.status(Response.Status.NO_CONTENT).build();
@@ -129,10 +131,10 @@ public class MedSiteController {
         }
     }
 
-    //TODO básiocamente estas dos de arriba son lo mismo, pero, la de abajo le pone al initial y al current el mismo dato
+    //DEV ENVIRONMENT ONLY
     @PATCH
     @Path("/update/inventory")
-    public Response updateMedSiteInventory(UpdateMedSiteQuantityReqDTO updateMedSiteQuantityReqDTO) { //TODO DEPRECATED
+    public Response updateMedSiteInventory(UpdateMedSiteQuantityReqDTO updateMedSiteQuantityReqDTO) {
         try {
             if (updateMedSiteInventoryUseCase.execute(updateMedSiteQuantityReqDTO)) {
                 return Response.status(Response.Status.NO_CONTENT).build();

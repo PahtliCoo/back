@@ -1,7 +1,8 @@
 /**
  * Notification Controller
+ * @co-author Luis Enrique Salazar Perez
  * @author Adolfo Hernández Fernández (a01664412@tec.mx)
- * @since 2025-05-26
+ * @since 2025-06-08
  */
 
 package life.pahtlicoo.infrastructure.controller;
@@ -29,12 +30,11 @@ public class NotificationController {
     GetSeenNotificationsStatusUseCase getSeenNotificationsStatusUseCase;
 
     @GET
-    @Path("/receiver/{receiver_id}/{order_by}") //TODO order by debería ser más bien un query param
+    @Path("/receiver/all/{receiver_id}")
     public Response getAllNotificationsByReceiverId(
             @PathParam("receiver_id") int receiverId,
-            @PathParam("order_by") @DefaultValue("desc") String orderBy) {
+            @QueryParam("order_by") @DefaultValue("desc") String orderBy) {
 
-        // Optional: validate orderBy to only accept expected values
         if (!orderBy.equalsIgnoreCase("asc") && !orderBy.equalsIgnoreCase("desc")) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity("Invalid order_by parameter. Use 'asc' or 'desc'.")

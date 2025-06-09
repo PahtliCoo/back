@@ -1,3 +1,9 @@
+/**
+ * Site Controller
+ * @author Rodrigo Rocha Rosales
+ * @co-author Adolfo Hernández Fernández (a01664412@tec.mx)
+ * @since 2025-06-08
+ */
 package life.pahtlicoo.infrastructure.controller;
 
 import jakarta.inject.Inject;
@@ -7,8 +13,6 @@ import jakarta.ws.rs.core.Response;
 import life.pahtlicoo.application.dto.site.GetAllSitesResDTO;
 import life.pahtlicoo.application.usecase.site.GetAllSitesUseCase;
 import life.pahtlicoo.application.usecase.site.GetSiteByIdUseCase;
-import life.pahtlicoo.domain.model.Site;
-import life.pahtlicoo.shared.annotation.NoAuthRequired;
 
 import java.util.List;
 
