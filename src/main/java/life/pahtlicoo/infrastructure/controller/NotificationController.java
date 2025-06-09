@@ -1,11 +1,17 @@
+/**
+ * Notification Controller
+ * @author Adolfo Hernández Fernández (a01664412@tec.mx)
+ * @since 2025-05-26
+ */
+
 package life.pahtlicoo.infrastructure.controller;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import life.pahtlicoo.application.dto.notification.GetNotificationReqDTO;
-import life.pahtlicoo.application.dto.notification.GetNotificationsSeenStatusReqDTO;
+import life.pahtlicoo.application.dto.notification.GetReceiverNotificationsResDTO;
+import life.pahtlicoo.application.dto.notification.GetNotificationsSeenStatusResDTO;
 import life.pahtlicoo.application.dto.notification.UpdateNotificationSeenReqDTO;
 import life.pahtlicoo.application.usecase.notification.*;
 
@@ -23,10 +29,10 @@ public class NotificationController {
     GetSeenNotificationsStatusUseCase getSeenNotificationsStatusUseCase;
 
     @GET
-    @Path("/receiver/{receiver_id}/{order_by}")
+    @Path("/receiver/{receiver_id}/{order_by}") //TODO order by debería ser más bien un query param
     public Response getAllNotificationsByReceiverId(
             @PathParam("receiver_id") int receiverId,
-            @PathParam("order_by") String orderBy) {
+            @PathParam("order_by") @DefaultValue("desc") String orderBy) {
 
         // Optional: validate orderBy to only accept expected values
         if (!orderBy.equalsIgnoreCase("asc") && !orderBy.equalsIgnoreCase("desc")) {
@@ -35,7 +41,7 @@ public class NotificationController {
                     .build();
         }
 
-        List<GetNotificationReqDTO> notifications = getAllNotificationsByReceiverIdUseCase
+        List<GetReceiverNotificationsResDTO> notifications = getAllNotificationsByReceiverIdUseCase
                 .execute(receiverId, orderBy.toLowerCase());
 
         if (notifications == null || notifications.isEmpty()) {
@@ -50,7 +56,7 @@ public class NotificationController {
     @GET
     @Path("/receiver/{receiver_id}")
     public Response getSeenNotificationsStatus(@PathParam("receiver_id") int receiverId) {
-        GetNotificationsSeenStatusReqDTO seenStatus = getSeenNotificationsStatusUseCase.execute(receiverId);
+        GetNotificationsSeenStatusResDTO seenStatus = getSeenNotificationsStatusUseCase.execute(receiverId);
         return Response.ok(seenStatus).build();
     }
 

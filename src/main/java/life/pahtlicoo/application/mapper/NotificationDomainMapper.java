@@ -1,3 +1,8 @@
+/**
+ * Mapper notification from request and shipment orders
+ * @author Luis Enrique Salazar Perez
+ * @since 2025-06-08
+ */
 package life.pahtlicoo.application.mapper;
 
 import jakarta.enterprise.context.ApplicationScoped;

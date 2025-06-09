@@ -1,9 +1,15 @@
+/**
+ * Notification service
+ * @author Luis Enrique Salazar Perez
+ * @co-author Adolfo Hernández Fernández (a01664412@tec.mx)
+ * @since 2025-06-08
+ */
 package life.pahtlicoo.application.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import life.pahtlicoo.application.dto.notification.GetNotificationReqDTO;
-import life.pahtlicoo.application.dto.notification.GetNotificationsSeenStatusReqDTO;
+import life.pahtlicoo.application.dto.notification.GetReceiverNotificationsResDTO;
+import life.pahtlicoo.application.dto.notification.GetNotificationsSeenStatusResDTO;
 import life.pahtlicoo.domain.model.Notification;
 import life.pahtlicoo.domain.repository.NotificationRepository;
 import life.pahtlicoo.infrastructure.websocket.UpdatesSocket;
@@ -24,11 +30,11 @@ public class NotificationService {
         return notificationRepository.createNotification(notification);
     }
 
-    public List<GetNotificationReqDTO> getAllNotificationsByReceiverId(int receiverId, String orderBy) {
+    public List<GetReceiverNotificationsResDTO> getAllNotificationsByReceiverId(int receiverId, String orderBy) {
         return notificationRepository.getAllNotificationsByReceiverId(receiverId, orderBy);
     }
 
-    public GetNotificationsSeenStatusReqDTO getNotificationsSeenStatus(int receiverId) {
+    public GetNotificationsSeenStatusResDTO getNotificationsSeenStatus(int receiverId) {
         return notificationRepository.getNotificationsSeenStatus(receiverId);
     }
 

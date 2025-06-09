@@ -1,3 +1,8 @@
+/**
+ * Web socket for notifications
+ * @author Luis Enrique Salazar Perez
+ * @since 2025-06-08
+ */
 package life.pahtlicoo.infrastructure.websocket;
 
 import jakarta.enterprise.context.ApplicationScoped;

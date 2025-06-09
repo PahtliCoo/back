@@ -5,8 +5,8 @@ import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import life.pahtlicoo.application.dto.notification.GetNotificationReqDTO;
-import life.pahtlicoo.application.dto.notification.GetNotificationsSeenStatusReqDTO;
+import life.pahtlicoo.application.dto.notification.GetReceiverNotificationsResDTO;
+import life.pahtlicoo.application.dto.notification.GetNotificationsSeenStatusResDTO;
 import life.pahtlicoo.domain.model.Notification;
 import life.pahtlicoo.domain.repository.NotificationRepository;
 import life.pahtlicoo.infrastructure.entity.NotificationEntity;
@@ -33,7 +33,7 @@ public class NotificationRepositoryImpl implements NotificationRepository, Panac
 
     @Override
     @Transactional
-    public List<GetNotificationReqDTO> getAllNotificationsByReceiverId(int receiverId, String orderBy) {
+    public List<GetReceiverNotificationsResDTO> getAllNotificationsByReceiverId(int receiverId, String orderBy) {
         Sort sort = "asc".equalsIgnoreCase(orderBy)
                 ? Sort.ascending("updatedAt")
                 : Sort.descending("updatedAt");
@@ -41,15 +41,15 @@ public class NotificationRepositoryImpl implements NotificationRepository, Panac
         List<NotificationEntity> notificationEntities = find("receiverId = ?1", sort, receiverId).list();
 
         return notificationEntities.stream()
-                .map(e -> new GetNotificationReqDTO(e.getNotificationId(), e.isSeen(), e.getDescription(), e.getUpdatedAt()))
+                .map(e -> new GetReceiverNotificationsResDTO(e.getNotificationId(), e.isSeen(), e.getDescription(), e.getUpdatedAt()))
                 .toList();
     }
 
     @Override
     @Transactional
-    public GetNotificationsSeenStatusReqDTO getNotificationsSeenStatus(int receiverId) {
+    public GetNotificationsSeenStatusResDTO getNotificationsSeenStatus(int receiverId) {
         boolean anySeen = find("receiverId = ?1 AND seen = true", receiverId).firstResultOptional().isPresent();
-        return new GetNotificationsSeenStatusReqDTO(anySeen);
+        return new GetNotificationsSeenStatusResDTO(anySeen);
     }
 
     @Override
