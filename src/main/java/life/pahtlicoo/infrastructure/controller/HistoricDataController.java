@@ -11,9 +11,7 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import life.pahtlicoo.application.dto.historicdata.GenerateForecastReqDTO;
-import life.pahtlicoo.application.dto.historicdata.GenerateForecastResDTO;
-import life.pahtlicoo.application.dto.historicdata.GetHistoricDataReqDTO;
+import life.pahtlicoo.application.dto.historicdata.*;
 import life.pahtlicoo.application.usecase.historicdata.*;
 import life.pahtlicoo.domain.model.HistoricData;
 import life.pahtlicoo.shared.annotation.NoAuthRequired;
@@ -34,6 +32,12 @@ public class HistoricDataController {
     ReadHistoricDataCSVUseCase readHistoricDataCSVUseCase;
     @Inject
     GenerateForecastUseCase generateForecastUseCase;
+    @Inject
+    GetMostRecentHistoricDataUseCase getMostRecentHistoricDataUseCase;
+    @Inject
+    GetHistoricDataByMedIdUseCase getHistoricDataByMedIdUseCase;
+    @Inject
+    GetPredictiveDataByMedIdUseCase getPredictiveDataByMedIdUseCase;
 
     @POST
     @Path("/range")
@@ -79,5 +83,26 @@ public class HistoricDataController {
             System.out.println(e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    @GET
+    @Path("/get/most-recent/{med_id}")
+    public Response getMostRecentHistoricData(@PathParam("med_id") int medId) {
+        List<GetRecentHistoricDataResDTO> mostRecent = getMostRecentHistoricDataUseCase.execute(medId);
+        return Response.ok(mostRecent).build();
+    }
+
+    @GET
+    @Path("/historic/{med_id}")
+    public Response getHistoricDataByMedId(@PathParam("med_id") int medId) {
+        List<GetRecentHistoricDataResDTO> recentHistoric = getHistoricDataByMedIdUseCase.execute(medId);
+        return Response.ok(recentHistoric).build();
+    }
+
+    @GET
+    @Path("/predictive/{med_id}")
+    public Response getPredictiveDataByMedId(@PathParam("med_id") int medId) {
+        List<GetRecentHistoricDataResDTO> recentPredictive = getPredictiveDataByMedIdUseCase.execute(medId);
+        return Response.ok(recentPredictive).build();
     }
 }

@@ -26,6 +26,8 @@ public class MedSiteController {
     RegisterNewMedSiteConsumptionUseCase registerNewMedSiteConsumptionUseCase;
     @Inject
     RegisterNewMedSiteAdditionUseCase registerNewMedSiteAdditionUseCase;
+    @Inject
+    GetMedSiteQuantityRequiredPerStateUseCase getMedSiteQuantityRequiredPerStateUseCase;
 
     @GET
     @Path("/sys-user/{sys_user_id}")
@@ -74,6 +76,21 @@ public class MedSiteController {
         }catch(Exception e){
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    @GET
+    @Path("/quantity-required/state/{med_id}")
+    public Response getMedSiteQuantityRequiredPerState(@PathParam("med_id") int medId) {
+        List<GetMedSiteQuantityRequiredPerStateResDTO> quantityRequired =
+                getMedSiteQuantityRequiredPerStateUseCase.execute(medId);
+
+        if (quantityRequired == null || quantityRequired.isEmpty()) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("No se encontraron sitios con cantidades para el medicamento indicado.")
+                    .build();
+        }
+
+        return Response.ok(quantityRequired).build();
     }
 
 }
