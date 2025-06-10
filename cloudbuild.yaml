@@ -20,7 +20,7 @@ steps:
       '--quiet',
       '--allow-unauthenticated',
       '--set-env-vars', 'SECRET_ID=pahtlicoo-firebase-config',
-      '--set-secrets', 'DB_USERNAME=pahtlicoo-dev-database-username:latest,DB_URL=pahtlicoo-dev-database-url:latest,DB_PASSWORD=pahtlicoo-dev-database-password:latest'
+      '--set-secrets', 'DB_USERNAME=pahtlicoo-dev-database-username:latest,DB_URL=pahtlicoo-prod-database-url:latest,DB_PASSWORD=pahtlicoo-dev-database-password:latest'
     ]
 
 images:
