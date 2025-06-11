@@ -73,7 +73,7 @@ public class GraphBuilder {
             chartImage.scaleToFit(400, 300);
 
             document.add(Chunk.NEWLINE);
-            document.add(new Paragraph(medicamento));
+            //document.add(new Paragraph(medicamento));
             document.add(chartImage);
         }
 
