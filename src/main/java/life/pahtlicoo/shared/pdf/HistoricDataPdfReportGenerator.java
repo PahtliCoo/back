@@ -1,8 +1,11 @@
 package life.pahtlicoo.shared.pdf;
 
-
-import com.lowagie.text.*;
-import com.lowagie.text.pdf.*;
+import com.lowagie.text.Chunk;
+import com.lowagie.text.Document;
+import com.lowagie.text.Element;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfWriter;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import life.pahtlicoo.application.dto.historicdata.HistoricReportRequestDTO;
@@ -32,14 +35,11 @@ public class HistoricDataPdfReportGenerator {
             PdfWriter.getInstance(document, baos);
             document.open();
 
-            Font titleFont = new Font(Font.HELVETICA, 16, Font.BOLD);
-            Font subtitleFont = new Font(Font.HELVETICA, 12, Font.NORMAL);
-
-            Paragraph title = new Paragraph("Reporte de Datos Históricos por Sitio", titleFont);
+            Paragraph title = new Paragraph("Reporte de Datos Históricos por Sitio");
             title.setAlignment(Element.ALIGN_CENTER);
             document.add(title);
 
-            Paragraph subtitle = new Paragraph("Año: " + dto.getYear() + ", Meses: " + dto.getStartMonth() + " a " + dto.getEndMonth(), subtitleFont);
+            Paragraph subtitle = new Paragraph("Año: " + dto.getYear() + ", Meses: " + dto.getStartMonth() + " a " + dto.getEndMonth());
             subtitle.setAlignment(Element.ALIGN_CENTER);
             document.add(subtitle);
 
@@ -49,8 +49,7 @@ public class HistoricDataPdfReportGenerator {
                 Integer siteId = siteEntry.getKey();
                 String siteName = dto.getSiteNameResolver().apply(siteId);
 
-                Font siteFont = new Font(Font.HELVETICA, 13, Font.BOLD);
-                Paragraph siteTitle = new Paragraph("Sitio: " + siteName, siteFont);
+                Paragraph siteTitle = new Paragraph("Sitio: " + siteName);
                 siteTitle.setSpacingBefore(10f);
                 siteTitle.setSpacingAfter(10f);
                 document.add(siteTitle);
@@ -73,7 +72,6 @@ public class HistoricDataPdfReportGenerator {
                     graphBuilder.addGraphsToDocument(document,  siteEntry.getValue(),  dto.getMedNameResolver()
                     );
                 }
-
                 document.newPage();
             }
 
@@ -82,20 +80,15 @@ public class HistoricDataPdfReportGenerator {
 
             String conclusion = openAIServiceImp.reportConclusion(prompt);
 
-            Font conclusionFont = new Font(Font.HELVETICA, 12, Font.ITALIC);
-            Paragraph conclusionTitle = new Paragraph("Conclusión del pronóstico", titleFont);
+            Paragraph conclusionTitle = new Paragraph("Conclusión del pronóstico");
             conclusionTitle.setAlignment(Element.ALIGN_CENTER);
             document.add(conclusionTitle);
 
-
-
-
-            Paragraph conclusionBody = new Paragraph(conclusion, conclusionFont);
+            Paragraph conclusionBody = new Paragraph(conclusion);
 
             conclusionBody.setSpacingBefore(10f);
             conclusionBody.setAlignment(Element.ALIGN_JUSTIFIED);
             document.add(conclusionBody);
-
 
             document.close();
             return baos.toByteArray();
