@@ -126,4 +126,13 @@ public class SysUserRepositoryImpl implements SysUserRepository, PanacheReposito
         return sysUserEntityMapper.toDomain(sysUserEntity);
     }
 
+    @Override
+    public int getSysUserIdByCredentialId(int credentialId) {
+        SysUserEntity sysUserEntity = SysUserEntity.find("credentialId",credentialId).firstResult();
+        if (sysUserEntity == null) {
+            throw new IllegalArgumentException("No user found with credentialId: " + credentialId);
+        }
+        return sysUserEntity.getSysUserId();
+    }
+
 }

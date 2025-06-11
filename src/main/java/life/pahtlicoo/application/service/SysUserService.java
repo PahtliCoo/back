@@ -46,4 +46,8 @@ public class SysUserService {
     public Boolean updateSysUserPasswordFirebase(String firebaseId, String newPassword) {
         return sysUserRepository.updateSysUserPasswordFirebase(firebaseId, newPassword);
     }
+
+    public int getSysUserByCredentialId(int credentialId) {
+        return sysUserRepository.getSysUserIdByCredentialId(credentialId);
+    }
 }
