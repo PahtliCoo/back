@@ -9,6 +9,14 @@ RUN mvn clean package -DskipTests
 FROM openjdk:22-jdk-slim-buster
 WORKDIR /app
 
+# Instalar librerias para los reportes pdf
+RUN apt-get update && apt-get install -y \
+    libfreetype6 \
+    fontconfig \
+    libxrender1 \
+    libxtst6 \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY --from=build /app/target/quarkus-app/lib/ /app/lib/
 COPY --from=build /app/target/quarkus-app/*.jar /app/
 COPY --from=build /app/target/quarkus-app/app/ /app/app/

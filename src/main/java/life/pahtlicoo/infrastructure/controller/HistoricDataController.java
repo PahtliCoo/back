@@ -73,7 +73,6 @@ public class HistoricDataController {
 
     @POST
     @Path("/forecast")
-    @NoAuthRequired
     public Response generateForecast(GenerateForecastReqDTO generateForecastReqDTO){
         try {
             List<GenerateForecastResDTO> generateForecastResDTOList = generateForecastUseCase.execute(generateForecastReqDTO);
