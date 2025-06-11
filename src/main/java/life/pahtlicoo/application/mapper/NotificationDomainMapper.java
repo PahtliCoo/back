@@ -12,7 +12,7 @@ import life.pahtlicoo.domain.model.ShipmentOrder;
 
 @ApplicationScoped
 public class NotificationDomainMapper {
-    public Notification requestToNotification(Request request, String siteName) {
+    public Notification requestToNotification(Request request, String siteName, int receiverId) {
         Notification notification = new Notification();
 
         String capitalizedSiteName = siteName == null || siteName.isBlank()
@@ -21,17 +21,17 @@ public class NotificationDomainMapper {
 
         notification.setDescription(capitalizedSiteName + " creó un pedido");
         notification.setSenderId(request.getSysUserId());
-        notification.setReceiverId(7);
+        notification.setReceiverId(receiverId);
         notification.setRequestPhase(1);
         notification.setRequestId(request.getRequestId());
         return notification;
     }
 
-    public Notification shipmentOrderToNotification(ShipmentOrder shipmentOrder) {
+    public Notification shipmentOrderToNotification(ShipmentOrder shipmentOrder, int senderId, int receiverId) {
         Notification notification = new Notification();
         notification.setDescription("administrador creó una orden de envío");
-        notification.setSenderId(2);
-        notification.setReceiverId(3);
+        notification.setSenderId(senderId);
+        notification.setReceiverId(receiverId);
         notification.setRequestPhase(2);
         notification.setRequestId(shipmentOrder.getRequestId());
         return notification;

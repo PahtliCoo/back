@@ -18,4 +18,5 @@ public interface SysUserRepository {
     public SysUser createSysUserFirebase(SysUser sysUser, String password);
     public Boolean deleteSysUserFirebase(String userUid);
     public SysUser getSysUserByFirebaseId(String firebaseId);
+    public int getSysUserIdByCredentialId(int credentialId);
 }
