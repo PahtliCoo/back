@@ -36,7 +36,9 @@ public class CreateNotificationFromRequestUseCase {
 
             Site site = siteService.findSite(sysUser.getSiteId());
 
-            Notification notification = notificationDomainMapper.requestToNotification(request, site.getName());
+            int logisticsReceiverId = sysUserService.getSysUserByCredentialId(2);
+
+            Notification notification = notificationDomainMapper.requestToNotification(request, site.getName(), logisticsReceiverId);
 
             return notificationService.createNotification(notification);
         } catch (Exception e){
